@@ -11,4 +11,5 @@ echo $PASSWORD | sudo -S ./install.sh
 rm install.sh
 
 #reboot
+echo -e '\n ... Rebooting ... \n'
 echo $PASSWORD | sudo -S reboot

@@ -52,4 +52,5 @@ echo $PASSWORD | sudo -S apt-get update -qq
 echo $PASSWORD | sudo -S apt-get upgrade -qq -y
 
 #reboot
+echo -e '\n ... Rebooting ... \n'
 echo $PASSWORD | sudo -S reboot
