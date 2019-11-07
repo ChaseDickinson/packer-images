@@ -9,7 +9,7 @@ echo $PASSWORD | sudo -S apt-get remove --purge -qq -y thunderbird transmission-
 
 #removing leftovers
 echo -e '\n ... Cleaning Up ... \n'
-echo $PASSWORD | sudo -S apt-get autoremove
+echo $PASSWORD | sudo -S apt-get --qq -y autoremove
 
 #reboot
 echo -e '\n ... Rebooting ... \n'
