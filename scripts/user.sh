@@ -43,10 +43,9 @@ else
 fi
 
 #suppressing welcome message
-#echo -e '\n ... Suppressing Welcome Message ... \n'
-#TODO:directory is probably throwing off sed
-#   need something like this: grep -rl 'apples' /dir_to_search_under | xargs sed -i 's/apples/oranges/g'
-#sed -i 's/Exec=/usr/lib/gnome-initial-setup/gnome-initial-setup --existing-user/#Exec=/usr/lib/gnome-initial-setup/gnome-initial-setup --existing-user/' /etc/xdg/autostart/gnome-inital-setup-first-login.desktop
+echo -e '\n ... Suppressing Welcome Message ... \n'
+line="Exec=/usr/lib/gnome-initial-setup/gnome-initial-setup --existing-user"
+sed -i 's|$line|#$line|' /etc/xdg/autostart/gnome-inital-setup-first-login.desktop
 
 #suppressing upgrade message for disco
 if [ "$OS_NICKNAME" == "disco" ];
