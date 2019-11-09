@@ -9,7 +9,3 @@ wget https://raw.githubusercontent.com/Microsoft/linux-vm-tools/master/ubuntu/18
 chmod +x install.sh
 echo $PASSWORD | sudo -S ./install.sh
 rm install.sh
-
-#reboot
-echo -e '\n ... Rebooting ... \n'
-echo $PASSWORD | sudo -S reboot

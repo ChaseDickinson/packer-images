@@ -3,6 +3,7 @@
         "os_name": "ubuntu",
         "os_version": "19.04",
         "os_nickname": "disco",
+        "scripts": "../scripts",
         "vm_name": "{{user `os_name`}}-{{user `os_version`}}-Packer",
         "cpus": "2",
         "memory": "4096",
@@ -57,16 +58,16 @@
             "type": "shell",
             "environment_vars": [
                 "OS_NICKNAME={{user `os_nickname`}}",
-                "PASSWORD={{user `password`}}"                
+                "PASSWORD={{user `password`}}",
+                "DIRECTORY={{user `scripts`}}"
             ],
             "expect_disconnect": true,
             "pause_before": "10s",
             "scripts": [
-                "../scripts/sudo.sh",
-                "./remove.sh",
-                "../scripts/user.sh",
-                "../scripts/linux-vm-tools.sh",
-                "../scripts/linux-vm-tools.sh"
+                "{{user `scripts`}}/sudo.sh",
+                "{{user `scripts`}}/remove.sh",
+                "{{user `scripts`}}/user.sh",
+                "{{user `scripts`}}/linux-vm-tools.sh"
             ]
         }
     ],

@@ -19,7 +19,6 @@ echo $PASSWORD | sudo -S snap install --classic code
 #add docker repository
 if [ "$OS_NICKNAME" == "eoan" ];
 then
-    #add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu disco stable"
     echo -e '\n ... Skipping Docker Repository ... \n'
 else
     echo -e '\n ... Adding Docker Repository ... \n'
@@ -50,6 +49,14 @@ fi
 echo -e '\n ... Installing Latest Upgrades ... \n'
 echo $PASSWORD | sudo -S apt-get update -qq
 echo $PASSWORD | sudo -S apt-get upgrade -qq -y
+echo $PASSWORD | sudo -S apt-get dist-upgrade -qq -y
+
+#TODO: Test these commands/behavior from a clean image, then implement after the kernel upgrade
+#removing GRUB timeout
+#echo -e '\n ... Configuring GRUB ... \n'
+#echo $PASSWORD | echo GRUB_TIMEOUT=0 | sudo -S tee -a /etc/default/grub
+#echo $PASSWORD | echo GRUB_HIDDEN_TIMEOUT=0 | sudo -S tee -a /etc/default/grub
+#echo $PASSWORD | sudo -S update-grub
 
 #reboot
 echo -e '\n ... Rebooting ... \n'

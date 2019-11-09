@@ -17,12 +17,13 @@ echo -e '\n ... Installing AWS CLI ... \n'
 pip3 install awscli --upgrade --user
 
 #setting PATH variables
-echo -e '\n ... Setting PATH variables ... \n'
+echo -e '\n ... Setting PATH for AWS CLI ... \n'
 echo 'export PATH=/bin:$PATH' >>~/.bashrc
 if [ "$OS_NICKNAME" == "eoan" ];
 then
-    echo -e '\n ... Skipping Setting Path Variables ... \n'
+    echo -e '\n ... Skipping Setting PATH for Homebrew ... \n'
 else
+    echo -e '\n ... Setting PATH for Homebrew ... \n'
     echo 'export PATH=~/.local/bin:$PATH' >>~/.bashrc
     echo 'PATH=/home/linuxbrew/.linuxbrew/Homebrew/Library/Homebrew/vendor/portable-ruby/current/bin:$PATH' >>~/.bashrc
     test -d ~/.linuxbrew && eval $(~/.linuxbrew/bin/brew shellenv)
@@ -39,6 +40,19 @@ else
     echo -e '\n ... Installing AWS SAM ... \n'
     brew tap aws/tap
     brew install aws-sam-cli
+fi
+
+#suppressing welcome message
+#echo -e '\n ... Suppressing Welcome Message ... \n'
+#TODO:directory is probably throwing off sed
+#   need something like this: grep -rl 'apples' /dir_to_search_under | xargs sed -i 's/apples/oranges/g'
+#sed -i 's/Exec=/usr/lib/gnome-initial-setup/gnome-initial-setup --existing-user/#Exec=/usr/lib/gnome-initial-setup/gnome-initial-setup --existing-user/' /etc/xdg/autostart/gnome-inital-setup-first-login.desktop
+
+#suppressing upgrade message for disco
+if [ "$OS_NICKNAME" == "disco" ];
+then
+    echo -e '\n ... Suppressing Disco Upgrade ... \n'
+    gsettings set com.ubuntu.update-notifier no-show-notifications true    
 fi
 
 #configure favorites bar
