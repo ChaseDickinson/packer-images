@@ -2,9 +2,11 @@ aisleriot/disco
 baobab/disco
 branding-ubuntu/disco
 cheese/disco
+cheese-common/disco
 deja-dup/disco
 duplicity/disco
 example-content/disco
+fonts-noto-color-emoji/disco
 gir1.2-rb-3.0/disco
 gir1.2-totem-1.0/disco
 gir1.2-totemplparser-1.0/disco
@@ -44,6 +46,7 @@ hyphen-ru/disco
 libabw-0.1-1/disco
 libavahi-ui-gtk3-0/disco
 libcheese-gtk25/disco
+libcheese8/disco
 libdmapsharing-3.0-2/disco
 libexttextcat-2.0-0/disco
 libexttextcat-data/disco
@@ -52,6 +55,7 @@ libgnome-games-support-1-3/disco
 libgnome-games-support-common/disco
 libgnome-todo/disco
 libgom-1.0-0/disco
+libgrilo-0.3-0/bionic
 liblangtag-common/disco
 liblangtag1/disco
 libmessaging-menu0/disco

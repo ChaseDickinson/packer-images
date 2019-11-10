@@ -2,6 +2,7 @@ aisleriot/eoan
 baobab/eoan
 branding-ubuntu/eoan
 cheese/eoan
+cheese-common/eoan
 deja-dup/eoan
 duplicity/eoan
 gir1.2-rb-3.0/eoan
@@ -42,6 +43,8 @@ hyphen-pt-pt/eoan
 hyphen-ru/eoan
 libabw-0.1-1/eoan
 libavahi-ui-gtk3-0/eoan
+libcheese-gtk25/eoan
+libcheese8/eoan
 libdmapsharing-3.0-2/eoan
 libexttextcat-2.0-0/eoan
 libexttextcat-data/eoan
@@ -50,6 +53,7 @@ libgnome-games-support-1-3/eoan
 libgnome-games-support-common/eoan
 libgnome-todo/eoan
 libgom-1.0-0/eoan
+libgrilo-0.3-0/bionic
 liblangtag-common/eoan
 liblangtag1/eoan
 libmessaging-menu0/eoan

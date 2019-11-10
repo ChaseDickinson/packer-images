@@ -2,6 +2,7 @@ aisleriot/bionic
 baobab/bionic
 branding-ubuntu/bionic
 cheese/bionic
+cheese-common/bionic
 deja-dup/bionic
 duplicity/bionic
 example-content/bionic
@@ -43,6 +44,8 @@ hyphen-pt-pt/bionic
 hyphen-ru/bionic
 libabw-0.1-1/bionic
 libavahi-ui-gtk3-0/bionic
+libcheese-gtk25/bionic
+libcheese8/bionic
 libdmapsharing-3.0-2/bionic
 libexttextcat-2.0-0/bionic
 libexttextcat-data/bionic
@@ -51,6 +54,7 @@ libgnome-games-support-1-3/bionic
 libgnome-games-support-common/bionic
 libgnome-todo/bionic
 libgom-1.0-0/bionic
+libgrilo-0.3-0/bionic
 liblangtag-common/bionic
 liblangtag1/bionic
 libmessaging-menu0/bionic
