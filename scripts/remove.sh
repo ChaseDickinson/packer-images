@@ -14,6 +14,8 @@ echo $PASSWORD | sudo -S apt-get autoremove -qq -y
 echo -e '\n ... Reinstalling Settings ... \n'
 echo $PASSWORD | sudo -S apt-get install -qq -y gnome-control-center
 
+#TODO: Disable welcome message
+
 #reboot
 echo -e '\n ... Rebooting ... \n'
 echo $PASSWORD | sudo -S reboot
