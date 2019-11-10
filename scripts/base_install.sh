@@ -84,7 +84,7 @@ echo $PASSWORD | sudo -S apt-get dist-upgrade -qq -y
 
 #disable welcome message
 echo -e '\n ... Disabling Welcome Message ... \n'
-sed $'s/\[daemon\]/\[daemon\]\\\nInitialSetupEnable=false/' /etc/gdm3/custom.conf
+echo $PASSWORD | sudo -S sed -i $'s/\[daemon\]/\[daemon\]\\\nInitialSetupEnable=false/' /etc/gdm3/custom.conf
 
 #reboot
 echo -e '\n ... Rebooting ... \n'

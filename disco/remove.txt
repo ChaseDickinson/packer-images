@@ -55,7 +55,7 @@ libgnome-games-support-1-3/disco
 libgnome-games-support-common/disco
 libgnome-todo/disco
 libgom-1.0-0/disco
-libgrilo-0.3-0/bionic
+libgrilo-0.3-0/disco
 liblangtag-common/disco
 liblangtag1/disco
 libmessaging-menu0/disco
