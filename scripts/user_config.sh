@@ -19,5 +19,5 @@ gsettings set org.gnome.shell favorite-apps "['firefox.desktop', 'org.gnome.Term
 #echo 'export "materialTheme.accent": "Orange"'  >>~/.config/Code/User/settings.json
 
 #forcing user to change password
-echo -e '\n ... Requiring user to set a new password at next login ... \n'
-echo $PASSWORD | sudo -S charge --lastday 0 ubuntu
+#echo -e '\n ... Requiring user to set a new password at next login ... \n'
+#echo $PASSWORD | sudo -S charge --lastday 0 ubuntu
