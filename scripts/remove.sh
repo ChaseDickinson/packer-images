@@ -3,10 +3,16 @@
 #pause before beginning install
 sleep 10
 
-#TODO: figure out why this throws a "no such file or directory" error
 #remove unwanted applications
 echo -e '\n ... Uninstalling Bloat ... \n'
-echo $PASSWORD | cat "$OS_NICKNAME".txt | sudo -S xargs apt-get remove --purge -qq -y
+sed -i 's/[[:space:]]*$//' ~/remove.txt
+echo $PASSWORD | sudo -S apt-get remove --purge -qq -y $(cat ~/remove.txt)
+rm ~/remove.txt
+echo $PASSWORD | sudo -S apt-get autoremove -qq -y
+
+#add settings back
+echo -e '\n ... Reinstalling Settings ... \n'
+echo $PASSWORD | sudo -S apt-get install -qq -y gnome-control-center
 
 #reboot
 echo -e '\n ... Rebooting ... \n'

@@ -1,18 +1,20 @@
 {
     "variables": {
+        "cpus": "2",
+        "disk_size": "51200",
+        "home": "/home/{{user `initial_username`}}/",
+        "initial_username": "ubuntu",
+        "initial_password": "ubuntu",
+        "iso_checksum_type": "sha256",
+        "iso_checksum": "7e8a0d07522f591dfee9bc9fcd7c05466763161e6cb0117906655bce1750b2fa",
+        "memory": "4096",
         "os_name": "ubuntu",
         "os_version": "19.04",
         "os_nickname": "disco",
+        "remove_list": "{{template_dir}}\\remove.txt",
         "scripts": "../scripts",
-        "vm_name": "{{user `os_name`}}-{{user `os_version`}}-Packer",
-        "cpus": "2",
-        "memory": "4096",
-        "disk_size": "51200",
-        "iso_checksum_type": "sha256",
-        "iso_checksum": "7e8a0d07522f591dfee9bc9fcd7c05466763161e6cb0117906655bce1750b2fa",
         "switch_name": "External Switch",
-        "username": "ubuntu",
-        "password": "ubuntu"
+        "vm_name": "{{user `os_name`}}-{{user `os_version`}}-Packer"
     },
     "builders": [
         {
@@ -21,10 +23,10 @@
             "iso_checksum": "{{user `iso_checksum`}}",
             "iso_checksum_type": "{{user `iso_checksum_type`}}",
             "communicator": "ssh",
-            "ssh_username": "{{user `username`}}",
-            "ssh_password": "{{user `password`}}",
+            "ssh_username": "{{user `initial_username`}}",
+            "ssh_password": "{{user `initial_password`}}",
             "ssh_timeout" : "2h",
-            "shutdown_command": "echo '{{user `password`}}' | sudo -S shutdown -P now",
+            "shutdown_command": "echo '{{user `initial_password`}}' | sudo -S shutdown -P now",
             "switch_name": "{{user `switch_name`}}",
             "cpus": "{{user `cpus`}}",
             "disk_block_size": "1",
@@ -42,7 +44,7 @@
                 "<esc><esc><esc><esc><esc><esc><esc>",
                 "set gfxpayload=1024x768<enter>",
                 "linux /install/vmlinuz ",
-                "preseed/url=http://{{.HTTPIP}}:{{.HTTPPort}}/{{user `os_nickname`}}.cfg ",
+                "preseed/url=http://{{.HTTPIP}}:{{.HTTPPort}}/preseed.cfg ",
                 "debian-installer=en_US auto locale=en_US kbd-chooser/method=us ",
                 "hostname={{.Name}} ",
                 "fb=false debconf/frontend=noninteractive ",
@@ -55,19 +57,23 @@
     ],
     "provisioners": [
         {
+            "type": "file",
+            "source": "{{user `remove_list`}}",
+            "destination": "{{user `home`}}"
+        },
+        {
             "type": "shell",
             "environment_vars": [
                 "OS_NICKNAME={{user `os_nickname`}}",
-                "PASSWORD={{user `password`}}",
-                "DIRECTORY={{user `scripts`}}"
+                "PASSWORD={{user `initial_password`}}"
             ],
             "expect_disconnect": true,
             "pause_before": "10s",
             "scripts": [
-                "{{user `scripts`}}/sudo.sh",
+                "{{user `scripts`}}/base_install.sh",
                 "{{user `scripts`}}/remove.sh",
-                "{{user `scripts`}}/user.sh",
-                "{{user `scripts`}}/linux-vm-tools.sh"
+                "{{user `scripts`}}/user_config.sh",
+                "{{user `scripts`}}/linux_vm_tools.sh"
             ]
         }
     ],
