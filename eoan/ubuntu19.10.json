@@ -65,6 +65,7 @@
             "type": "shell",
             "environment_vars": [
                 "OS_NICKNAME={{user `os_nickname`}}",
+                "USERNAME={{user `initial_username`}}",
                 "PASSWORD={{user `initial_password`}}"
             ],
             "expect_disconnect": true,
