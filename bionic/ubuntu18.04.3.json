@@ -13,7 +13,7 @@
         "os_nickname": "bionic",
         "remove_list": "{{template_dir}}\\remove.txt",
         "scripts": "../scripts",
-        "switch_name": "External Switch",
+        "switch_name": "Default Switch",
         "vm_name": "{{user `os_name`}}-{{user `os_version`}}-Packer"
     },
     "builders": [

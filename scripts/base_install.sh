@@ -14,7 +14,12 @@ echo $PASSWORD | sudo -S apt-get install -qq -y gdm3 ubuntu-desktop git python3-
 
 #VS Code
 echo -e '\n ... Installing VS Code ... \n'
-echo $PASSWORD | sudo -S snap install --classic code
+#echo $PASSWORD | sudo -S snap install --classic code
+curl https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > packages.microsoft.gpg
+echo $PASSWORD | sudo -S install -o root -g root -m 644 packages.microsoft.gpg /usr/share/keyrings/
+echo $PASSWORD | sudo -S sh -c 'echo "deb [arch=amd64 signed-by=/usr/share/keyrings/packages.microsoft.gpg] https://packages.microsoft.com/repos/vscode stable main" > /etc/apt/sources.list.d/vscode.list'
+echo $PASSWORD | sudo -S apt-get update -qq
+echo $PASSWORD | sudo -S apt-get install -qq -y code 
 
 #add docker repository
 if [ "$OS_NICKNAME" == "eoan" ];
@@ -81,10 +86,6 @@ echo -e '\n ... Installing Latest Upgrades ... \n'
 echo $PASSWORD | sudo -S apt-get update -qq
 echo $PASSWORD | sudo -S apt-get upgrade -qq -y
 echo $PASSWORD | sudo -S apt-get dist-upgrade -qq -y
-
-#disable welcome message
-echo -e '\n ... Disabling Welcome Message ... \n'
-echo $PASSWORD | sudo -S sed -i $'s/\[daemon\]/\[daemon\]\\\nInitialSetupEnable=false/' /etc/gdm3/custom.conf
 
 #reboot
 echo -e '\n ... Rebooting ... \n'
