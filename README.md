@@ -23,6 +23,16 @@
     |-- user_config.sh - user-sepecific settings like dock favorites & VS Code setup
 ```
 
+## Usage
+
+Hyper-V is required.
+
+Don't forget to disable Secure Boot after you create a VM!
+
+Once the build completes, copy the VHD to a different directory, then point a new Hyper-V VM to it during setup. You'll have to run the following command from an elevated PowerShell prompt for the "Enhanced Mode" functionality to work:
+
+`Set-VM -VMName <your_vm_name> -EnhancedSessionTransportType HvSocket`
+
 ## Noob Logic
 
 - Why are you using the server images and installing the desktop GUI?
@@ -57,13 +67,3 @@ So I'm using the server images, then installing the packages I want.
 
 - This is unsecure because you're leaving "ubuntu" set as the default username and password!
   - Password is set to expire in a day
-
-## Usage
-
-Hyper-V is required.
-
-Don't forget to disable Secure Boot after you create a VM!
-
-Once the build completes, copy the VHD to a different directory, then point a new Hyper-V VM to it during setup. You'll have to run the following command from an elevated PowerShell prompt for the "Enhanced Mode" functionality to work:
-
-`Set-VM -VMName <your_vm_name> -EnhancedSessionTransportType HvSocket`
