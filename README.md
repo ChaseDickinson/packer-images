@@ -35,6 +35,8 @@ Once the build completes, copy the VHD to a different directory, then point a ne
 
 ## Noob Logic
 
+Well aware there's probably an easier/better way to accomplish this, but I was not able to find working examples when I looked so I'm sharing my functional imperfection.
+
 - Why are you using the server images and installing the desktop GUI?
   - Because I can't get the damn desktop images to boot! I kept getting a kernel panic with a message about "VFS: Unable to mount root fs on unknown-block(0,0)". I spent hours on Google trying to figure this out, and as a general life rule, if I can't find an answer on Google after lookking for an extended period of time, it's probably a "me" problem.
   - Based on some research, the only difference between the Ubuntu images (besides obviously something with the installation/boot process) is the server doesn't preinstall a GUI while the desktop image does.
