@@ -41,9 +41,29 @@ So I'm using the server images, then installing the packages I want.
 - This is unsecure because you're leaving "ubuntu" set as the default username and password!
   - Password is set to expire in a day
 
+## Repo Structure
+
+```
+|-- Distro
+    |-- preseed.cfg - preseed file for Ubuntu install
+    |-- remove.list - list of packages to be removed
+    |-- template.json - Packer template
+|-- files
+    |-- code_extensions.list - list of VS Code extensions to install
+    |-- settings.json - JSON settings for VS Code
+|-- scripts
+    |-- base_install.sh - base install packages
+    |-- linux_vm_tools.sh - Microsoft linux-vm-tools install; enables enhanced mode
+    |-- remove.sh - script to remove packages from /Distro/remove.list
+    |-- user_config.sh - user-sepecific settings like dock favorites & VS Code setup
+```
+
+
 ## Usage
 
-Hyper-V is a requirement at this point.
+Hyper-V is required.
+
+Don't forget to disable Secure Boot after you create a VM!
 
 Once the build completes, copy the VHD to a different directory, then point a new Hyper-V VM to it during setup. You'll have to run the following command from an elevated PowerShell prompt for the "Enhanced Mode" functionality to work:
 

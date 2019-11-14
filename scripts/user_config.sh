@@ -13,10 +13,6 @@ echo -e '\n ... Installing VS Code extensions ... \n'
 sed -i 's/[[:space:]]*$//' ~/files/code_extensions.list
 cat ~/files/code_extensions.list | xargs -L 1 code --install-extension
 rm ~/files/code_extensions.list
-#code --install-extension amazonwebservices.aws-toolkit-vscode
-#code --install-extension equinusocio.vsc-material-theme
-#code --install-extension pkief.material-icon-theme
-#code --install-extension ms-azuretools.vscode-docker
 
 #pause before configuring settings
 sleep 10
