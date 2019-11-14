@@ -1,4 +1,4 @@
-# Custom Ubuntu Hyper-V VMs by Packer
+# Ubuntu Desktop Hyper-V VMs by Packer
 
 ## Problem Statement
 
