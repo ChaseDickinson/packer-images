@@ -6,6 +6,23 @@
 2. Good user experience - Things like copy & paste from host to guest needs to work; bonus points if the refresh rate is not janky
 3. Create as close to the "minimal install" experience as possible - I won't be playing solitaire or shopping on Amazon so I don't need those packages installed
 
+## Repo Structure
+
+```
+|-- Distro
+    |-- preseed.cfg - preseed file for Ubuntu install
+    |-- remove.list - list of packages to be removed
+    |-- template.json - Packer template
+|-- files
+    |-- code_extensions.list - list of VS Code extensions to install
+    |-- settings.json - JSON settings for VS Code
+|-- scripts
+    |-- base_install.sh - base install packages
+    |-- linux_vm_tools.sh - Microsoft linux-vm-tools install; enables enhanced mode
+    |-- remove.sh - script to remove packages from /Distro/remove.list
+    |-- user_config.sh - user-sepecific settings like dock favorites & VS Code setup
+```
+
 ## Noob Logic
 
 - Why are you using the server images and installing the desktop GUI?
@@ -40,24 +57,6 @@ So I'm using the server images, then installing the packages I want.
 
 - This is unsecure because you're leaving "ubuntu" set as the default username and password!
   - Password is set to expire in a day
-
-## Repo Structure
-
-```
-|-- Distro
-    |-- preseed.cfg - preseed file for Ubuntu install
-    |-- remove.list - list of packages to be removed
-    |-- template.json - Packer template
-|-- files
-    |-- code_extensions.list - list of VS Code extensions to install
-    |-- settings.json - JSON settings for VS Code
-|-- scripts
-    |-- base_install.sh - base install packages
-    |-- linux_vm_tools.sh - Microsoft linux-vm-tools install; enables enhanced mode
-    |-- remove.sh - script to remove packages from /Distro/remove.list
-    |-- user_config.sh - user-sepecific settings like dock favorites & VS Code setup
-```
-
 
 ## Usage
 
