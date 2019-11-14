@@ -1,0 +1,8 @@
+{
+    "git.autofetch": true,
+    "workbench.iconTheme": "material-icon-theme",
+    "workbench.colorTheme": "Material Theme Darker",
+    "materialTheme.accent": "Orange",
+    "aws.samcli.location": "/home/ubuntu/.linuxbrew/bin/sam",
+    "aws.telemetry": "Disable"
+}

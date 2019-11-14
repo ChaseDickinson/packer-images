@@ -2,6 +2,7 @@
     "variables": {
         "cpus": "2",
         "disk_size": "51200",
+        "files": "../files",
         "home": "/home/{{user `initial_username`}}/",
         "initial_username": "ubuntu",
         "initial_password": "ubuntu",
@@ -11,7 +12,7 @@
         "os_name": "ubuntu",
         "os_version": "19.10",
         "os_nickname": "eoan",
-        "remove_list": "{{template_dir}}\\remove.txt",
+        "remove_list": "{{template_dir}}\\remove.list",
         "scripts": "../scripts",
         "switch_name": "Default Switch",
         "vm_name": "{{user `os_name`}}-{{user `os_version`}}-Packer"
@@ -59,6 +60,11 @@
         {
             "type": "file",
             "source": "{{user `remove_list`}}",
+            "destination": "{{user `home`}}"
+        },
+        {
+            "type": "file",
+            "source": "{{user `files`}}",
             "destination": "{{user `home`}}"
         },
         {

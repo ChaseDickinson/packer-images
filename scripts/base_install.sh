@@ -10,11 +10,10 @@ echo $PASSWORD | sudo -S apt-get install -qq -y
 
 #install base packages
 echo -e '\n ... Installing base packages ... \n'
-echo $PASSWORD | sudo -S apt-get install -qq -y gdm3 ubuntu-desktop git python3-pip apt-transport-https ca-certificates curl gnupg-agent software-properties-common
+echo $PASSWORD | sudo -S apt-get install -y gdm3 ubuntu-desktop git python3-pip apt-transport-https ca-certificates curl gnupg-agent software-properties-common
 
 #VS Code
 echo -e '\n ... Installing VS Code ... \n'
-#echo $PASSWORD | sudo -S snap install --classic code
 curl https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > packages.microsoft.gpg
 echo $PASSWORD | sudo -S install -o root -g root -m 644 packages.microsoft.gpg /usr/share/keyrings/
 echo $PASSWORD | sudo -S sh -c 'echo "deb [arch=amd64 signed-by=/usr/share/keyrings/packages.microsoft.gpg] https://packages.microsoft.com/repos/vscode stable main" > /etc/apt/sources.list.d/vscode.list'
