@@ -24,5 +24,5 @@ mv ~/files/settings.json ~/.config/Code/User/settings.json
 rm ~/files
 
 #forcing user to change password
-echo -e '\n ... Setting Password to Expire in a Day ... \n'
-echo $PASSWORD | sudo -S chage -M 1 $USERNAME
+echo -e '\n ... Setting Password to Expire Today ... \n'
+echo $PASSWORD | sudo -S chage -M 0 $USERNAME
