@@ -52,20 +52,23 @@ So I'm using the server images, then installing the packages I want.
   - AWS SAM, which requires:
     - Docker (and pre-reqs)
     - Homebrew (and pre-reqs)
-  - Microsoft's linux-vm-tools (enable "Enhanced Mode" for Ubuntu VMs)
+  - Microsoft's [linux-vm-tools](https://github.com/microsoft/linux-vm-tools) (enable "Enhanced Mode" for Ubuntu VMs)
   - Also installing some of my preferred VS Code extensions
 
 - What are you removing?
-  - Everything that is listed as getting removed during the Ubuntu minimal installation (insert link)
+  - Pretty much everything that is listed as getting removed during the Ubuntu minimal installation
+    - [bionic](https://people.canonical.com/~ubuntu-archive/seeds/ubuntu.bionic/desktop.minimal-remove)
+    - [disco](https://people.canonical.com/~ubuntu-archive/seeds/ubuntu.disco/desktop.minimal-remove)
+    - [eoan](https://people.canonical.com/~ubuntu-archive/seeds/ubuntu.eoan/desktop.minimal-remove)
 
 - What are you reinstalling?
-  - gnome-control-center (because something in the minimal installation removes the settings menu...? Linux is weird)
+  - gnome-control-center (because something in the minimal installation removes the settings menu...? ~~Linux~~ ~~Ubuntu~~ Technology is weird)
 
 - Why aren't you installing Docker, Homebrew, or AWS SAM on 19.10 Eoan?
   - Because there's no Docker Community Edition available yet, which causes the install to fail for that version
 
 - Why are you updating the kernel?
-  - Because the Microsoft linux-vm-tools package requires it; if I don't do it before running that install, it requires me to run the install twice, while doing it for me
+  - Because the Microsoft linux-vm-tools package requires it; if I don't do it before running that install, it requires me to run the install twice so that it can do it for me
 
 - This is unsecure because you're leaving "ubuntu" set as the default username and password!
   - Password is set to expire in a day
