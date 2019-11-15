@@ -20,6 +20,11 @@ echo $PASSWORD | sudo -S sh -c 'echo "deb [arch=amd64 signed-by=/usr/share/keyri
 echo $PASSWORD | sudo -S apt-get update -qq
 echo $PASSWORD | sudo -S apt-get install -qq -y code 
 
+#install node
+echo -e '\n ... Installing Node.js v12 ... \n'
+echo $PASSWORD | curl -sL https://deb.nodesource.com/setup_12.x | sudo -S -E bash -
+echo $PASSWORD | sudo -S apt-get install -qq -y nodejs
+
 #add docker repository
 if [ "$OS_NICKNAME" == "eoan" ];
 then
@@ -40,7 +45,7 @@ else
     echo $PASSWORD | sudo -S apt-get install -qq -y docker-ce docker-ce-cli containerd.io
 fi
 
-#install homebrew, pt I
+#install homebrew
 if [ "$OS_NICKNAME" == "eoan" ];
 then
     echo -e '\n ... Skipping Homebrew Install ... \n'

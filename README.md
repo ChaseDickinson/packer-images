@@ -48,6 +48,7 @@ So I'm using the server images, then installing the packages I want.
   - VS Code
   - GIT
   - Python3
+  - Node.js 12.x
   - AWS CLI
   - AWS SAM, which requires:
     - Docker (and pre-reqs)
