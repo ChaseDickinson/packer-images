@@ -21,7 +21,7 @@ sleep 10
 echo -e '\n ... Copying VS Code settings ... \n'
 mkdir -p ~/.config/Code/User
 mv ~/files/settings.json ~/.config/Code/User/settings.json
-rm ~/files
+rm -rf ~/files
 
 #forcing user to change password
 echo -e '\n ... Setting Password to Expire Today ... \n'
