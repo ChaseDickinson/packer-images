@@ -2,7 +2,11 @@
 
 ## Problem Statement
 
-1. Disposable, repeatable environments - Install whatever I want, figure it out, then start clean (or add to the build)
+I built this out mostly for my own use, and I'm sharing in case it's helpful to anyone else. Should be fairly straight-forward to edit to meet your own needs.
+
+My primary goals were:
+
+1. Disposable, repeatable environments - Spin up an environment with my tools of choice, change/add to it or otherwise play around, then destroy it
 2. Good user experience - Things like copy & paste from host to guest needs to work; bonus points if the refresh rate is not janky
 3. Create as close to the "minimal install" experience as possible - I won't be playing solitaire or shopping on Amazon so I don't need those packages installed
 
@@ -27,7 +31,7 @@
 
 Hyper-V is required.
 
-Don't forget to disable Secure Boot after you create a VM!
+Don't forget to disable Secure Boot after you create a VM! You'll also need to login and change your password first before completing the step below to enable "Enhanced Mode".
 
 Once the build completes, copy the VHD to a different directory, then point a new Hyper-V VM to it during setup. You'll have to run the following command from an elevated PowerShell prompt for the "Enhanced Mode" functionality to work:
 
@@ -38,8 +42,8 @@ Once the build completes, copy the VHD to a different directory, then point a ne
 Well aware there's probably an easier/better way to accomplish this, but I was not able to find working examples when I looked so I'm sharing my functional imperfection.
 
 - Why are you using the server images and installing the desktop GUI?
-  - Because I can't get the damn desktop images to boot! I kept getting a kernel panic with a message about "VFS: Unable to mount root fs on unknown-block(0,0)". I spent hours on Google trying to figure this out, and as a general life rule, if I can't find an answer on Google after lookking for an extended period of time, it's probably a "me" problem.
-  - Based on some research, the only difference between the Ubuntu images (besides obviously something with the installation/boot process) is the server doesn't preinstall a GUI while the desktop image does.
+  - Because I can't get the damn desktop images to boot! I kept getting a kernel panic with a message about "VFS: Unable to mount root fs on unknown-block(0,0)". I spent hours on Google trying to figure this out, and as a general life rule, if I can't find an answer on Google after lookking for a day or two, it's probably a "me" problem.
+  - Based on some research, the only difference between the Ubuntu images (besides obviously something with the installation/boot process) is that the server doesn't preinstall a GUI while the desktop image does.
 
 So I'm using the server images, then installing the packages I want.
 
@@ -50,11 +54,11 @@ So I'm using the server images, then installing the packages I want.
   - Python3
   - Node.js 12.x
   - AWS CLI
-  - AWS SAM, which requires:
+  - AWS SAM (on Bionic & Disco), which requires:
     - Docker (and pre-reqs)
     - Homebrew (and pre-reqs)
   - Microsoft's [linux-vm-tools](https://github.com/microsoft/linux-vm-tools) (enable "Enhanced Mode" for Ubuntu VMs)
-  - Also installing some of my preferred VS Code extensions
+  - Also installing some of my preferred VS Code extensions and configuration settings
 
 - What are you removing?
   - Pretty much everything that is listed as getting removed during the Ubuntu minimal installation
@@ -66,10 +70,10 @@ So I'm using the server images, then installing the packages I want.
   - gnome-control-center (because something in the minimal installation removes the settings menu...? ~~Linux~~ ~~Ubuntu~~ Technology is weird)
 
 - Why aren't you installing Docker, Homebrew, or AWS SAM on 19.10 Eoan?
-  - Because there's no Docker Community Edition available yet, which causes the install to fail for that version
+  - Because there's [no Docker Community Edition available yet for Eoan](https://docs.docker.com/install/linux/docker-ce/ubuntu/), which causes the install to fail for that version when it tries to find it
 
 - Why are you updating the kernel?
-  - Because the Microsoft linux-vm-tools package requires it; if I don't do it before running that install, it requires me to run the install twice so that it can do it for me
+  - Because the Microsoft linux-vm-tools package requires it; if I don't do it before running that install, it requires me to run the install twice so that it can do the upgrade for me
 
 - This is unsecure because you're leaving "ubuntu" set as the default username and password!
-  - Password is set to expire in a day
+  - Password is set to expire and will require you to change the password at next login
