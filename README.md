@@ -75,5 +75,5 @@ So I'm using the server images, then installing the packages I want.
 - Why are you updating the kernel?
   - Because the Microsoft linux-vm-tools package requires it; if I don't do it before running that install, it requires me to run the install twice so that it can do the upgrade for me
 
-- This is unsecure because you're leaving "ubuntu" set as the default username and password!
+- This is not secure because you're leaving "ubuntu" set as the default username and password!
   - Password is set to expire and will require you to change the password at next login
