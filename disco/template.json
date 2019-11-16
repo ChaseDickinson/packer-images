@@ -1,14 +1,14 @@
 {
     "variables": {
-        "cpus": "2",
-        "disk_size": "51200",
+        "cpus": "1",
+        "disk_size": "25600",
         "files": "../files",
         "home": "/home/{{user `initial_username`}}/",
         "initial_username": "ubuntu",
         "initial_password": "ubuntu",
         "iso_checksum_type": "sha256",
         "iso_checksum": "7e8a0d07522f591dfee9bc9fcd7c05466763161e6cb0117906655bce1750b2fa",
-        "memory": "4096",
+        "memory": "2048",
         "os_name": "ubuntu",
         "os_version": "19.04",
         "os_nickname": "disco",
