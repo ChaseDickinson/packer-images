@@ -15,7 +15,7 @@
         "remove_list": "{{template_dir}}\\remove.list",
         "scripts": "../scripts",
         "switch_name": "Default Switch",
-        "vm_name": "{{user `os_name`}}-{{user `os_version`}}-Packer"
+        "vm_name": "{{user `os_version`}}-Packer"
     },
     "builders": [
         {
@@ -36,7 +36,7 @@
             "enable_mac_spoofing": true,
             "enable_virtualization_extensions": true,
             "generation": "2",
-            "output_directory": "..\\..\\VMs\\{{timestamp}}_{{user `os_name`}}{{user `os_version`}}",
+            "output_directory": "..\\..\\VMs\\{{user `os_nickname`}}\\{{timestamp}}",
             "vm_name": "{{user `vm_name`}}",
             "memory": "{{user `memory`}}",
             "http_directory": "./",

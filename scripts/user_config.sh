@@ -33,8 +33,5 @@ echo $PASSWORD | sudo -S chage -M 0 $USERNAME
 #  run fc-cache -fv command
 #  update VS code settings to use preferred font settings
 
-#TODO - host file-share:
-#  place script on desktop to run to mount shared folder from host
-
 #TODO - figure out what is causing lvmetad error at boot
 #  change to non-LVM partition?
