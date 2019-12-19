@@ -46,7 +46,7 @@
                 "linux /casper/vmlinuz ",
                 "url=http://{{.HTTPIP}}:{{.HTTPPort}}/preseed.cfg ",
                 "boot=casper automatic-ubiquity noninteractive noprompt --- <enter>",
-                "initrd /casper/initrd <enter> ",
+                "initrd /casper/initrd <enter>",
                 "boot<enter>"
             ]
         }
