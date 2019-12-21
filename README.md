@@ -21,9 +21,10 @@ My primary goals were:
     |-- code_extensions.list - list of VS Code extensions to install
     |-- settings.json - JSON settings for VS Code
 |-- scripts
-    |-- base_install.sh - base install packages
+    |-- desktop_base.sh - base install packages for desktop images
     |-- linux_vm_tools.sh - Microsoft linux-vm-tools install; enables enhanced mode
     |-- remove.sh - script to remove packages from /Distro/remove.list
+    |-- server_base.sh - base install packages for server images
     |-- user_config.sh - user-sepecific settings like dock favorites & VS Code setup
 ```
 
@@ -37,15 +38,7 @@ Once the build completes, copy the VHD to a different directory, then point a ne
 
 `Set-VM -VMName <your_vm_name> -EnhancedSessionTransportType HvSocket`
 
-## Noob Logic
-
-Well aware there's probably an easier/better way to accomplish this, but I was not able to find working examples when I looked so I'm sharing my functional imperfection.
-
-- Why are you using the server images and installing the desktop GUI?
-  - Because I can't get the damn desktop images to boot! I kept getting a kernel panic with a message about "VFS: Unable to mount root fs on unknown-block(0,0)". I spent hours on Google trying to figure this out, and as a general life rule, if I can't find an answer on Google after lookking for a day or two, it's probably a "me" problem.
-  - Based on some research, the only difference between the Ubuntu images (besides obviously something with the installation/boot process) is that the server doesn't preinstall a GUI while the desktop image does.
-
-So I'm using the server images, then installing the packages I want.
+## What's Included
 
 - What are you installing? 
   - Ubuntu Desktop
@@ -60,14 +53,12 @@ So I'm using the server images, then installing the packages I want.
   - Microsoft's [linux-vm-tools](https://github.com/microsoft/linux-vm-tools) (enable "Enhanced Mode" for Ubuntu VMs)
   - Also installing some of my preferred VS Code extensions and configuration settings
 
-- What are you removing?
-  - Pretty much everything that is listed as getting removed during the Ubuntu minimal installation
+## What's Not Included
+
+- Taking advantage of the built in minimal install functionality included in the Ubuntu Desktop images. This removes the following packages:
     - [bionic](https://people.canonical.com/~ubuntu-archive/seeds/ubuntu.bionic/desktop.minimal-remove)
     - [disco](https://people.canonical.com/~ubuntu-archive/seeds/ubuntu.disco/desktop.minimal-remove)
     - [eoan](https://people.canonical.com/~ubuntu-archive/seeds/ubuntu.eoan/desktop.minimal-remove)
-
-- What are you reinstalling?
-  - gnome-control-center (because something in the minimal installation removes the settings menu...? ~~Linux~~ ~~Ubuntu~~ Technology is weird)
 
 - Why aren't you installing Docker, Homebrew, or AWS SAM on 19.10 Eoan?
   - Because there's [no Docker Community Edition available yet for Eoan](https://docs.docker.com/install/linux/docker-ce/ubuntu/), which causes the install to fail for that version when it tries to find it
