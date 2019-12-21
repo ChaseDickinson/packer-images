@@ -2,30 +2,32 @@
     "variables": {
         "cpus": "1",
         "disk_size": "25600",
-        "files": "../files",
+        "files": "../../files",
         "home": "/home/{{user `initial_username`}}/",
         "initial_username": "ubuntu",
         "initial_password": "ubuntu",
         "iso_checksum_type": "sha256",
-        "iso_checksum": "add4614b6fe3bb8e7dddcaab0ea97c476fbd4ffe288f2a4912cb06f1a47dcfa0",
+        "iso_checksum": "921fd8b271c04aa86a321cc35b40e677f9b85f7903bf2204efb2389b0f0a64c1",
         "memory": "4096",
         "os_name": "ubuntu",
-        "os_version": "18.04.3",
-        "os_nickname": "bionic",
-        "scripts": "../scripts",
+        "os_nickname": "eoan",
+        "os_type": "server",
+        "os_version": "19.10",
+        "remove_list": "{{template_dir}}\\remove.list",
+        "scripts": "../../scripts",
         "switch_name": "Default Switch",
-        "vm_name": "{{user `os_version`}}-desktop-packer"
+        "vm_name": "{{user `os_version`}}-{{user `os_type`}}-Packer"
     },
     "builders": [
         {
             "type": "hyperv-iso",
-            "iso_url": "http://releases.ubuntu.com/{{user `os_version`}}/ubuntu-{{user `os_version`}}-desktop-amd64.iso",
+            "iso_url": "http://cdimage.ubuntu.com/releases/{{user `os_version`}}/release/ubuntu-{{user `os_version`}}-{{user `os_type`}}-amd64.iso",
             "iso_checksum": "{{user `iso_checksum`}}",
             "iso_checksum_type": "{{user `iso_checksum_type`}}",
             "communicator": "ssh",
             "ssh_username": "{{user `initial_username`}}",
             "ssh_password": "{{user `initial_password`}}",
-            "ssh_timeout": "2h",
+            "ssh_timeout" : "2h",
             "shutdown_command": "echo '{{user `initial_password`}}' | sudo -S shutdown -P now",
             "switch_name": "{{user `switch_name`}}",
             "cpus": "{{user `cpus`}}",
@@ -35,27 +37,27 @@
             "enable_mac_spoofing": true,
             "enable_virtualization_extensions": true,
             "generation": "2",
-            "output_directory": "..\\..\\VMs\\{{user `os_nickname`}}-desktop\\{{timestamp}}",
+            "output_directory": "..\\..\\..\\VMs\\{{user `os_type`}}\\{{user `os_nickname`}}\\{{timestamp}}",
             "vm_name": "{{user `vm_name`}}",
             "memory": "{{user `memory`}}",
             "http_directory": "./",
             "boot_wait": "0s",
             "boot_command": [
-                "<esc><esc><esc><esc><esc><esc><esc><esc><esc><esc><esc><esc>",
-                "linux /casper/vmlinuz ",
-                "url=http://{{.HTTPIP}}:{{.HTTPPort}}/preseed.cfg ",
-                "boot=casper debug-ubiquity noninteractive noprompt --- <enter>",
-                "initrd /casper/initrd <enter>",
+                "<esc><esc><esc><esc><esc><esc><esc>",
+                "set gfxpayload=1024x768<enter>",
+                "linux /install/vmlinuz ",
+                "preseed/url=http://{{.HTTPIP}}:{{.HTTPPort}}/preseed.cfg ",
+                "debian-installer=en_US auto locale=en_US kbd-chooser/method=us ",
+                "hostname={{.Name}} ",
+                "fb=false debconf/frontend=noninteractive ",
+                "keyboard-configuration/modelcode=SKIP keyboard-configuration/layout=USA ",
+                "keyboard-configuration/variant=USA console-setup/ask_detect=false <enter>",
+                "initrd /install/initrd.gz<enter> ",
                 "boot<enter>"
             ]
         }
     ],
     "provisioners": [
-        {
-            "type": "file",
-            "source": "{{user `files`}}",
-            "destination": "{{user `home`}}"
-        },
         {
             "type": "shell",
             "environment_vars": [
@@ -66,9 +68,7 @@
             "expect_disconnect": true,
             "pause_before": "10s",
             "scripts": [
-                "{{user `scripts`}}/desktop_base.sh",
-                "{{user `scripts`}}/user_config.sh",
-                "{{user `scripts`}}/linux_vm_tools.sh"
+                "{{user `scripts`}}/server_base.sh"
             ]
         }
     ],

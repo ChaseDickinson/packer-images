@@ -1,0 +1,77 @@
+{
+    "variables": {
+        "cpus": "1",
+        "disk_size": "25600",
+        "files": "../../files",
+        "home": "/home/{{user `initial_username`}}/",
+        "initial_username": "ubuntu",
+        "initial_password": "ubuntu",
+        "iso_checksum_type": "sha256",
+        "iso_checksum": "add4614b6fe3bb8e7dddcaab0ea97c476fbd4ffe288f2a4912cb06f1a47dcfa0",
+        "memory": "4096",
+        "os_name": "ubuntu",
+        "os_nickname": "bionic",
+        "os_type": "desktop",
+        "os_version": "18.04.3",
+        "scripts": "../../scripts",
+        "switch_name": "Default Switch",
+        "vm_name": "{{user `os_version`}}-{{user `os_type`}}-packer"
+    },
+    "builders": [
+        {
+            "type": "hyperv-iso",
+            "iso_url": "http://releases.ubuntu.com/{{user `os_version`}}/ubuntu-{{user `os_version`}}-{{user `os_type`}}-amd64.iso",
+            "iso_checksum": "{{user `iso_checksum`}}",
+            "iso_checksum_type": "{{user `iso_checksum_type`}}",
+            "communicator": "ssh",
+            "ssh_username": "{{user `initial_username`}}",
+            "ssh_password": "{{user `initial_password`}}",
+            "ssh_timeout": "2h",
+            "shutdown_command": "echo '{{user `initial_password`}}' | sudo -S shutdown -P now",
+            "switch_name": "{{user `switch_name`}}",
+            "cpus": "{{user `cpus`}}",
+            "disk_block_size": "1",
+            "disk_size": "{{user `disk_size`}}",
+            "enable_dynamic_memory": false,
+            "enable_mac_spoofing": true,
+            "enable_virtualization_extensions": true,
+            "generation": "2",
+            "output_directory": "..\\..\\..\\VMs\\{{user `os_type`}}\\{{user `os_nickname`}}\\{{timestamp}}",
+            "vm_name": "{{user `vm_name`}}",
+            "memory": "{{user `memory`}}",
+            "http_directory": "./",
+            "boot_wait": "0s",
+            "boot_command": [
+                "<esc><esc><esc><esc><esc><esc><esc><esc><esc><esc><esc><esc>",
+                "linux /casper/vmlinuz ",
+                "url=http://{{.HTTPIP}}:{{.HTTPPort}}/preseed.cfg ",
+                "boot=casper debug-ubiquity noninteractive noprompt --- <enter>",
+                "initrd /casper/initrd <enter>",
+                "boot<enter>"
+            ]
+        }
+    ],
+    "provisioners": [
+        {
+            "type": "file",
+            "source": "{{user `files`}}",
+            "destination": "{{user `home`}}"
+        },
+        {
+            "type": "shell",
+            "environment_vars": [
+                "OS_NICKNAME={{user `os_nickname`}}",
+                "USERNAME={{user `initial_username`}}",
+                "PASSWORD={{user `initial_password`}}"
+            ],
+            "expect_disconnect": true,
+            "pause_before": "10s",
+            "scripts": [
+                "{{user `scripts`}}/desktop_base.sh",
+                "{{user `scripts`}}/user_config.sh",
+                "{{user `scripts`}}/linux_vm_tools.sh"
+            ]
+        }
+    ],
+    "post-processors": []
+}

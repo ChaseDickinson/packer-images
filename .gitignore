@@ -1,2 +1,2 @@
 #prevent committing Packer cache to repo
-*/packer_cache
+*packer_cache

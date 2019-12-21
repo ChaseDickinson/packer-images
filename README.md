@@ -13,9 +13,8 @@ My primary goals were:
 ## Repo Structure
 
 ```
-|-- Distro
+|-- [desktop|server]
     |-- preseed.cfg - preseed file for Ubuntu install
-    |-- remove.list - list of packages to be removed
     |-- template.json - Packer template
 |-- files
     |-- code_extensions.list - list of VS Code extensions to install
@@ -23,7 +22,6 @@ My primary goals were:
 |-- scripts
     |-- desktop_base.sh - base install packages for desktop images
     |-- linux_vm_tools.sh - Microsoft linux-vm-tools install; enables enhanced mode
-    |-- remove.sh - script to remove packages from /Distro/remove.list
     |-- server_base.sh - base install packages for server images
     |-- user_config.sh - user-sepecific settings like dock favorites & VS Code setup
 ```

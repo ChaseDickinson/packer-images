@@ -7,18 +7,11 @@ sleep 10
 echo -e '\n ... Installing Latest Updates ... \n'
 echo $PASSWORD | sudo -S apt-get update -qq
 echo $PASSWORD | sudo -S apt-get install -qq -y
+echo $PASSWORD | sudo -S apt-get autoremove -qq -y
 
 #install base packages
 echo -e '\n ... Installing base packages ... \n'
-echo $PASSWORD | sudo -S apt-get install -y gdm3 ubuntu-desktop git python3-pip apt-transport-https ca-certificates curl gnupg-agent software-properties-common
-
-#VS Code
-echo -e '\n ... Installing VS Code ... \n'
-curl https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > packages.microsoft.gpg
-echo $PASSWORD | sudo -S install -o root -g root -m 644 packages.microsoft.gpg /usr/share/keyrings/
-echo $PASSWORD | sudo -S sh -c 'echo "deb [arch=amd64 signed-by=/usr/share/keyrings/packages.microsoft.gpg] https://packages.microsoft.com/repos/vscode stable main" > /etc/apt/sources.list.d/vscode.list'
-echo $PASSWORD | sudo -S apt-get update -qq
-echo $PASSWORD | sudo -S apt-get install -qq -y code 
+echo $PASSWORD | sudo -S apt-get install -y git python3-pip apt-transport-https ca-certificates curl gnupg-agent software-properties-common
 
 #install node
 echo -e '\n ... Installing Node.js v12 ... \n'

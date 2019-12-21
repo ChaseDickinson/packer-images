@@ -2,7 +2,7 @@
     "variables": {
         "cpus": "1",
         "disk_size": "25600",
-        "files": "../files",
+        "files": "../../files",
         "home": "/home/{{user `initial_username`}}/",
         "initial_username": "ubuntu",
         "initial_password": "ubuntu",
@@ -10,17 +10,18 @@
         "iso_checksum": "7d8e0055d663bffa27c1718685085626cb59346e7626ba3d3f476322271f573e",
         "memory": "4096",
         "os_name": "ubuntu",
-        "os_version": "18.04.3",
         "os_nickname": "bionic",
+        "os_type": "server",
+        "os_version": "18.04.3",
         "remove_list": "{{template_dir}}\\remove.list",
-        "scripts": "../scripts",
+        "scripts": "../../scripts",
         "switch_name": "Default Switch",
-        "vm_name": "{{user `os_version`}}-Packer"
+        "vm_name": "{{user `os_version`}}-{{user `os_type`}}-Packer"
     },
     "builders": [
         {
             "type": "hyperv-iso",
-            "iso_url": "http://cdimage.ubuntu.com/releases/{{user `os_version`}}/release/ubuntu-{{user `os_version`}}-server-amd64.iso",
+            "iso_url": "http://cdimage.ubuntu.com/releases/{{user `os_version`}}/release/ubuntu-{{user `os_version`}}-{{user `os_type`}}-amd64.iso",
             "iso_checksum": "{{user `iso_checksum`}}",
             "iso_checksum_type": "{{user `iso_checksum_type`}}",
             "communicator": "ssh",
@@ -36,7 +37,7 @@
             "enable_mac_spoofing": true,
             "enable_virtualization_extensions": true,
             "generation": "2",
-            "output_directory": "..\\..\\VMs\\{{user `os_nickname`}}\\{{timestamp}}",
+            "output_directory": "..\\..\\..\\VMs\\{{user `os_type`}}\\{{user `os_nickname`}}\\{{timestamp}}",
             "vm_name": "{{user `vm_name`}}",
             "memory": "{{user `memory`}}",
             "http_directory": "./",
@@ -58,16 +59,6 @@
     ],
     "provisioners": [
         {
-            "type": "file",
-            "source": "{{user `remove_list`}}",
-            "destination": "{{user `home`}}"
-        },
-        {
-            "type": "file",
-            "source": "{{user `files`}}",
-            "destination": "{{user `home`}}"
-        },
-        {
             "type": "shell",
             "environment_vars": [
                 "OS_NICKNAME={{user `os_nickname`}}",
@@ -77,10 +68,7 @@
             "expect_disconnect": true,
             "pause_before": "10s",
             "scripts": [
-                "{{user `scripts`}}/server_base.sh",
-                "{{user `scripts`}}/remove.sh",
-                "{{user `scripts`}}/user_config.sh",
-                "{{user `scripts`}}/linux_vm_tools.sh"
+                "{{user `scripts`}}/server_base.sh"
             ]
         }
     ],
