@@ -30,6 +30,8 @@ My primary goals were:
 
 Hyper-V is required.
 
+VMs will output to a directory at the same level as the repository root, organized by image type then OS version.
+
 Don't forget to disable Secure Boot after you create a VM! You'll also need to login and change your password first before completing the step below to enable "Enhanced Mode".
 
 Once the build completes, copy the VHD to a different directory, then point a new Hyper-V VM to it during setup. You'll have to run the following command from an elevated PowerShell prompt for the "Enhanced Mode" functionality to work:
