@@ -7,7 +7,7 @@ sleep 10
 echo -e '\n ... Installing Latest Updates ... \n'
 echo $PASSWORD | sudo -S apt-get update -qq
 echo $PASSWORD | sudo -S apt-get install -qq -y
-#add autoremove?
+echo $PASSWORD | sudo -S apt-get autoremove -qq -y
 
 #install base packages
 echo -e '\n ... Installing base packages ... \n'
