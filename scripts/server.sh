@@ -3,12 +3,6 @@
 #pause before beginning install
 sleep 10
 
-#install latest updates available
-echo -e '\n ... Installing Latest Updates ... \n'
-echo $PASSWORD | sudo -S apt-get update -qq
-echo $PASSWORD | sudo -S apt-get install -qq -y
-echo $PASSWORD | sudo -S apt-get autoremove -qq -y
-
 #install base packages
 echo -e '\n ... Installing base packages ... \n'
 echo $PASSWORD | sudo -S apt-get install -y git python3-pip apt-transport-https ca-certificates curl gnupg-agent software-properties-common
@@ -77,12 +71,6 @@ else
     brew tap aws/tap
     brew install aws-sam-cli
 fi
-
-#install latest updates available
-echo -e '\n ... Installing Latest Upgrades ... \n'
-echo $PASSWORD | sudo -S apt-get update -qq
-echo $PASSWORD | sudo -S apt-get upgrade -qq -y
-echo $PASSWORD | sudo -S apt-get dist-upgrade -qq -y
 
 #reboot
 echo -e '\n ... Rebooting ... \n'

@@ -1,0 +1,19 @@
+{
+    "cpus": "1",
+    "disk_size": "25600",
+    "files": "../files",
+    "home": "/home/{{user `initial_username`}}/",
+    "initial_username": "ubuntu",
+    "initial_password": "ubuntu",
+    "iso_checksum": "2da6f8b5c65b71b040c5c510311eae1798545b8ba801c9b63e9e3fd3c0457cbe",
+    "iso_url": "http://releases.ubuntu.com/{{user `os_version`}}/ubuntu-{{user `os_version`}}-{{user `os_type`}}-amd64.iso",
+    "memory": "4096",
+    "output_directory": "..\\..\\VMs\\{{user `os_type`}}\\{{user `os_nickname`}}\\{{timestamp}}",
+    "os_name": "ubuntu",
+    "os_nickname": "disco",
+    "os_type": "desktop",
+    "os_version": "19.04",
+    "scripts": "../scripts",
+    "switch_name": "Default Switch",
+    "vm_name": "{{user `os_version`}}-{{user `os_type`}}-packer"
+}
