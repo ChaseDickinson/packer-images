@@ -1,12 +1,18 @@
 ## This repo is a work in progress
 
+## TODO
+
+1) Add Virtualbox builder
+2) Terminal theming - font & Powerline install
+3) Adopt HCL2
+
 ## Problem Statement
 
 I built this out mostly for my own use, and I'm sharing in case it's helpful to anyone else. Should be fairly straight-forward to edit to meet your own needs.
 
-My primary goals were:
+My primary goals are:
 
-1. Disposable, repeatable environments - Spin up an environment with my tools of choice, change/add to it or otherwise play around, then destroy it
+1. Disposable, repeatable environments - Spin up an environment with my tools of choice, experiment, then destroy it
 2. Good user experience - Things like copy & paste from host to guest needs to work; bonus points if the refresh rate is not janky
 3. Create as close to the "minimal install" experience as possible - I won't be playing solitaire or shopping on Amazon so I don't need those packages installed
 
@@ -28,20 +34,19 @@ My primary goals were:
 
 ## Usage
 
-Hyper-V is required.
+Hyper-V only for now.
 
-VMs will output to a directory at the same level as the repository root, organized by image type then OS version.
+VMs will output to a directory at the same level as the repository root, organized by image type (desktop or server) then OS version (bionic, disco, or eoan).
 
 Don't forget to disable Secure Boot after you create a VM! You'll also need to login and change your password first before completing the step below to enable "Enhanced Mode".
 
-Once the build completes, copy the VHD to a different directory, then point a new Hyper-V VM to it during setup. You'll have to run the following command from an elevated PowerShell prompt for the "Enhanced Mode" functionality to work:
+Once the build completes, copy the VHD to a different directory, then point a new Hyper-V VM to it during setup. You'll have to run the following command from an elevated PowerShell prompt (replace <your_vm_name> with the name of the VM you created) for the "Enhanced Mode" functionality to work:
 
 `Set-VM -VMName <your_vm_name> -EnhancedSessionTransportType HvSocket`
 
 ## What's Included
 
 - What are you installing? 
-  - Ubuntu Desktop
   - VS Code
   - GIT
   - Python3

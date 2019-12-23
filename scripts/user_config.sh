@@ -23,6 +23,10 @@ mkdir -p ~/.config/Code/User
 mv ~/files/settings.json ~/.config/Code/User/settings.json
 rm -rf ~/files
 
+#disable welcome message
+echo -e '\n ... Disable Ubuntu Welcome Message ... \n'
+sed -i 's/\[daemon\]/\[daemon\]\'$'\nInitialSetupEnable=false/' /etc/gdm3/custom.conf
+
 #forcing user to change password
 echo -e '\n ... Setting Password to Expire Today ... \n'
 echo $PASSWORD | sudo -S chage -M 0 $USERNAME
@@ -32,6 +36,3 @@ echo $PASSWORD | sudo -S chage -M 0 $USERNAME
 #  extract to appropriate directory
 #  run fc-cache -fv command
 #  update VS code settings to use preferred font settings
-
-#TODO - figure out what is causing lvmetad error at boot
-#  change to non-LVM partition?

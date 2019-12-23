@@ -1,4 +1,10 @@
 #hyperv-iso builder
+
+#challenges thus far:
+#    - Validate commands still expect JSON
+#    - {{user `variable`}} references do not behave as expected
+#    - Splitting source & build file does not behave as expected
+
 source "hyperv-iso" "bionic_desktop" {
     iso_url = "http://releases.ubuntu.com/18.04.3/ubuntu-18.04.3-desktop-amd64.iso"
     iso_checksum = "add4614b6fe3bb8e7dddcaab0ea97c476fbd4ffe288f2a4912cb06f1a47dcfa0"
