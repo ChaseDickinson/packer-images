@@ -14,6 +14,7 @@ echo $PASSWORD | sudo -S install -o root -g root -m 644 packages.microsoft.gpg /
 echo $PASSWORD | sudo -S sh -c 'echo "deb [arch=amd64 signed-by=/usr/share/keyrings/packages.microsoft.gpg] https://packages.microsoft.com/repos/vscode stable main" > /etc/apt/sources.list.d/vscode.list'
 echo $PASSWORD | sudo -S apt-get update -qq
 echo $PASSWORD | sudo -S apt-get install -qq -y code 
+rm packages.microsoft.gpg
 
 #install node
 echo -e '\n ... Installing Node.js v12 ... \n'
@@ -79,6 +80,34 @@ else
     brew tap aws/tap
     brew install aws-sam-cli
 fi
+
+#configure favorites bar
+echo -e '\n ... Configuring favorites ... \n'
+gsettings set org.gnome.shell favorite-apps "['firefox.desktop', 'org.gnome.Terminal.desktop', 'code.desktop', 'org.gnome.gedit.desktop', 'org.gnome.Nautilus.desktop', 'update-manager.desktop', 'gnome-control-center.desktop']"
+
+#install code extensions
+echo -e '\n ... Installing VS Code extensions ... \n'
+#remove whitespace from list
+sed -i 's/[[:space:]]*$//' ~/files/code_extensions.list
+cat ~/files/code_extensions.list | xargs -L 1 code --install-extension
+rm ~/files/code_extensions.list
+
+#pause before configuring settings
+sleep 10
+
+#vs code settings
+echo -e '\n ... Copying VS Code settings ... \n'
+mkdir -p ~/.config/Code/User
+mv ~/files/settings.json ~/.config/Code/User/settings.json
+rm -rf ~/files
+
+#disable welcome message
+echo -e '\n ... Disable Ubuntu Welcome Message ... \n'
+sed -i 's/\[daemon\]/\[daemon\]\'$'\nInitialSetupEnable=false/' /etc/gdm3/custom.conf
+
+#forcing user to change password
+echo -e '\n ... Setting Password to Expire Today ... \n'
+echo $PASSWORD | sudo -S chage -M 0 $USERNAME
 
 #reboot
 echo -e '\n ... Rebooting ... \n'

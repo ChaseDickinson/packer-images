@@ -20,19 +20,29 @@ My primary goals are:
 
 ```
 |-- [desktop|server]
-    |-- preseed.cfg - preseed file for Ubuntu install
-    |-- template.json - Packer template
+    |-- OS Version
+        |-- preseed.cfg - preseed file for specific OS version
+        |-- variables.json - variable file for specific OS version
+    |-- template.json - Packer template for OS type
 |-- files
     |-- code_extensions.list - list of VS Code extensions to install
     |-- settings.json - JSON settings for VS Code
 |-- scripts
-    |-- desktop_base.sh - base install packages for desktop images
+    |-- base.sh - simple upgrade & cleanup
+    |-- desktop.sh - install packages and configuration settings for desktop images
     |-- linux_vm_tools.sh - Microsoft linux-vm-tools install; enables enhanced mode
-    |-- server_base.sh - base install packages for server images
-    |-- user_config.sh - user-sepecific settings like dock favorites & VS Code setup
+    |-- server.sh - install packages for server images
 ```
 
 ## Usage
+
+There's one template per OS type (desktop or server). You'll need to invoke the Packer build command with the desired OS version:
+
+PowerShell example for Bionic:
+`packer build -var-file .\bionic\variables.json .\template.json`
+
+Linux example for Eoan:
+`packer build -var-file=./eoan/variables.json template.json`
 
 Hyper-V only for now.
 
@@ -43,6 +53,8 @@ Don't forget to disable Secure Boot after you create a VM! You'll also need to l
 Once the build completes, copy the VHD to a different directory, then point a new Hyper-V VM to it during setup. You'll have to run the following command from an elevated PowerShell prompt (replace <your_vm_name> with the name of the VM you created) for the "Enhanced Mode" functionality to work:
 
 `Set-VM -VMName <your_vm_name> -EnhancedSessionTransportType HvSocket`
+
+More on Microsoft's linux-vm-tools can be found on [their repo](https://github.com/microsoft/linux-vm-tools).
 
 ## What's Included
 
