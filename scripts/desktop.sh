@@ -103,7 +103,7 @@ rm -rf ~/files
 
 #disable welcome message
 echo -e '\n ... Disable Ubuntu Welcome Message ... \n'
-sed -i 's/\[daemon\]/\[daemon\]\'$'\nInitialSetupEnable=false/' /etc/gdm3/custom.conf
+echo $PASSWORD | sudo -S sed -i 's/\[daemon\]/\[daemon\]\'$'\nInitialSetupEnable=false/' /etc/gdm3/custom.conf
 
 #forcing user to change password
 echo -e '\n ... Setting Password to Expire Today ... \n'
