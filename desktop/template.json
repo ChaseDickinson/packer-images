@@ -21,12 +21,12 @@
             "vm_name": "{{user `vm_name`}}",
             "memory": "{{user `memory`}}",
             "http_directory": "./",
-            "boot_wait": "0s",
+            "boot_wait": "2s",
             "boot_command": [
                 "<esc><esc><esc><esc><esc><esc><esc><esc><esc><esc><esc><esc>",
                 "linux /casper/vmlinuz ",
                 "url=http://{{.HTTPIP}}:{{.HTTPPort}}/{{user `os_nickname`}}/preseed.cfg ",
-                "boot=casper automatic-ubiquity noninteractive noprompt --- <enter>",
+                "boot=casper ip=dhcp automatic-ubiquity noninteractive noprompt --- <enter>",
                 "initrd /casper/initrd <enter>",
                 "boot<enter>"
             ]

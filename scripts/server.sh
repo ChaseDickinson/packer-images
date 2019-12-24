@@ -10,7 +10,7 @@ echo $PASSWORD | sudo -S apt-get install -y git python3-pip apt-transport-https 
 #install node
 echo -e '\n ... Installing Node.js v12 ... \n'
 echo $PASSWORD | curl -sL https://deb.nodesource.com/setup_12.x | sudo -S -E bash -
-echo $PASSWORD | sudo -S apt-get install -qq -y nodejs
+echo $PASSWORD | sudo -S apt-get install -y nodejs
 
 #add docker repository
 if [ "$OS_NICKNAME" == "eoan" ];
@@ -28,8 +28,8 @@ then
     echo -e '\n ... Skipping Docker Install ... \n'
 else
     echo -e '\n ... Installing Docker ... \n'
-    echo $PASSWORD | sudo -S apt-get update -qq
-    echo $PASSWORD | sudo -S apt-get install -qq -y docker-ce docker-ce-cli containerd.io
+    echo $PASSWORD | sudo -S apt-get update
+    echo $PASSWORD | sudo -S apt-get install -y docker-ce docker-ce-cli containerd.io
 fi
 
 #install homebrew
@@ -38,7 +38,7 @@ then
     echo -e '\n ... Skipping Homebrew Install ... \n'
 else
     echo -e '\n ... Installing Homebrew ... \n'
-    echo $PASSWORD | sudo -S apt-get install linuxbrew-wrapper -qq -y
+    echo $PASSWORD | sudo -S apt-get install -y linuxbrew-wrapper
     yes | brew --help
 fi
 
@@ -71,6 +71,15 @@ else
     brew tap aws/tap
     brew install aws-sam-cli
 fi
+
+#forcing user to change password
+echo -e '\n ... Setting Password to Expire ... \n'
+echo $PASSWORD | sudo -S chage -M 0 $USERNAME
+
+#final cleanup
+echo -e '\n ... Autoremove ... \n'
+echo $PASSWORD | sudo -S apt-get update
+echo $PASSWORD | sudo -S apt-get autoremove -y
 
 #reboot
 echo -e '\n ... Rebooting ... \n'

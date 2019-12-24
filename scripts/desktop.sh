@@ -12,14 +12,14 @@ echo -e '\n ... Installing VS Code ... \n'
 curl https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > packages.microsoft.gpg
 echo $PASSWORD | sudo -S install -o root -g root -m 644 packages.microsoft.gpg /usr/share/keyrings/
 echo $PASSWORD | sudo -S sh -c 'echo "deb [arch=amd64 signed-by=/usr/share/keyrings/packages.microsoft.gpg] https://packages.microsoft.com/repos/vscode stable main" > /etc/apt/sources.list.d/vscode.list'
-echo $PASSWORD | sudo -S apt-get update -qq
-echo $PASSWORD | sudo -S apt-get install -qq -y code 
+echo $PASSWORD | sudo -S apt-get update
+echo $PASSWORD | sudo -S apt-get install -y code 
 rm packages.microsoft.gpg
 
 #install node
 echo -e '\n ... Installing Node.js v12 ... \n'
 echo $PASSWORD | curl -sL https://deb.nodesource.com/setup_12.x | sudo -S -E bash -
-echo $PASSWORD | sudo -S apt-get install -qq -y nodejs
+echo $PASSWORD | sudo -S apt-get install -y nodejs
 
 #add docker repository
 if [ "$OS_NICKNAME" == "eoan" ];
@@ -37,8 +37,8 @@ then
     echo -e '\n ... Skipping Docker Install ... \n'
 else
     echo -e '\n ... Installing Docker ... \n'
-    echo $PASSWORD | sudo -S apt-get update -qq
-    echo $PASSWORD | sudo -S apt-get install -qq -y docker-ce docker-ce-cli containerd.io
+    echo $PASSWORD | sudo -S apt-get update
+    echo $PASSWORD | sudo -S apt-get install -y docker-ce docker-ce-cli containerd.io
 fi
 
 #install homebrew
@@ -47,7 +47,7 @@ then
     echo -e '\n ... Skipping Homebrew Install ... \n'
 else
     echo -e '\n ... Installing Homebrew ... \n'
-    echo $PASSWORD | sudo -S apt-get install linuxbrew-wrapper -qq -y
+    echo $PASSWORD | sudo -S apt-get install -y linuxbrew-wrapper
     yes | brew --help
 fi
 
@@ -103,10 +103,10 @@ rm -rf ~/files
 
 #disable welcome message
 echo -e '\n ... Disable Ubuntu Welcome Message ... \n'
-echo $PASSWORD | sudo -S sed -i 's/\[daemon\]/\[daemon\]\'$'\nInitialSetupEnable=false/' /etc/gdm3/custom.conf
+echo $PASSWORD | sudo -S sed -i 's/Exec=/#Exec=/' /etc/xdg/autostart/gnome-initial-setup-first-login.desktop
 
 #forcing user to change password
-echo -e '\n ... Setting Password to Expire Today ... \n'
+echo -e '\n ... Setting Password to Expire ... \n'
 echo $PASSWORD | sudo -S chage -M 0 $USERNAME
 
 #reboot
