@@ -26,7 +26,7 @@
                 "<esc><esc><esc><esc><esc><esc><esc>",
                 "set gfxpayload=1024x768<enter>",
                 "linux /install/vmlinuz ",
-                "preseed/url=http://{{.HTTPIP}}:{{.HTTPPort}}/preseed.cfg ",
+                "preseed/url=http://{{.HTTPIP}}:{{.HTTPPort}}/{{user `os_nickname`}}/preseed.cfg ",
                 "debian-installer=en_US auto locale=en_US kbd-chooser/method=us ",
                 "hostname={{.Name}} ",
                 "fb=false debconf/frontend=noninteractive ",
