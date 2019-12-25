@@ -5,7 +5,8 @@
 1) Update password change behavior
 2) Add Virtualbox builder
 3) Terminal theming - font & Powerline install, gsettings commands
-4) Adopt HCL2
+4) aws cli v2
+5) Adopt HCL2
 
 ## Problem Statement
 
@@ -85,4 +86,4 @@ More on Microsoft's linux-vm-tools can be found on [their repo](https://github.c
   - Because the Microsoft linux-vm-tools package requires it; if I don't do it before running that install, it requires me to run the install twice so that it can do the upgrade for me
 
 - This is not secure because you're leaving "ubuntu" set as the default username and password!
-  - Password is set to expire and will require you to change it at next login
+  - New password is randomly generated at first login

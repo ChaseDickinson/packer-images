@@ -14,6 +14,7 @@ fi
 #microsoft linux-vm-tools
 echo -e '\n ... Installing Microsoft Linux-VM-Tools ... \n'
 wget https://raw.githubusercontent.com/Microsoft/linux-vm-tools/master/ubuntu/18.04/install.sh
+sed -i 's/apt/apt-get/g' install.sh
 chmod +x install.sh
 echo $PASSWORD | sudo -S ./install.sh
 rm install.sh

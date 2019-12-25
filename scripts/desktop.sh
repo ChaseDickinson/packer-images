@@ -99,15 +99,15 @@ sleep 10
 echo -e '\n ... Copying VS Code settings ... \n'
 mkdir -p ~/.config/Code/User
 mv ~/files/settings.json ~/.config/Code/User/settings.json
+
+#implementing prompt to change password on first login
+echo -e '\n ... Implementing Password Change Prompt ... \n'
+echo $PASSWORD | sudo -S mkdir -p /usr/local/scripts
+echo $PASSWORD | sudo -S mv ~/files/passwd.sh /usr/local/scripts/passwd.sh
 rm -rf ~/files
-
-#disable welcome message
-echo -e '\n ... Disable Ubuntu Welcome Message ... \n'
-echo $PASSWORD | sudo -S sed -i 's/Exec=/#Exec=/' /etc/xdg/autostart/gnome-initial-setup-first-login.desktop
-
-#forcing user to change password
-echo -e '\n ... Setting Password to Expire ... \n'
-echo $PASSWORD | sudo -S chage -M 0 $USERNAME
+echo $PASSWORD | sudo -S sed -i -e 's/\r$//' /usr/local/scripts/passwd.sh
+echo $PASSWORD | sudo -S chmod +x /usr/local/scripts/passwd.sh
+echo $PASSWORD | sudo -S sed -i 's/Exec=.*/Exec=\/usr\/bin\/gnome-terminal -- \/usr\/local\/scripts\/passwd.sh/' /etc/xdg/autostart/gnome-initial-setup-first-login.desktop
 
 #reboot
 echo -e '\n ... Rebooting ... \n'
