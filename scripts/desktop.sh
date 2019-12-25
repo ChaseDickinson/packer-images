@@ -107,6 +107,7 @@ echo $PASSWORD | sudo -S mv ~/files/passwd.sh /usr/local/scripts/passwd.sh
 rm -rf ~/files
 echo $PASSWORD | sudo -S sed -i -e 's/\r$//' /usr/local/scripts/passwd.sh
 echo $PASSWORD | sudo -S chmod +x /usr/local/scripts/passwd.sh
+#TODO: need to add flag to this command that leaves the dialog window open
 echo $PASSWORD | sudo -S sed -i 's/Exec=.*/Exec=\/usr\/bin\/gnome-terminal -- \/usr\/local\/scripts\/passwd.sh/' /etc/xdg/autostart/gnome-initial-setup-first-login.desktop
 
 #reboot
