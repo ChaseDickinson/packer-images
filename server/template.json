@@ -10,9 +10,8 @@
     "builders": [
         {
             "type": "hyperv-iso",
-            "boot_wait": "0s",
             "boot_command": [
-                "<esc><esc><esc><esc><esc><esc><esc>",
+                "<esc><esc><esc><esc>",
                 "set gfxpayload=1024x768<enter>",
                 "linux /install/vmlinuz ",
                 "preseed/url=http://{{.HTTPIP}}:{{.HTTPPort}}/{{user `os_name`}}/preseed.cfg ",

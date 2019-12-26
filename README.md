@@ -1,9 +1,11 @@
+# Packer Ubuntu Builds
+
 ## This repo is a work in progress
 
 ## TODO
 
-1) Update password change behavior
-2) Add Virtualbox builder
+1) Add Virtualbox builder
+2) Error handling in password change script
 3) Terminal theming - font & Powerline install, gsettings commands
 4) aws cli v2
 5) Adopt HCL2
@@ -20,20 +22,23 @@ My primary goals are:
 
 ## Repo Structure
 
-```
-|-- [desktop|server]
-    |-- OS Version
-        |-- preseed.cfg - preseed file for specific OS version
-        |-- variables.json - variable file for specific OS version
-    |-- template.json - Packer template for OS type
-|-- files
-    |-- code_extensions.list - list of VS Code extensions to install
-    |-- settings.json - JSON settings for VS Code
-|-- scripts
-    |-- base.sh - simple upgrade & cleanup
-    |-- desktop.sh - install packages and configuration settings for desktop images
-    |-- linux_vm_tools.sh - Microsoft linux-vm-tools install; enables enhanced mode
-    |-- server.sh - install packages for server images
+```ascii
+.
++-- [desktop|server]
+|   +-- template.json - Packer template for OS type
+|   +-- OS Version (bionic, disco, eoan, etc.)
+    |   +-- preseed.cfg - preseed file for specific OS version
+    |   +-- variables.json - variable file for specific OS version
++-- files
+|   +-- code_extensions.list - list of VS Code extensions to install
+|   +-- settings.json - JSON settings for VS Code
++-- scripts
+|   +-- base.sh - simple upgrade & cleanup
+|   +-- desktop.sh - install packages and configuration settings for desktop images
+|   +-- linux_vm_tools.sh - Microsoft linux-vm-tools install; enables enhanced mode
+|   +-- server.sh - install packages for server images
++-- .gitignore
++-- README.md
 ```
 
 ## Usage
@@ -41,10 +46,16 @@ My primary goals are:
 There's one template per OS type (desktop or server). You'll need to invoke the Packer build command with the desired OS version:
 
 PowerShell example for Bionic:
-`packer build -var-file .\bionic\variables.json .\template.json`
+
+```powershell
+packer build -var-file .\bionic\variables.json .\template.json
+```
 
 Linux example for Eoan:
-`packer build -var-file=./eoan/variables.json template.json`
+
+```bash
+packer build -var-file=./eoan/variables.json template.json
+```
 
 Hyper-V only for now.
 
@@ -54,13 +65,15 @@ Don't forget to disable Secure Boot after you create a VM! You'll also need to l
 
 Once the build completes, copy the VHD to a different directory, then point a new Hyper-V VM to it during setup. You'll have to run the following command from an elevated PowerShell prompt (replace <your_vm_name> with the name of the VM you created) for the "Enhanced Mode" functionality to work:
 
-`Set-VM -VMName <your_vm_name> -EnhancedSessionTransportType HvSocket`
+```powershell
+Set-VM -VMName <your_vm_name> -EnhancedSessionTransportType HvSocket
+```
 
 More on Microsoft's linux-vm-tools can be found on [their repo](https://github.com/microsoft/linux-vm-tools).
 
 ## What's Included
 
-- What are you installing? 
+- What are you installing?
   - VS Code
   - GIT
   - Python3
@@ -75,9 +88,9 @@ More on Microsoft's linux-vm-tools can be found on [their repo](https://github.c
 ## What's Not Included
 
 - Taking advantage of the built in minimal install functionality included in the Ubuntu Desktop images. This removes the following packages:
-    - [bionic](https://people.canonical.com/~ubuntu-archive/seeds/ubuntu.bionic/desktop.minimal-remove)
-    - [disco](https://people.canonical.com/~ubuntu-archive/seeds/ubuntu.disco/desktop.minimal-remove)
-    - [eoan](https://people.canonical.com/~ubuntu-archive/seeds/ubuntu.eoan/desktop.minimal-remove)
+  - [bionic](https://people.canonical.com/~ubuntu-archive/seeds/ubuntu.bionic/desktop.minimal-remove)
+  - [disco](https://people.canonical.com/~ubuntu-archive/seeds/ubuntu.disco/desktop.minimal-remove)
+  - [eoan](https://people.canonical.com/~ubuntu-archive/seeds/ubuntu.eoan/desktop.minimal-remove)
 
 - Why aren't you installing Docker, Homebrew, or AWS SAM on 19.10 Eoan?
   - Because there's [no Docker Community Edition available yet for Eoan](https://docs.docker.com/install/linux/docker-ce/ubuntu/), which causes the install to fail for that version when it tries to find it
