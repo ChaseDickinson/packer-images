@@ -49,7 +49,7 @@ build {
 
     provisioner "shell" {
         environment_vars = [
-            "OS_NICKNAME=bionic",
+            "OS_NAME=bionic",
             "USERNAME=ubuntu",
             "PASSWORD=ubuntu"
         ]

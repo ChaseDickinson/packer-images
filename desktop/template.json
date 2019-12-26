@@ -1,35 +1,43 @@
 {
+    "variables": {
+        "files": "../files",
+        "home": "/home/{{user `ssh_username`}}/",
+        "os_type": "desktop",
+        "scripts": "../scripts",
+        "ssh_username": "ubuntu",
+        "ssh_password": "ubuntu"
+    },
     "builders": [
         {
             "type": "hyperv-iso",
-            "iso_url": "{{user `iso_url`}}",
-            "iso_checksum": "{{user `iso_checksum`}}",
+            "boot_command": [
+                "<esc><esc><esc><esc><esc><esc><esc><esc><esc><esc><esc><esc>",
+                "linux /casper/vmlinuz ",
+                "url=http://{{.HTTPIP}}:{{.HTTPPort}}/{{user `os_name`}}/preseed.cfg ",
+                "boot=casper ip=dhcp automatic-ubiquity noninteractive noprompt --- <enter>",
+                "initrd /casper/initrd <enter>",
+                "boot<enter>"
+            ],
+            "boot_wait": "2s",
             "communicator": "ssh",
-            "ssh_username": "{{user `initial_username`}}",
-            "ssh_password": "{{user `initial_password`}}",
-            "ssh_timeout": "2h",
-            "shutdown_command": "echo '{{user `initial_password`}}' | sudo -S shutdown -P now",
-            "switch_name": "{{user `switch_name`}}",
-            "cpus": "{{user `cpus`}}",
+            "cpus": "1",
             "disk_block_size": "1",
-            "disk_size": "{{user `disk_size`}}",
+            "disk_size": "25600",
             "enable_dynamic_memory": false,
             "enable_mac_spoofing": true,
             "enable_virtualization_extensions": true,
             "generation": "2",
-            "output_directory": "{{user `output_directory`}}",
-            "vm_name": "{{user `vm_name`}}",
-            "memory": "{{user `memory`}}",
             "http_directory": "./",
-            "boot_wait": "2s",
-            "boot_command": [
-                "<esc><esc><esc><esc><esc><esc><esc><esc><esc><esc><esc><esc>",
-                "linux /casper/vmlinuz ",
-                "url=http://{{.HTTPIP}}:{{.HTTPPort}}/{{user `os_nickname`}}/preseed.cfg ",
-                "boot=casper ip=dhcp automatic-ubiquity noninteractive noprompt --- <enter>",
-                "initrd /casper/initrd <enter>",
-                "boot<enter>"
-            ]
+            "iso_url": "http://releases.ubuntu.com/{{user `os_version`}}/ubuntu-{{user `os_version`}}-{{user `os_type`}}-amd64.iso",
+            "iso_checksum": "{{user `iso_checksum`}}",
+            "memory": "4096",
+            "output_directory": "..\\..\\VMs\\{{user `os_type`}}\\{{user `os_name`}}\\{{timestamp}}",
+            "shutdown_command": "echo '{{user `ssh_password`}}' | sudo -S shutdown -P now",
+            "ssh_password": "{{user `ssh_password`}}",
+            "ssh_timeout": "2h",
+            "ssh_username": "{{user `ssh_username`}}",
+            "switch_name": "Default Switch",
+            "vm_name": "packer-{{user `os_version`}}-{{user `os_type`}}-{{timestamp}}"
         }
     ],
     "provisioners": [
@@ -41,9 +49,9 @@
         {
             "type": "shell",
             "environment_vars": [
-                "OS_NICKNAME={{user `os_nickname`}}",
-                "USERNAME={{user `initial_username`}}",
-                "PASSWORD={{user `initial_password`}}"
+                "OS_NAME={{user `os_name`}}",
+                "USERNAME={{user `ssh_username`}}",
+                "PASSWORD={{user `ssh_password`}}"
             ],
             "expect_disconnect": true,
             "pause_before": "10s",

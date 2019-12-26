@@ -4,7 +4,7 @@
 sleep 10
 
 #install prerequisites for bionic
-if [ "$OS_NICKNAME" == "bionic" ];
+if [ "$OS_NAME" == "bionic" ];
 then
     echo -e '\n ... Installing prerequirements for Bionic ... \n'
     echo $PASSWORD | sudo -S apt-get install -y xserver-xorg-core

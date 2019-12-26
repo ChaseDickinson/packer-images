@@ -13,7 +13,7 @@ echo $PASSWORD | curl -sL https://deb.nodesource.com/setup_12.x | sudo -S -E bas
 echo $PASSWORD | sudo -S apt-get install -y nodejs
 
 #add docker repository
-if [ "$OS_NICKNAME" == "eoan" ];
+if [ "$OS_NAME" == "eoan" ];
 then
     echo -e '\n ... Skipping Docker Repository ... \n'
 else
@@ -23,7 +23,7 @@ else
 fi
 
 #install docker
-if [ "$OS_NICKNAME" == "eoan" ];
+if [ "$OS_NAME" == "eoan" ];
 then
     echo -e '\n ... Skipping Docker Install ... \n'
 else
@@ -33,7 +33,7 @@ else
 fi
 
 #install homebrew
-if [ "$OS_NICKNAME" == "eoan" ];
+if [ "$OS_NAME" == "eoan" ];
 then
     echo -e '\n ... Skipping Homebrew Install ... \n'
 else
@@ -49,7 +49,7 @@ pip3 install awscli --upgrade --user
 #setting PATH variables
 echo -e '\n ... Setting PATH for AWS CLI ... \n'
 echo 'export PATH=/bin:$PATH' >>~/.bashrc
-if [ "$OS_NICKNAME" == "eoan" ];
+if [ "$OS_NAME" == "eoan" ];
 then
     echo -e '\n ... Skipping Setting PATH for Homebrew ... \n'
 else
@@ -63,7 +63,7 @@ else
 fi
 
 #install aws sam
-if [ "$OS_NICKNAME" == "eoan" ];
+if [ "$OS_NAME" == "eoan" ];
 then
     echo -e '\n ... Skipping AWS SAM Install ... \n'
 else

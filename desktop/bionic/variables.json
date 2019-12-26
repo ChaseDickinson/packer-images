@@ -1,19 +1,5 @@
 {
-    "cpus": "1",
-    "disk_size": "25600",
-    "files": "../files",
-    "home": "/home/{{user `initial_username`}}/",
-    "initial_username": "ubuntu",
-    "initial_password": "ubuntu",
     "iso_checksum": "add4614b6fe3bb8e7dddcaab0ea97c476fbd4ffe288f2a4912cb06f1a47dcfa0",
-    "iso_url": "http://releases.ubuntu.com/{{user `os_version`}}/ubuntu-{{user `os_version`}}-{{user `os_type`}}-amd64.iso",
-    "memory": "4096",
-    "output_directory": "..\\..\\VMs\\{{user `os_type`}}\\{{user `os_nickname`}}\\{{timestamp}}",
-    "os_name": "ubuntu",
-    "os_nickname": "bionic",
-    "os_type": "desktop",
-    "os_version": "18.04.3",
-    "scripts": "../scripts",
-    "switch_name": "Default Switch",
-    "vm_name": "{{user `os_version`}}-{{user `os_type`}}-packer"
+    "os_name": "bionic",
+    "os_version": "18.04.3"
 }
