@@ -32,6 +32,9 @@ My primary goals are:
 +-- files
 |   +-- code_extensions.list - list of VS Code extensions to install
 |   +-- settings.json - JSON settings for VS Code
++-- HCL
+    +-- WIP - playing around with HCL; not working yet
+    +-- Working - files that work as expected
 +-- scripts
 |   +-- base.sh - simple upgrade & cleanup
 |   +-- desktop.sh - install packages and configuration settings for desktop images
