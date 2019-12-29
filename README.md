@@ -4,10 +4,10 @@
 
 ## TODO
 
-1) Add Virtualbox builder
-2) Terminal theming - font & Powerline install, gsettings commands
-3) aws cli v2
-4) Error handling in password change script
+1) Password change workflow - replace initial setup file
+2) Add Virtualbox builder
+3) Terminal theming - font & Powerline install, gsettings commands
+4) aws cli v2
 5) Adopt HCL2
 
 ## Problem Statement
