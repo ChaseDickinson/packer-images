@@ -101,6 +101,7 @@ mkdir -p ~/.config/Code/User
 mv ~/files/settings.json ~/.config/Code/User/settings.json
 
 #implementing prompt to change password on first login
+#TODO: update to rename default .desktop file; copy new one
 echo -e '\n ... Implementing Password Change Prompt ... \n'
 echo $PASSWORD | sudo -S mkdir -p /usr/local/scripts
 echo $PASSWORD | sudo -S mv ~/files/passwd.sh /usr/local/scripts/passwd.sh

@@ -7,6 +7,7 @@ read -sp "Please enter current password for username $username: " current_passwo
 echo " "
 
 password_check () {
+    #TODO: change this to check password salt from /etc/shadow file; use awk command?
     echo $current_password | sudo -S apt-get update &> /dev/null
     echo $?
 }
@@ -26,8 +27,8 @@ if [ $correct_password -eq 0 ]
 then
     output=$(password_change)
     echo -e "$output"
-    #this command closes the window before the new password can be captured [I'm guessing?]
-    #echo -n "yes" > ~/.config/password-reset-done
+    read -rsp $'Once you\'ve saved the new password, press ENTER to continue.\n'
+    echo -n "yes" > ~/.config/password-reset-done
 else
     echo "Incorrect password entered. Reboot to try again."
 fi
