@@ -104,3 +104,4 @@ More on Microsoft's linux-vm-tools can be found on [their repo](https://github.c
 
 - This is not secure because you're leaving "ubuntu" set as the default username and password!
   - New password is randomly generated at first login
+  - 10 characters, alphanumeric - goal is to provide an easy way to change the default password; current risk profile does not require additional complexity

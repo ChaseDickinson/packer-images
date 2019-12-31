@@ -23,7 +23,7 @@ password_check () {
 }
 
 password_change () {
-    new_password=$(openssl rand -base64 12)
+    new_password=$(cat /dev/urandom | tr -dc '[:alnum:]' | head -c 10)
 
     echo -e "$current_password\n$new_password\n$new_password" | passwd &> /dev/null
 
