@@ -4,9 +4,9 @@
 
 ## TODO
 
-1) Password change workflow - replace initial setup file
+1) Terminal theming - font & Powerline install, gsettings commands
 2) Add Virtualbox builder
-3) Terminal theming - font & Powerline install, gsettings commands
+3) Password retry logic
 4) aws cli v2
 5) Adopt HCL2
 
