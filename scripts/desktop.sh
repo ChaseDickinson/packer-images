@@ -104,11 +104,9 @@ mv ~/files/settings.json ~/.config/Code/User/settings.json
 echo -e '\n ... Implementing Password Change Prompt ... \n'
 echo $PASSWORD | sudo -S mkdir -p /usr/local/scripts
 echo $PASSWORD | sudo -S mv ~/files/passwd.sh /usr/local/scripts/passwd.sh
-rm -rf ~/files
 echo $PASSWORD | sudo -S sed -i -e 's/\r$//' /usr/local/scripts/passwd.sh
 echo $PASSWORD | sudo -S chmod +x /usr/local/scripts/passwd.sh
-echo $PASSWORD | sudo -S mv /etc/xdg/autostart/gnome-initial-setup-first-login.desktop /etc/xdg/autostart/gnome-initial-setup-first-login.desktop.old
-echo $PASSWORD | sudo -S cat <<EOF > /etc/xdg/autostart/change_password.desktop
+cat <<EOF > ~/files/change_password.desktop
 [Desktop Entry]
 Name=Change Password
 Icon=preferences-system
@@ -122,6 +120,9 @@ OnlyShowIn=GNOME;Unity;
 NoDisplay=true
 AutostartCondition=unless-exists password-reset-done
 EOF
+echo $PASSWORD | sudo -S mv /etc/xdg/autostart/gnome-initial-setup-first-login.desktop /etc/xdg/autostart/gnome-initial-setup-first-login.desktop.old
+echo $PASSWORD | sudo -S mv ~/files/change_password.desktop /etc/xdg/autostart/change_password.desktop
+rm -rf ~/files
 
 #reboot
 echo -e '\n ... Rebooting ... \n'
