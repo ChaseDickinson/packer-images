@@ -121,17 +121,51 @@ gsettings set org.gnome.shell favorite-apps "['org.gnome.Nautilus.desktop', 'org
 
 #theme GNOME terminal
 #need a way to capture the UUID of the default profile; or create a new one & set it as the default?
-#gsettings get org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:b1dcc9dd-5262-4d8d-a863-c897e6d979b9/ palette
-#['#2E3436', '#CC0000', '#4E9A06', '#C4A000', '#3465A4', '#75507B', '#06989A', '#D3D7CF', '#555753', '#EF2929', '#8AE234', '#FCE94F', '#729FCF', '#AD7FA8', '#34E2E2', '#EEEEEC']
-#
-#gsettings get org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:b1dcc9dd-5262-4d8d-a863-c897e6d979b9/ font
-#'Fira Code 15'
-#
-#gsettings get org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:b1dcc9dd-5262-4d8d-a863-c897e6d979b9/ default-size-columns
-#120
-#
-#gsettings get org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:b1dcc9dd-5262-4d8d-a863-c897e6d979b9/ default-size-rows
-#30
+#Current values:
+#org.gnome.Terminal.Legacy.Profile audible-bell true
+#org.gnome.Terminal.Legacy.Profile cursor-shape 'block'
+#org.gnome.Terminal.Legacy.Profile cursor-colors-set false
+#org.gnome.Terminal.Legacy.Profile scroll-on-keystroke true
+#org.gnome.Terminal.Legacy.Profile cjk-utf8-ambiguous-width 'narrow'
+#org.gnome.Terminal.Legacy.Profile default-size-rows 30
+#org.gnome.Terminal.Legacy.Profile encoding 'UTF-8'
+#org.gnome.Terminal.Legacy.Profile use-theme-colors true
+#org.gnome.Terminal.Legacy.Profile custom-command ''
+#org.gnome.Terminal.Legacy.Profile visible-name 'Unnamed'
+#org.gnome.Terminal.Legacy.Profile text-blink-mode 'always'
+#org.gnome.Terminal.Legacy.Profile cell-height-scale 1.0
+#org.gnome.Terminal.Legacy.Profile login-shell false
+#org.gnome.Terminal.Legacy.Profile exit-action 'close'
+#org.gnome.Terminal.Legacy.Profile use-system-font false
+#org.gnome.Terminal.Legacy.Profile backspace-binding 'ascii-delete'
+#org.gnome.Terminal.Legacy.Profile rewrap-on-resize true
+#org.gnome.Terminal.Legacy.Profile foreground-color '#D3D7CF'
+#org.gnome.Terminal.Legacy.Profile bold-color-same-as-fg true
+#org.gnome.Terminal.Legacy.Profile background-transparency-percent 50
+#org.gnome.Terminal.Legacy.Profile cursor-blink-mode 'system'
+#org.gnome.Terminal.Legacy.Profile bold-is-bright true
+#org.gnome.Terminal.Legacy.Profile default-show-menubar true
+#org.gnome.Terminal.Legacy.Profile cell-width-scale 1.0
+#org.gnome.Terminal.Legacy.Profile default-size-columns 120
+#org.gnome.Terminal.Legacy.Profile palette ['#2E3436', '#CC0000', '#4E9A06', '#C4A000', '#3465A4', '#75507B', '#06989A', '#D3D7CF', '#555753', '#EF2929', '#8AE234', '#FCE94F', '#729FCF', '#AD7FA8', '#34E2E2', '#EEEEEC']
+#org.gnome.Terminal.Legacy.Profile cursor-foreground-color '#ffffff'
+#org.gnome.Terminal.Legacy.Profile allow-bold true
+#org.gnome.Terminal.Legacy.Profile background-color '#2E3436'
+#org.gnome.Terminal.Legacy.Profile highlight-foreground-color '#ffffff'
+#org.gnome.Terminal.Legacy.Profile font 'Fira Code 15'
+#org.gnome.Terminal.Legacy.Profile delete-binding 'delete-sequence'
+#org.gnome.Terminal.Legacy.Profile use-theme-transparency true
+#org.gnome.Terminal.Legacy.Profile scrollback-unlimited false
+#org.gnome.Terminal.Legacy.Profile use-transparent-background false
+#org.gnome.Terminal.Legacy.Profile cursor-background-color '#000000'
+#org.gnome.Terminal.Legacy.Profile highlight-background-color '#000000'
+#org.gnome.Terminal.Legacy.Profile scroll-on-output false
+#org.gnome.Terminal.Legacy.Profile scrollbar-policy 'always'
+#org.gnome.Terminal.Legacy.Profile use-custom-command false
+#org.gnome.Terminal.Legacy.Profile bold-color '#000000'
+#org.gnome.Terminal.Legacy.Profile highlight-colors-set false
+#org.gnome.Terminal.Legacy.Profile scrollback-lines 10000
+#org.gnome.Terminal.Legacy.Profile word-char-exceptions @ms nothing
 
 #install code extensions
 echo -e '\n ... Installing VS Code extensions ... \n'
