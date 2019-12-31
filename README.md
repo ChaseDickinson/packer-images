@@ -5,10 +5,11 @@
 ## TODO
 
 1) Terminal theming - font & Powerline install, gsettings commands
-2) Add Virtualbox builder
-3) Password retry logic
-4) aws cli v2
-5) Adopt HCL2
+2) aws cli v2
+3) Add Virtualbox builder
+4) Vagrant boxes for servers
+5) Password retry logic
+6) Adopt HCL2
 
 ## Problem Statement
 
