@@ -4,8 +4,8 @@
 
 ## TODO
 
-1) Terminal theming - font & Powerline install, gsettings commands
-2) aws cli v2
+1) Terminal theming - gsettings commands
+2) Install packer
 3) Add Virtualbox builder
 4) Vagrant boxes for servers
 5) Password retry logic

@@ -5,7 +5,15 @@ sleep 10
 
 #install base packages
 echo -e '\n ... Installing base packages ... \n'
-echo $PASSWORD | sudo -S apt-get install -y git python3-pip apt-transport-https ca-certificates curl gnupg-agent software-properties-common
+echo $PASSWORD | sudo -S apt-get install -y \
+git \
+python3-pip \
+apt-transport-https \
+ca-certificates curl \
+gnupg-agent \
+software-properties-common \
+powerline \
+fonts-firacode
 
 #VS Code
 echo -e '\n ... Installing VS Code ... \n'
@@ -16,10 +24,14 @@ echo $PASSWORD | sudo -S apt-get update
 echo $PASSWORD | sudo -S apt-get install -y code 
 rm packages.microsoft.gpg
 
-#install node
-echo -e '\n ... Installing Node.js v12 ... \n'
-echo $PASSWORD | curl -sL https://deb.nodesource.com/setup_12.x | sudo -S -E bash -
-echo $PASSWORD | sudo -S apt-get install -y nodejs
+#add VirtualBox repository
+echo -e '\n ... Installing VirtualBox ... \n'
+echo $PASSWORD | wget -q https://www.virtualbox.org/download/oracle_vbox_2016.asc -O- | sudo -S apt-key add -
+echo $PASSWORD | sudo -S add-apt-repository "deb [arch=amd64] http://download.virtualbox.org/virtualbox/debian $(lsb_release -cs) contrib"
+
+#install VirtualBox
+echo $PASSWORD | sudo -S apt update
+echo $PASSWORD | sudo -S apt install -y virtualbox-6.1
 
 #add docker repository
 if [ "$OS_NAME" == "eoan" ];
@@ -51,6 +63,11 @@ else
     yes | brew --help
 fi
 
+#install node
+echo -e '\n ... Installing Node.js v12 ... \n'
+echo $PASSWORD | curl -sL https://deb.nodesource.com/setup_12.x | sudo -S -E bash -
+echo $PASSWORD | sudo -S apt-get install -y nodejs
+
 #install awscli
 echo -e '\n ... Installing AWS CLI ... \n'
 pip3 install awscli --upgrade --user
@@ -71,6 +88,23 @@ else
     echo "eval \$($(brew --prefix)/bin/brew shellenv)" >>~/.profile  
 fi
 
+echo -e '\n ... Setting PATH for Powerline ... \n'
+echo -e "\n\n#powerline configuration" >>~/.bashrc
+echo "if [ -f `which powerline-daemon` ]; then" >>~/.bashrc
+echo -e "\tpowerline-daemon -q" >>~/.bashrc
+echo -e "\tPOWERLINE_BASH_CONTINUATION=1" >>~/.bashrc
+echo -e "\tPOWERLINE_BASH_SELECT=1" >>~/.bashrc
+echo -e "\t. /usr/share/powerline/bindings/bash/powerline.sh" >>~/.bashrc
+echo "fi" >>~/.bashrc
+
+#install awscliv2
+echo -e '\n ... Installing AWS CLI v2 ... \n'
+curl "https://d1vvhvl2y92vvt.cloudfront.net/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+unzip awscliv2.zip
+echo $PASSWORD | sudo -S ./aws/install
+rm -rf aws
+rm awscliv2.zip
+
 #install aws sam
 if [ "$OS_NAME" == "eoan" ];
 then
@@ -83,7 +117,21 @@ fi
 
 #configure favorites bar
 echo -e '\n ... Configuring favorites ... \n'
-gsettings set org.gnome.shell favorite-apps "['firefox.desktop', 'org.gnome.Terminal.desktop', 'code.desktop', 'org.gnome.gedit.desktop', 'org.gnome.Nautilus.desktop', 'update-manager.desktop', 'gnome-control-center.desktop']"
+gsettings set org.gnome.shell favorite-apps "['org.gnome.Nautilus.desktop', 'org.gnome.Terminal.desktop', 'code.desktop', 'org.gnome.gedit.desktop', 'virtualbox.desktop', 'firefox.desktop', 'update-manager.desktop', 'gnome-control-center.desktop']"
+
+#theme GNOME terminal
+#need a way to capture the UUID of the default profile; or create a new one & set it as the default?
+#gsettings get org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:b1dcc9dd-5262-4d8d-a863-c897e6d979b9/ palette
+#['#2E3436', '#CC0000', '#4E9A06', '#C4A000', '#3465A4', '#75507B', '#06989A', '#D3D7CF', '#555753', '#EF2929', '#8AE234', '#FCE94F', '#729FCF', '#AD7FA8', '#34E2E2', '#EEEEEC']
+#
+#gsettings get org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:b1dcc9dd-5262-4d8d-a863-c897e6d979b9/ font
+#'Fira Code 15'
+#
+#gsettings get org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:b1dcc9dd-5262-4d8d-a863-c897e6d979b9/ default-size-columns
+#120
+#
+#gsettings get org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:b1dcc9dd-5262-4d8d-a863-c897e6d979b9/ default-size-rows
+#30
 
 #install code extensions
 echo -e '\n ... Installing VS Code extensions ... \n'
