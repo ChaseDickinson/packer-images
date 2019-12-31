@@ -108,8 +108,7 @@ rm -rf ~/files
 echo $PASSWORD | sudo -S sed -i -e 's/\r$//' /usr/local/scripts/passwd.sh
 echo $PASSWORD | sudo -S chmod +x /usr/local/scripts/passwd.sh
 echo $PASSWORD | sudo -S mv /etc/xdg/autostart/gnome-initial-setup-first-login.desktop /etc/xdg/autostart/gnome-initial-setup-first-login.desktop.old
-echo $PASSWORD | sudo -S touch /etc/xdg/autostart/change_password.desktop
-echo $PASSWORD | sudo -S cat <<EOF /etc/xdg/autostart/change_password.desktop
+echo $PASSWORD | sudo -S cat <<EOF > /etc/xdg/autostart/change_password.desktop
 [Desktop Entry]
 Name=Change Password
 Icon=preferences-system
