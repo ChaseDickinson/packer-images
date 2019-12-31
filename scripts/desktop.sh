@@ -101,14 +101,27 @@ mkdir -p ~/.config/Code/User
 mv ~/files/settings.json ~/.config/Code/User/settings.json
 
 #implementing prompt to change password on first login
-#TODO: update to rename default .desktop file; copy new one
 echo -e '\n ... Implementing Password Change Prompt ... \n'
 echo $PASSWORD | sudo -S mkdir -p /usr/local/scripts
 echo $PASSWORD | sudo -S mv ~/files/passwd.sh /usr/local/scripts/passwd.sh
 rm -rf ~/files
 echo $PASSWORD | sudo -S sed -i -e 's/\r$//' /usr/local/scripts/passwd.sh
 echo $PASSWORD | sudo -S chmod +x /usr/local/scripts/passwd.sh
-echo $PASSWORD | sudo -S sed -i 's/Exec=.*/Exec=gnome-terminal -e "bash -c \/usr\/local\/scripts\/passwd.sh;bash"/' /etc/xdg/autostart/gnome-initial-setup-first-login.desktop
+echo $PASSWORD | sudo -S mv /etc/xdg/autostart/gnome-initial-setup-first-login.desktop /etc/xdg/autostart/gnome-initial-setup-first-login.desktop.old
+echo $PASSWORD | sudo -S cat <<EOF /etc/xdg/autostart/change_password.desktop
+[Desktop Entry]
+Name=Change Password
+Icon=preferences-system
+Comment=Script to change password on first launch
+Exec=gnome-terminal -e "bash -c /usr/local/scripts/passwd.sh;bash"
+Terminal=false
+Type=Application
+StartupNotify=true
+Categories=GNOME;GTK;System;
+OnlyShowIn=GNOME;Unity;
+NoDisplay=true
+AutostartCondition=unless-exists password-reset-done
+EOF
 
 #reboot
 echo -e '\n ... Rebooting ... \n'
