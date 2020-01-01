@@ -4,12 +4,10 @@
 
 ## TODO
 
-1) Terminal theming - gsettings commands
-2) Install packer
-3) Add Virtualbox builder
-4) Vagrant boxes for servers
-5) Password retry logic
-6) Adopt HCL2
+1) Add Virtualbox builder
+2) Vagrant boxes for servers
+3) Password retry logic
+4) Adopt HCL2
 
 ## Problem Statement
 

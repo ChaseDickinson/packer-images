@@ -30,8 +30,8 @@ echo $PASSWORD | wget -q https://www.virtualbox.org/download/oracle_vbox_2016.as
 echo $PASSWORD | sudo -S add-apt-repository "deb [arch=amd64] http://download.virtualbox.org/virtualbox/debian $(lsb_release -cs) contrib"
 
 #install VirtualBox
-echo $PASSWORD | sudo -S apt update
-echo $PASSWORD | sudo -S apt install -y virtualbox-6.1
+echo $PASSWORD | sudo -S apt-get update
+echo $PASSWORD | sudo -S apt-get install -y virtualbox-6.1
 
 #add docker repository
 if [ "$OS_NAME" == "eoan" ];
@@ -105,6 +105,18 @@ echo $PASSWORD | sudo -S ./aws/install
 rm -rf aws
 rm awscliv2.zip
 
+#install packer
+curl "https://releases.hashicorp.com/packer/1.5.1/packer_1.5.1_linux_amd64.zip" -o "packer.zip"
+unzip packer.zip
+echo $PASSWORD | sudo -S mv packer /usr/bin/packer
+rm packer.zip
+
+#install terraform
+curl "https://releases.hashicorp.com/terraform/0.12.18/terraform_0.12.18_linux_amd64.zip" -o "terraform.zip"
+unzip terraform.zip
+echo $PASSWORD | sudo -S mv terraform /usr/bin/terraform
+rm terraform.zip
+
 #install aws sam
 if [ "$OS_NAME" == "eoan" ];
 then
@@ -115,57 +127,21 @@ else
     brew install aws-sam-cli
 fi
 
-#configure favorites bar
+#configure Desktop interface
 echo -e '\n ... Configuring favorites ... \n'
 gsettings set org.gnome.shell favorite-apps "['org.gnome.Nautilus.desktop', 'org.gnome.Terminal.desktop', 'code.desktop', 'org.gnome.gedit.desktop', 'virtualbox.desktop', 'firefox.desktop', 'update-manager.desktop', 'gnome-control-center.desktop']"
+gsettings set org.gnome.desktop.interface text-scaling-factor 1.5
 
 #theme GNOME terminal
-#need a way to capture the UUID of the default profile; or create a new one & set it as the default?
-#Current values:
-#org.gnome.Terminal.Legacy.Profile audible-bell true
-#org.gnome.Terminal.Legacy.Profile cursor-shape 'block'
-#org.gnome.Terminal.Legacy.Profile cursor-colors-set false
-#org.gnome.Terminal.Legacy.Profile scroll-on-keystroke true
-#org.gnome.Terminal.Legacy.Profile cjk-utf8-ambiguous-width 'narrow'
-#org.gnome.Terminal.Legacy.Profile default-size-rows 30
-#org.gnome.Terminal.Legacy.Profile encoding 'UTF-8'
-#org.gnome.Terminal.Legacy.Profile use-theme-colors true
-#org.gnome.Terminal.Legacy.Profile custom-command ''
-#org.gnome.Terminal.Legacy.Profile visible-name 'Unnamed'
-#org.gnome.Terminal.Legacy.Profile text-blink-mode 'always'
-#org.gnome.Terminal.Legacy.Profile cell-height-scale 1.0
-#org.gnome.Terminal.Legacy.Profile login-shell false
-#org.gnome.Terminal.Legacy.Profile exit-action 'close'
-#org.gnome.Terminal.Legacy.Profile use-system-font false
-#org.gnome.Terminal.Legacy.Profile backspace-binding 'ascii-delete'
-#org.gnome.Terminal.Legacy.Profile rewrap-on-resize true
-#org.gnome.Terminal.Legacy.Profile foreground-color '#D3D7CF'
-#org.gnome.Terminal.Legacy.Profile bold-color-same-as-fg true
-#org.gnome.Terminal.Legacy.Profile background-transparency-percent 50
-#org.gnome.Terminal.Legacy.Profile cursor-blink-mode 'system'
-#org.gnome.Terminal.Legacy.Profile bold-is-bright true
-#org.gnome.Terminal.Legacy.Profile default-show-menubar true
-#org.gnome.Terminal.Legacy.Profile cell-width-scale 1.0
-#org.gnome.Terminal.Legacy.Profile default-size-columns 120
-#org.gnome.Terminal.Legacy.Profile palette ['#2E3436', '#CC0000', '#4E9A06', '#C4A000', '#3465A4', '#75507B', '#06989A', '#D3D7CF', '#555753', '#EF2929', '#8AE234', '#FCE94F', '#729FCF', '#AD7FA8', '#34E2E2', '#EEEEEC']
-#org.gnome.Terminal.Legacy.Profile cursor-foreground-color '#ffffff'
-#org.gnome.Terminal.Legacy.Profile allow-bold true
-#org.gnome.Terminal.Legacy.Profile background-color '#2E3436'
-#org.gnome.Terminal.Legacy.Profile highlight-foreground-color '#ffffff'
-#org.gnome.Terminal.Legacy.Profile font 'Fira Code 15'
-#org.gnome.Terminal.Legacy.Profile delete-binding 'delete-sequence'
-#org.gnome.Terminal.Legacy.Profile use-theme-transparency true
-#org.gnome.Terminal.Legacy.Profile scrollback-unlimited false
-#org.gnome.Terminal.Legacy.Profile use-transparent-background false
-#org.gnome.Terminal.Legacy.Profile cursor-background-color '#000000'
-#org.gnome.Terminal.Legacy.Profile highlight-background-color '#000000'
-#org.gnome.Terminal.Legacy.Profile scroll-on-output false
-#org.gnome.Terminal.Legacy.Profile scrollbar-policy 'always'
-#org.gnome.Terminal.Legacy.Profile use-custom-command false
-#org.gnome.Terminal.Legacy.Profile bold-color '#000000'
-#org.gnome.Terminal.Legacy.Profile highlight-colors-set false
-#org.gnome.Terminal.Legacy.Profile scrollback-lines 10000
-#org.gnome.Terminal.Legacy.Profile word-char-exceptions @ms nothing
+profile=$(gsettings get org.gnome.Terminal.ProfilesList default | xargs)
+gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:$profile/ default-size-rows 30
+gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:$profile/ default-size-columns 120
+gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:$profile/ font 'Fira Code 12'
+gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:$profile/ use-system-font false
+gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:$profile/ use-theme-colors false
+gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:$profile/ background-color '#1c262b'
+gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:$profile/ foreground-color '#c2c8d7'
+gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:$profile/ palette "['#000000', '#EE2B2A', '#40A33F', '#FFEA2E', '#1E80F0', '#8800A0', '#16AFCA', '#A4A4A4', '#777777', '#DC5C60', '#70BE71', '#FFF163', '#54A4F3', '#AA4DBC', '#42C7DA', '#FFFFFF']"
 
 #install code extensions
 echo -e '\n ... Installing VS Code extensions ... \n'

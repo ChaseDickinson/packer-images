@@ -20,6 +20,9 @@ echo $PASSWORD | sudo -S apt-get autoremove -y
 echo -e '\n ... Reinstalling snapd ... \n'
 echo $PASSWORD | sudo -S apt-get install -y snapd
 
+#create a working directory
+mkdir ~/code
+
 #reboot
 echo -e '\n ... Rebooting ... \n'
 echo $PASSWORD | sudo -S reboot
