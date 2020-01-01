@@ -6,8 +6,10 @@
 
 1) Add Virtualbox builder
 2) Vagrant boxes for servers
-3) Password retry logic
-4) Adopt HCL2
+3) Split desktop builds - base & additions for each builder
+4) Password retry logic
+5) Docker images for servers
+6) Adopt HCL2
 
 ## Problem Statement
 
