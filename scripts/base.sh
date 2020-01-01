@@ -21,7 +21,7 @@ echo -e '\n ... Reinstalling snapd ... \n'
 echo $PASSWORD | sudo -S apt-get install -y snapd
 
 #create a working directory
-mkdir ~/code
+mkdir ~/wip
 
 #reboot
 echo -e '\n ... Rebooting ... \n'
