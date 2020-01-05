@@ -131,6 +131,7 @@ fi
 echo -e '\n ... Configuring favorites ... \n'
 gsettings set org.gnome.shell favorite-apps "['org.gnome.Nautilus.desktop', 'org.gnome.Terminal.desktop', 'code.desktop', 'org.gnome.gedit.desktop', 'virtualbox.desktop', 'firefox.desktop', 'update-manager.desktop', 'gnome-control-center.desktop']"
 gsettings set org.gnome.desktop.interface text-scaling-factor 1.5
+gsettings set org.gnome.shell.extensions.dash-to-dock click-action minimize
 
 #theme GNOME terminal
 profile=$(gsettings get org.gnome.Terminal.ProfilesList default | xargs)
