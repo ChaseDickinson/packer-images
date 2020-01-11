@@ -24,6 +24,7 @@
                 "initrd /install/initrd.gz<enter> ",
                 "boot<enter>"
             ],
+            "boot_wait": "5s",
             "cpus": "1",
             "disk_block_size": "1",
             "disk_size": "25600",
@@ -64,8 +65,7 @@
     "post-processors": [
         {
             "type": "vagrant",
-            "compression_level": 9,
-            "output": "{{user `output_drive`}}\\vm\\vagrant\\{{.Provider}}_{{.BuildName}}-{{timestamp}}.box"
+            "output": "{{user `output_drive`}}\\vm\\vagrant\\{{user `os_name`}}-{{.Provider}}-{{timestamp}}.box"
         }
     ]
 }

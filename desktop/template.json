@@ -67,8 +67,11 @@
         {
             "type": "compress",
             "format": ".zip",
-            "output": "{{user `output_drive`}}\\packer\\{{.BuildName}}-{{timestamp}}.zip",
-            "compression_level": 9
+            "keep_input_artifact": true,
+            "only": [
+                "hyperv-iso"
+            ],
+            "output": "{{user `output_drive`}}\\vm\\packer\\{{user `os_name`}}-{{.Provider}}-{{timestamp}}.zip"
         }
     ]
 }
