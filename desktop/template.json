@@ -71,7 +71,7 @@
             "only": [
                 "hyperv-iso"
             ],
-            "output": "{{user `output_drive`}}\\vm\\packer\\{{user `os_name`}}-{{.Provider}}-{{timestamp}}.zip"
+            "output": "{{user `output_drive`}}\\vm\\packer\\{{user `os_name`}}-{{timestamp}}.zip"
         }
     ]
 }
