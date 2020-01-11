@@ -74,7 +74,9 @@ pip3 install awscli --upgrade --user
 
 #setting PATH variables
 echo -e '\n ... Setting PATH for AWS CLI ... \n'
+#awscli
 echo 'export PATH=/bin:$PATH' >>~/.bashrc
+#homebrew
 if [ "$OS_NAME" == "eoan" ];
 then
     echo -e '\n ... Skipping Setting PATH for Homebrew ... \n'
@@ -87,7 +89,7 @@ else
     test -r ~/.bashrc && echo "eval \$($(brew --prefix)/bin/brew shellenv)" >>~/.bashrc
     echo "eval \$($(brew --prefix)/bin/brew shellenv)" >>~/.profile  
 fi
-
+#powerline
 echo -e '\n ... Setting PATH for Powerline ... \n'
 echo -e "\n\n#powerline configuration" >>~/.bashrc
 echo "if [ -f `which powerline-daemon` ]; then" >>~/.bashrc
@@ -130,7 +132,7 @@ fi
 #configure Desktop interface
 echo -e '\n ... Configuring favorites ... \n'
 gsettings set org.gnome.shell favorite-apps "['org.gnome.Nautilus.desktop', 'org.gnome.Terminal.desktop', 'code.desktop', 'org.gnome.gedit.desktop', 'virtualbox.desktop', 'firefox.desktop', 'update-manager.desktop', 'gnome-control-center.desktop']"
-gsettings set org.gnome.desktop.interface text-scaling-factor 1.5
+gsettings set org.gnome.desktop.interface text-scaling-factor 1.25
 gsettings set org.gnome.shell.extensions.dash-to-dock click-action minimize
 
 #theme GNOME terminal

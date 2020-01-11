@@ -3,6 +3,7 @@
         "files": "../files",
         "home": "/home/{{user `ssh_username`}}/",
         "os_type": "desktop",
+        "output_drive": "{{env `ONEDRIVE`}}",
         "scripts": "../scripts",
         "ssh_username": "ubuntu",
         "ssh_password": "ubuntu"
@@ -31,13 +32,13 @@
             "iso_url": "http://releases.ubuntu.com/{{user `os_version`}}/ubuntu-{{user `os_version`}}-{{user `os_type`}}-amd64.iso",
             "iso_checksum": "{{user `iso_checksum`}}",
             "memory": "4096",
-            "output_directory": "..\\..\\VMs\\{{user `os_type`}}\\{{user `os_name`}}-{{timestamp}}",
+            "output_directory": "{{user `output_drive`}}\\VMs\\{{user `os_type`}}\\{{user `os_name`}}-{{timestamp}}",
             "shutdown_command": "echo '{{user `ssh_password`}}' | sudo -S shutdown -P now",
             "ssh_password": "{{user `ssh_password`}}",
             "ssh_timeout": "2h",
             "ssh_username": "{{user `ssh_username`}}",
             "switch_name": "Default Switch",
-            "vm_name": "{{user `os_version`}}-{{user `os_type`}}"
+            "vm_name": "{{user `os_version`}}"
         }
     ],
     "provisioners": [
