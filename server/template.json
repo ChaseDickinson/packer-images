@@ -36,7 +36,7 @@
             "iso_checksum": "{{user `iso_checksum`}}",
             "communicator": "ssh",
             "memory": "2048",
-            "output_directory": "{{user `output_drive`}}\\vm\\packer\\{{user `os_name`}}-{{timestamp}}",
+            "output_directory": "..\\..\\vm\\packer\\{{user `os_name`}}-{{timestamp}}",
             "shutdown_command": "echo '{{user `ssh_password`}}' | sudo -S shutdown -P now",
             "ssh_password": "{{user `ssh_password`}}",
             "ssh_timeout": "2h",
@@ -65,7 +65,7 @@
         {
             "type": "vagrant",
             "compression_level": 9,
-            "output": "{{user `output_drive`}}\\vm\\vagrant\\{{timestamp}}-{{.Provider}}_{{.BuildName}}.box",
+            "output": "{{user `output_drive`}}\\vm\\vagrant\\{{.Provider}}_{{.BuildName}}-{{timestamp}}.box"
         }
     ]
 }
