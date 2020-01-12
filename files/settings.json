@@ -1,14 +1,12 @@
 {
+    "aws.telemetry": "Disable",
+    "aws.samcli.location": "/home/ubuntu/.linuxbrew/bin/sam",
     "editor.fontFamily": "Fira Code",
     "editor.fontLigatures": true,
     "editor.fontSize": 16,
     "editor.formatOnSave": true,
     "git.autofetch": true,
-    "workbench.iconTheme": "material-icon-theme",
-    "workbench.colorTheme": "Material Theme Darker",
     "materialTheme.accent": "Orange",
-    "aws.samcli.location": "/home/ubuntu/.linuxbrew/bin/sam",
-    "aws.telemetry": "Disable",
     "workbench.colorCustomizations": {
         "activityBarBadge.background": "#FF7300",
         "list.activeSelectionForeground": "#FF7300",
@@ -31,6 +29,8 @@
         "menubar.selectionForeground": "#FF7300",
         "editor.findMatchBorder": "#FF7300",
         "selection.background": "#FF7300",
-        "activityBar.activeBorder": "#FF7300",
-    }
+        "activityBar.activeBorder": "#FF7300"
+    },
+    "workbench.colorTheme": "Material Theme Darker",
+    "workbench.iconTheme": "material-icon-theme"
 }
