@@ -74,7 +74,7 @@ fi
 
 #forcing user to change password
 echo -e '\n ... Setting Password to Expire ... \n'
-echo $PASSWORD | sudo -S chage -M 0 $USERNAME
+echo $PASSWORD | sudo -S chage -M 1 $USERNAME
 
 #final cleanup
 echo -e '\n ... Autoremove ... \n'
