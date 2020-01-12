@@ -45,8 +45,11 @@
     "provisioners": [
         {
             "type": "file",
-            "source": "{{user `files`}}",
-            "destination": "{{user `home`}}"
+            "destination": "{{user `home`}}",
+            "only": [
+                "hyperv-iso"
+            ],
+            "source": "{{user `files`}}"
         },
         {
             "type": "shell",
@@ -56,6 +59,9 @@
                 "PASSWORD={{user `ssh_password`}}"
             ],
             "expect_disconnect": true,
+            "only": [
+                "hyperv-iso"
+            ],
             "pause_before": "10s",
             "scripts": [
                 "{{user `scripts`}}/base.sh",

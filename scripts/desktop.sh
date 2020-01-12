@@ -24,15 +24,6 @@ echo $PASSWORD | sudo -S apt-get update
 echo $PASSWORD | sudo -S apt-get install -y code 
 rm packages.microsoft.gpg
 
-#add VirtualBox repository
-echo -e '\n ... Installing VirtualBox ... \n'
-echo $PASSWORD | wget -q https://www.virtualbox.org/download/oracle_vbox_2016.asc -O- | sudo -S apt-key add -
-echo $PASSWORD | sudo -S add-apt-repository "deb [arch=amd64] http://download.virtualbox.org/virtualbox/debian $(lsb_release -cs) contrib"
-
-#install VirtualBox
-echo $PASSWORD | sudo -S apt-get update
-echo $PASSWORD | sudo -S apt-get install -y virtualbox-6.1
-
 #add docker repository
 if [ "$OS_NAME" == "eoan" ];
 then
@@ -131,7 +122,7 @@ fi
 
 #configure Desktop interface
 echo -e '\n ... Configuring favorites ... \n'
-gsettings set org.gnome.shell favorite-apps "['org.gnome.Nautilus.desktop', 'org.gnome.Terminal.desktop', 'code.desktop', 'org.gnome.gedit.desktop', 'virtualbox.desktop', 'firefox.desktop', 'update-manager.desktop', 'gnome-control-center.desktop']"
+gsettings set org.gnome.shell favorite-apps "['org.gnome.Nautilus.desktop', 'org.gnome.Terminal.desktop', 'code.desktop', 'org.gnome.gedit.desktop', 'firefox.desktop', 'update-manager.desktop', 'gnome-control-center.desktop']"
 gsettings set org.gnome.desktop.interface text-scaling-factor 1.25
 gsettings set org.gnome.shell.extensions.dash-to-dock click-action minimize
 
