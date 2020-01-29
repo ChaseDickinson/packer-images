@@ -7,7 +7,7 @@
 1) Add Virtualbox builder
 2) Vagrant boxes for servers
 3) Docker images for servers
-4) Split desktop builds - base & additions for each builder
+4) Split desktop builds - base & additions
 5) Password retry logic
 6) Adopt HCL2
 
@@ -27,7 +27,7 @@ My primary goals are:
 .
 +-- [desktop|server]
 |   +-- template.json - Packer template for OS type
-|   +-- OS Version (bionic, disco, eoan, etc.)
+|   +-- OS Version (bionic, eoan, etc.)
     |   +-- preseed.cfg - preseed file for specific OS version
     |   +-- variables.json - variable file for specific OS version
 +-- files
@@ -63,7 +63,7 @@ packer build -var-file=./eoan/variables.json template.json
 
 Hyper-V only for now.
 
-VMs will output to a directory at the same level as the repository root, organized by image type (desktop or server) then OS version (bionic, disco, or eoan).
+VMs will output to a directory at the same level as the repository root, organized by image type (desktop or server) then OS version (bionic or eoan).
 
 Don't forget to disable Secure Boot after you create a VM! You'll also need to login and change your password first before completing the step below to enable "Enhanced Mode".
 
@@ -83,7 +83,7 @@ More on Microsoft's linux-vm-tools can be found on [their repo](https://github.c
   - Python3
   - Node.js 12.x
   - AWS CLI
-  - AWS SAM (on Bionic & Disco), which requires:
+  - AWS SAM (on Bionic), which requires:
     - Docker (and pre-reqs)
     - Homebrew (and pre-reqs)
   - Microsoft's [linux-vm-tools](https://github.com/microsoft/linux-vm-tools) (enable "Enhanced Mode" for Ubuntu VMs)
@@ -93,7 +93,6 @@ More on Microsoft's linux-vm-tools can be found on [their repo](https://github.c
 
 - Taking advantage of the built in minimal install functionality included in the Ubuntu Desktop images. This removes the following packages:
   - [bionic](https://people.canonical.com/~ubuntu-archive/seeds/ubuntu.bionic/desktop.minimal-remove)
-  - [disco](https://people.canonical.com/~ubuntu-archive/seeds/ubuntu.disco/desktop.minimal-remove)
   - [eoan](https://people.canonical.com/~ubuntu-archive/seeds/ubuntu.eoan/desktop.minimal-remove)
 
 - Why aren't you installing Docker, Homebrew, or AWS SAM on 19.10 Eoan?
