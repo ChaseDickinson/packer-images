@@ -27,7 +27,7 @@ source "hyperv-iso" "ubuntu_bionic" {
   shutdown_command = "echo '${local.ssh_password}' | sudo -S shutdown -P now"
   ssh_timeout      = "2h"
  
-  boot_command = <<EOF
+  boot_command = [<<EOF
 <esc><esc><esc><esc>
 linux /casper/vmlinuz
 url=http://{{.HTTPIP}}:{{.HTTPPort}}/preseed.cfg
@@ -35,4 +35,5 @@ boot=casper ip=dhcp automatic-ubiquity noninteractive noprompt --- <enter>
 initrd /casper/initrd <enter>
 boot<enter>
 EOF
+]
 }
