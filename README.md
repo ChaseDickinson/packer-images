@@ -4,11 +4,12 @@
 
 ## TODO
 
-1) Add Virtualbox builder
-2) Vagrant boxes for servers
-3) Docker images for servers
-4) Split desktop builds - base & additions
-5) Password retry logic
+1) Troublshoot Eoan Install
+2) Add Virtualbox builder
+3) Vagrant boxes for servers
+4) Docker images for servers
+5) Split desktop builds - base & additions
+6) Password retry logic
 
 ## Problem Statement
 
