@@ -1,7 +1,7 @@
-# Builds for bionic desktop image
+# Builds for eoan desktop image
 
 build {
-  sources = ["source.hyperv-iso.bionic_desktop"]
+  sources = ["source.hyperv-iso.eoan_desktop"]
 
   provisioner "file" {
     destination = local.home
