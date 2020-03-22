@@ -24,5 +24,5 @@ EOF
   home             = "/home/${local.ssh_username}/"
   iso_url          = "http://releases.ubuntu.com/${local.os_version}/ubuntu-${local.os_version}-${local.os_type}-amd64.iso"
   output_directory = format("..\\..\\..\\vms\\%s", local.date_time)
-  vm_name          = "${local.os_version}-${local.os_type}-packer"
+  vm_name          = "${local.os_version}-${local.os_type}-${local.date_time}"
 }
