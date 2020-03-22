@@ -14,7 +14,7 @@ locals {
   boot_command = [<<EOF
 <esc><esc><esc><esc><esc><esc><esc><esc><esc><esc><esc><esc>
 linux /casper/vmlinuz 
-url=http://{{.HTTPIP}}:{{.HTTPPort}}/${local.os_name}/preseed.cfg 
+preseed/url=http://{{.HTTPIP}}:{{.HTTPPort}}/${local.os_name}/preseed.cfg 
 boot=casper automatic-ubiquity noninteractive noprompt --- <enter>
 initrd /casper/initrd <enter>
 boot<enter>
