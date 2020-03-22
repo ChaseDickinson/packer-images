@@ -50,7 +50,7 @@ curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip
 unzip awscliv2.zip
 echo $PASSWORD | sudo -S ./aws/install
 rm -rf aws
-rm awscliv2
+rm awscliv2.zip
 
 #setting PATH variables
 echo -e '\n ... Setting PATH for AWS CLI ... \n'
