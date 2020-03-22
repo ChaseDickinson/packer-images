@@ -1,6 +1,6 @@
 # Source for desktop build
 
-source "hyperv-iso" "bionic_desktop" {
+source "hyperv-iso" "eoan_desktop" {
   boot_command                     = local.boot_command
   boot_wait                        = "2s"
   communicator                     = "ssh"
