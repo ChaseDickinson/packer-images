@@ -9,7 +9,6 @@
 3) Docker images for servers
 4) Split desktop builds - base & additions
 5) Password retry logic
-6) Adopt HCL2
 
 ## Problem Statement
 
