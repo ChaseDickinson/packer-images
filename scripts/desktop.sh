@@ -26,8 +26,30 @@ basePackages() {
   ca-certificates curl \
   gnupg-agent \
   software-properties-common \
-  powerline \
-  fonts-firacode
+  zsh
+}
+
+fonts() {
+  echo -e '\n****************************************\n'
+  echo '  Installing fonts'
+  echo -e '\n****************************************\n'
+
+  mkdir ~/nerd-fonts
+  cd ~/nerd-fonts
+  # Caskaydia Cove
+  curl -fLo "CaskaydiaCove.ttf" https://github.com/ryanoasis/nerd-fonts/blob/master/patched-fonts/CascadiaCode/complete/Caskaydia%20Cove%20Regular%20Nerd%20Font%20Complete.ttf?raw=true
+  # Fira Code
+  curl -fLo "FiraCode.ttf" https://github.com/ryanoasis/nerd-fonts/blob/master/patched-fonts/FiraCode/Regular/complete/Fira%20Code%20Regular%20Nerd%20Font%20Complete.ttf?raw=true
+  # Hack
+  curl -fLo "Hack.ttf" https://github.com/ryanoasis/nerd-fonts/blob/master/patched-fonts/Hack/Regular/complete/Hack%20Regular%20Nerd%20Font%20Complete.ttf?raw=true
+
+  cd ~
+  echo $PASSWORD | sudo -S mv ~/nerd-fonts /usr/share/fonts/truetype/nerd-fonts
+  echo $PASSWORD | sudo -S chown -R root:root /usr/share/fonts/truetype/nerd-fonts
+  echo $PASSWORD | sudo -S chmod 755 /usr/share/fonts/truetype/nerd-fonts
+  echo $PASSWORD | sudo -S find /usr/share/fonts/truetype/nerd-fonts -type f -iname "*.ttf" -exec chmod 644 {} \;
+
+  echo $PASSWORD | sudo -S fc-cache -fv
 }
 
 vsCode() {
@@ -71,6 +93,26 @@ aws() {
   echo $PASSWORD | sudo -S ./aws/install
   rm -rf aws
   rm awscliv2.zip
+}
+
+cli() {
+  echo -e '\n****************************************\n'
+  echo '  Installing CLI customizations'
+  echo -e '\n****************************************\n'
+  # Powerline
+  pip3 install powerline-status
+
+  # Oh-My-Zsh
+  sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
+
+  # Powerlevel9K
+  git clone https://github.com/bhilburn/powerlevel9k.git ~/.oh-my-zsh/custom/themes/powerlevel9k
+
+  # Copy .zshrc file
+  mv ~/files/.zshrc ~/.zshrc
+
+  # Set default shell
+  chsh -s $(which zsh) $username
 }
 
 path() {
@@ -121,12 +163,12 @@ gnomeConfig() {
   profile=$(gsettings get org.gnome.Terminal.ProfilesList default | xargs)
   gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:$profile/ default-size-rows 30
   gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:$profile/ default-size-columns 120
-  gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:$profile/ font 'Fira Code 12'
+  gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:$profile/ font 'CaskaydiaCove Nerd Font 12'
   gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:$profile/ use-system-font false
   gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:$profile/ use-theme-colors false
-  gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:$profile/ background-color '#1c262b'
-  gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:$profile/ foreground-color '#c2c8d7'
-  gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:$profile/ palette "['#000000', '#EE2B2A', '#40A33F', '#FFEA2E', '#1E80F0', '#8800A0', '#16AFCA', '#A4A4A4', '#777777', '#DC5C60', '#70BE71', '#FFF163', '#54A4F3', '#AA4DBC', '#42C7DA', '#FFFFFF']"
+  gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:$profile/ background-color '#0D0D17'
+  gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:$profile/ foreground-color '#E6E5E5'
+  gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:$profile/ palette "['#4D4D4D', '#F12D52', '#09CD7E', '#F5F17A', '#3182E0', '#FF2B6D', '#09C87A', '#FCFCFC', '#808080', '#F16D86', '#0AE78D', '#FFFC67', '#6096FF', '#FF78A2', '#0AE78D', '#FFFFFF']"
 }
 
 vsCodeConfig() {
@@ -168,7 +210,7 @@ AutostartCondition=unless-exists password-reset-done
 EOF
   echo $PASSWORD | sudo -S mv /etc/xdg/autostart/gnome-initial-setup-first-login.desktop /etc/xdg/autostart/gnome-initial-setup-first-login.desktop.old
   echo $PASSWORD | sudo -S mv ~/files/change_password.desktop /etc/xdg/autostart/change_password.desktop
-  rm -rf ~/files
+  rm -Rf ~/files
 }
 
 reboot() {
@@ -182,6 +224,8 @@ main() {
   validateArguments
   
   basePackages
+
+  fonts
   
   vsCode
   
@@ -191,6 +235,8 @@ main() {
   
   aws
   
+  cli
+
   path
   
   hashicorp
