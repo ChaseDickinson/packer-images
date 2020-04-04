@@ -1,5 +1,12 @@
 #!/bin/bash
 
+# ----------------------------------------
+# Configure Ubuntu server environment
+# ----------------------------------------
+set -o errexit
+set -o errtrace
+set -o nounset
+
 #pause before beginning install
 sleep 10
 

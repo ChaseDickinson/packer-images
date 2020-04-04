@@ -5,7 +5,7 @@ build {
 
   provisioner "file" {
     destination = local.home
-    source      = local.files
+    source      = var.files
   }
 
   provisioner "shell" {
@@ -13,15 +13,15 @@ build {
     pause_after       = "10s"
 
     environment_vars = [
-      "OS_NAME=${local.os_name}",
-      "USERNAME=${local.ssh_username}",
-      "PASSWORD=${local.ssh_password}"
+      "OS_NAME=${var.os_name}",
+      "USERNAME=${var.ssh_username}",
+      "PASSWORD=${var.ssh_password}"
     ]
 
     scripts = [
-      "${local.scripts}/base.sh",
-      "${local.scripts}/desktop.sh",
-      "${local.scripts}/linux_vm_tools.sh"
+      "${var.scripts}/base.sh",
+      "${var.scripts}/desktop.sh",
+      "${var.scripts}/linux_vm_tools.sh"
     ]
   }
 }

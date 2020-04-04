@@ -5,11 +5,12 @@
 ## TODO
 
 1) Troublshoot Eoan Install
-2) Add Virtualbox builder
-3) Vagrant boxes for servers
-4) Docker images for servers
-5) Split desktop builds - base & additions
-6) Password retry logic
+2) Add zsh & oh-my-zsh to install
+3) Add Virtualbox builder
+4) Vagrant boxes for servers
+5) Docker images for servers
+6) Split desktop builds - base & additions
+7) Password retry logic
 
 ## Problem Statement
 
