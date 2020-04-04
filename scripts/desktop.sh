@@ -83,7 +83,7 @@ path() {
     echo 'export PATH=/bin:$PATH' >>~/.bashrc
     #powerline
     echo -e "\n\n#powerline configuration" >>~/.bashrc
-    echo "if [ -f `which powerline-daemon` ]; then" >>~/.bashrc
+    echo "if [ -f $(which powerline-daemon) ]; then" >>~/.bashrc
     echo -e "\tpowerline-daemon -q" >>~/.bashrc
     echo -e "\tPOWERLINE_BASH_CONTINUATION=1" >>~/.bashrc
     echo -e "\tPOWERLINE_BASH_SELECT=1" >>~/.bashrc

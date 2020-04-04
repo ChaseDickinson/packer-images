@@ -19,8 +19,7 @@ validateArguments() {
 }
 
 linuxVmTools() {
-    if [ "${OS_NAME}" == "bionic"];
-    then
+    if [ "${OS_NAME}" == "bionic" ]; then
         echo -e '\n****************************************\n'
         echo '  Installing prerequirements for Bionic'
         echo -e '\n****************************************\n'
