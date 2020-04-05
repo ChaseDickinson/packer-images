@@ -112,23 +112,7 @@ cli() {
   mv ~/files/.zshrc ~/.zshrc
 
   # Set default shell
-  chsh -s $(which zsh) $username
-}
-
-path() {
-  echo -e '\n****************************************\n'
-  echo '  Setting PATH variables'
-  echo -e '\n****************************************\n'
-  #awscli
-  echo 'export PATH=/bin:$PATH' >>~/.bashrc
-  #powerline
-  echo -e "\n\n#powerline configuration" >>~/.bashrc
-  echo "if [ -f $(which powerline-daemon) ]; then" >>~/.bashrc
-  echo -e "\tpowerline-daemon -q" >>~/.bashrc
-  echo -e "\tPOWERLINE_BASH_CONTINUATION=1" >>~/.bashrc
-  echo -e "\tPOWERLINE_BASH_SELECT=1" >>~/.bashrc
-  echo -e "\t. /usr/share/powerline/bindings/bash/powerline.sh" >>~/.bashrc
-  echo "fi" >>~/.bashrc
+  echo $PASSWORD | sudo -S usermod --shell $(which zsh) $(whoami)
 }
 
 hashicorp() {
@@ -237,8 +221,6 @@ main() {
   
   cli
 
-  path
-  
   hashicorp
   
   gnomeConfig

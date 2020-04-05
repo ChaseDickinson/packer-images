@@ -38,6 +38,7 @@ source $ZSH/oh-my-zsh.sh
 # ------------------------------
 
 # Powerline configuration
+export PATH=/bin:$PATH
 export PATH=$PATH:$HOME/.local/bin
 powerline-daemon -q
 .  /home/ubuntu/.local/lib/python3.6/site-packages/powerline/bindings/zsh/powerline.zsh

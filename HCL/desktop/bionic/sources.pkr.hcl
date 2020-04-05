@@ -9,7 +9,7 @@ locals {
   keep_vm          = false
   output_directory = format("..\\..\\..\\vms\\%s", local.date_time)
   skip_export      = true
-  vm_name          = "${var.os_version}-${var.os_type}-packer"
+  vm_name          = "${var.os_version}-${var.os_type}-packer1.5"
 }
 
 locals {
