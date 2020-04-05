@@ -1,5 +1,6 @@
 {
-    "iso_checksum": "96a8095001d447bbb9078925d72f7a77a3f62fbd78460093759af4394ce83d79",
-    "os_name": "eoan",
-    "os_version": "19.10"
+  "boot_command": "<esc><esc><esc><esc>linux /casper/vmlinuz preseed/url=http://{{.HTTPIP}}:{{.HTTPPort}}/{{user `os_name`}}/preseed.cfg boot=casper only-ubiquity debug-ubiquity noninteractive noprompt --- <enter>initrd /casper/initrd <enter>boot<enter>",
+  "iso_checksum": "96a8095001d447bbb9078925d72f7a77a3f62fbd78460093759af4394ce83d79",
+  "os_name": "eoan",
+  "os_version": "19.10"
 }
