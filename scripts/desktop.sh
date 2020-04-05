@@ -20,9 +20,9 @@ validateArguments() {
 
 basePackages() {
   #install latest updates available
-  echo -e '\n****************************************\n'
-  echo '  Installing base packages'
-  echo -e '\n****************************************\n'
+  echo -e "\n****************************************\n"
+  echo "  Installing base packages"
+  echo -e "\n****************************************\n"
 
   echo $PASSWORD | sudo -S apt-get install -y \
   git \
@@ -35,9 +35,9 @@ basePackages() {
 }
 
 fonts() {
-  echo -e '\n****************************************\n'
-  echo '  Installing fonts'
-  echo -e '\n****************************************\n'
+  echo -e "\n****************************************\n"
+  echo "  Installing fonts"
+  echo -e "\n****************************************\n"
 
   mkdir ~/nerd-fonts
   cd ~/nerd-fonts
@@ -54,9 +54,9 @@ fonts() {
 }
 
 vsCode() {
-  echo -e '\n****************************************\n'
-  echo '  Installing Visual Studio Code'
-  echo -e '\n****************************************\n'
+  echo -e "\n****************************************\n"
+  echo "  Installing Visual Studio Code"
+  echo -e "\n****************************************\n"
 
   curl https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > packages.microsoft.gpg
   echo $PASSWORD | sudo -S install -o root -g root -m 644 packages.microsoft.gpg /usr/share/keyrings/
@@ -67,9 +67,9 @@ vsCode() {
 }
 
 docker() {
-  echo -e '\n****************************************\n'
-  echo '  Installing Docker'
-  echo -e '\n****************************************\n'
+  echo -e "\n****************************************\n"
+  echo "  Installing Docker"
+  echo -e "\n****************************************\n"
 
   # Adding Docker repo    
   echo $PASSWORD | curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo -S apt-key add -
@@ -80,18 +80,18 @@ docker() {
 }
 
 node() {
-  echo -e '\n****************************************\n'
-  echo '  Installing Node'
-  echo -e '\n****************************************\n'
+  echo -e "\n****************************************\n"
+  echo "  Installing Node"
+  echo -e "\n****************************************\n"
 
   echo $PASSWORD | curl -sL https://deb.nodesource.com/setup_12.x | sudo -S -E bash -
   echo $PASSWORD | sudo -S apt-get install -y nodejs
 }
 
 aws() {
-  echo -e '\n****************************************\n'
-  echo '  Installing AWS CLI'
-  echo -e '\n****************************************\n'
+  echo -e "\n****************************************\n"
+  echo "  Installing AWS CLI"
+  echo -e "\n****************************************\n"
 
   curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
   unzip awscliv2.zip
@@ -101,9 +101,9 @@ aws() {
 }
 
 cli() {
-  echo -e '\n****************************************\n'
-  echo '  Installing CLI customizations'
-  echo -e '\n****************************************\n'
+  echo -e "\n****************************************\n"
+  echo "  Installing CLI customizations"
+  echo -e "\n****************************************\n"
 
   # Powerline
   pip3 install powerline-status
@@ -122,27 +122,27 @@ cli() {
 }
 
 hashicorp() {
-  echo -e '\n****************************************\n'
-  echo '  Install Terraform ${TERRAFORM_VERSION}'
-  echo -e '\n****************************************\n'
+  echo -e "\n****************************************\n"
+  echo "  Install Terraform  ${TERRAFORM_VERSION}"
+  echo -e "\n****************************************\n"
 
   curl -o "terraform.zip" "https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip"
   unzip terraform.zip
   echo $PASSWORD | sudo -S mv terraform /usr/bin/terraform
   rm terraform.zip
 
-  echo -e '\n****************************************\n'
-  echo '  Install Packer ${PACKER_VERSION}'
-  echo -e '\n****************************************\n'
+  echo -e "\n****************************************\n"
+  echo "  Install Packer ${PACKER_VERSION}"
+  echo -e "\n****************************************\n"
 
   curl -o "packer.zip" "https://releases.hashicorp.com/packer/${PACKER_VERSION}/packer_${PACKER_VERSION}_linux_amd64.zip"
   unzip packer.zip
   echo $PASSWORD | sudo -S mv packer /usr/bin/packer
   rm packer.zip
 
-  echo -e '\n****************************************\n'
-  echo '  Install Vagrant ${VAGRANT_VERSION}'
-  echo -e '\n****************************************\n'
+  echo -e "\n****************************************\n"
+  echo "  Install Vagrant ${VAGRANT_VERSION}"
+  echo -e "\n****************************************\n"
 
   curl -o "vagrant.zip" "https://releases.hashicorp.com/vagrant/${VAGRANT_VERSION}/vagrant_${VAGRANT_VERSION}_linux_amd64.zip"
   unzip vagrant.zip
@@ -151,17 +151,17 @@ hashicorp() {
 }
 
 gnomeConfig() {
-  echo -e '\n****************************************\n'
-  echo '  Configuring desktop favorites'
-  echo -e '\n****************************************\n'
+  echo -e "\n****************************************\n"
+  echo "  Configuring desktop favorites"
+  echo -e "\n****************************************\n"
 
   gsettings set org.gnome.shell favorite-apps "['org.gnome.Nautilus.desktop', 'org.gnome.Terminal.desktop', 'code.desktop', 'org.gnome.gedit.desktop', 'firefox.desktop', 'update-manager.desktop', 'gnome-control-center.desktop']"
   gsettings set org.gnome.desktop.interface text-scaling-factor 1.25
   gsettings set org.gnome.shell.extensions.dash-to-dock click-action minimize
 
-  echo -e '\n****************************************\n'
-  echo '  Configuring terminal theme'
-  echo -e '\n****************************************\n'
+  echo -e "\n****************************************\n"
+  echo "  Configuring terminal theme"
+  echo -e "\n****************************************\n"
 
   profile=$(gsettings get org.gnome.Terminal.ProfilesList default | xargs)
   gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:$profile/ default-size-rows 30
@@ -175,27 +175,27 @@ gnomeConfig() {
 }
 
 vsCodeConfig() {
-  echo -e '\n****************************************\n'
-  echo '  Installing VS Code extensions'
-  echo -e '\n****************************************\n'
+  echo -e "\n****************************************\n"
+  echo "  Installing VS Code extensions"
+  echo -e "\n****************************************\n"
 
   #remove whitespace from list
   sed -i 's/[[:space:]]*$//' ~/files/code_extensions.list
   cat ~/files/code_extensions.list | xargs -L 1 code --install-extension
   rm ~/files/code_extensions.list
 
-  echo -e '\n****************************************\n'
-  echo '  Copying VS Code settings'
-  echo -e '\n****************************************\n'
+  echo -e "\n****************************************\n"
+  echo "  Copying VS Code settings"
+  echo -e "\n****************************************\n"
 
   mkdir -p ~/.config/Code/User
   mv ~/files/settings.json ~/.config/Code/User/settings.json
 }
 
 changePassword() {
-  echo -e '\n****************************************\n'
-  echo '  Implementing password change prompt'
-  echo -e '\n****************************************\n'
+  echo -e "\n****************************************\n"
+  echo "  Implementing password change prompt"
+  echo -e "\n****************************************\n"
 
   echo $PASSWORD | sudo -S mkdir -p /usr/local/scripts
   echo $PASSWORD | sudo -S mv ~/files/passwd.sh /usr/local/scripts/passwd.sh
@@ -221,9 +221,9 @@ EOF
 }
 
 reboot() {
-  echo -e '\n****************************************\n'
-  echo '  Rebooting'
-  echo -e '\n****************************************\n'
+  echo -e "\n****************************************\n"
+  echo "  Rebooting"
+  echo -e "\n****************************************\n"
   
   echo $PASSWORD | sudo -S reboot
 }
