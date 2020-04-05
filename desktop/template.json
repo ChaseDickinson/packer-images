@@ -32,7 +32,7 @@
       "iso_url": "http://releases.ubuntu.com/{{user `os_version`}}/ubuntu-{{user `os_version`}}-{{user `os_type`}}-amd64.iso",
       "iso_checksum": "{{user `iso_checksum`}}",
       "memory": "4096",
-      "output_directory": "..\\..\\vms\\{{timestamp}}",
+      "output_directory": "..\\..\\{{user `os_name`}}",
       "shutdown_command": "echo '{{user `ssh_password`}}' | sudo -S shutdown -P now",
       "skip_export": true,
       "ssh_password": "{{user `ssh_password`}}",
@@ -75,11 +75,11 @@
       "type": "compress",
       "compression_level": 9,
       "format": ".zip",
-      "keep_input_artifact": true,
+      "keep_input_artifact": false,
       "only": [
         "hyperv-iso"
       ],
-      "output": "{{user `output_drive`}}\\vms\\{{timestamp}}.zip"
+      "output": "{{user `output_drive`}}\\vms\\{{timestamp}}_{{.BuildName}}.zip"
     }
   ]
 }

@@ -7,6 +7,10 @@ set -o errexit
 set -o errtrace
 set -o nounset
 
+TERRAFORM_VERSION="0.12.21"
+PACKER_VERSION="1.5.5"
+VAGRANT_VERSION="2.2.7"
+
 validateArguments() {
   if [ -z "${PASSWORD-}" ]; then
     printf "\n\nError: 'PASSWORD' is required.\n\n"
@@ -19,6 +23,7 @@ basePackages() {
   echo -e '\n****************************************\n'
   echo '  Installing base packages'
   echo -e '\n****************************************\n'
+
   echo $PASSWORD | sudo -S apt-get install -y \
   git \
   python3-pip \
@@ -36,10 +41,6 @@ fonts() {
 
   mkdir ~/nerd-fonts
   cd ~/nerd-fonts
-  # Caskaydia Cove
-  curl -fLo "CaskaydiaCove.ttf" https://github.com/ryanoasis/nerd-fonts/blob/master/patched-fonts/CascadiaCode/complete/Caskaydia%20Cove%20Regular%20Nerd%20Font%20Complete.ttf?raw=true
-  # Fira Code
-  curl -fLo "FiraCode.ttf" https://github.com/ryanoasis/nerd-fonts/blob/master/patched-fonts/FiraCode/Regular/complete/Fira%20Code%20Regular%20Nerd%20Font%20Complete.ttf?raw=true
   # Hack
   curl -fLo "Hack.ttf" https://github.com/ryanoasis/nerd-fonts/blob/master/patched-fonts/Hack/Regular/complete/Hack%20Regular%20Nerd%20Font%20Complete.ttf?raw=true
 
@@ -56,6 +57,7 @@ vsCode() {
   echo -e '\n****************************************\n'
   echo '  Installing Visual Studio Code'
   echo -e '\n****************************************\n'
+
   curl https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > packages.microsoft.gpg
   echo $PASSWORD | sudo -S install -o root -g root -m 644 packages.microsoft.gpg /usr/share/keyrings/
   echo $PASSWORD | sudo -S sh -c 'echo "deb [arch=amd64 signed-by=/usr/share/keyrings/packages.microsoft.gpg] https://packages.microsoft.com/repos/vscode stable main" > /etc/apt/sources.list.d/vscode.list'
@@ -68,6 +70,7 @@ docker() {
   echo -e '\n****************************************\n'
   echo '  Installing Docker'
   echo -e '\n****************************************\n'
+
   # Adding Docker repo    
   echo $PASSWORD | curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo -S apt-key add -
   echo $PASSWORD | sudo -S add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
@@ -80,6 +83,7 @@ node() {
   echo -e '\n****************************************\n'
   echo '  Installing Node'
   echo -e '\n****************************************\n'
+
   echo $PASSWORD | curl -sL https://deb.nodesource.com/setup_12.x | sudo -S -E bash -
   echo $PASSWORD | sudo -S apt-get install -y nodejs
 }
@@ -88,6 +92,7 @@ aws() {
   echo -e '\n****************************************\n'
   echo '  Installing AWS CLI'
   echo -e '\n****************************************\n'
+
   curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
   unzip awscliv2.zip
   echo $PASSWORD | sudo -S ./aws/install
@@ -99,6 +104,7 @@ cli() {
   echo -e '\n****************************************\n'
   echo '  Installing CLI customizations'
   echo -e '\n****************************************\n'
+
   # Powerline
   pip3 install powerline-status
 
@@ -117,26 +123,38 @@ cli() {
 
 hashicorp() {
   echo -e '\n****************************************\n'
-  echo '  Install Terraform'
+  echo '  Install Terraform ${TERRAFORM_VERSION}'
   echo -e '\n****************************************\n'
-  curl "https://releases.hashicorp.com/terraform/0.12.18/terraform_0.12.18_linux_amd64.zip" -o "terraform.zip"
+
+  curl -o "terraform.zip" "https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip"
   unzip terraform.zip
   echo $PASSWORD | sudo -S mv terraform /usr/bin/terraform
   rm terraform.zip
 
   echo -e '\n****************************************\n'
-  echo '  Install Packer'
+  echo '  Install Packer ${PACKER_VERSION}'
   echo -e '\n****************************************\n'
-  curl "https://releases.hashicorp.com/packer/1.5.1/packer_1.5.1_linux_amd64.zip" -o "packer.zip"
+
+  curl -o "packer.zip" "https://releases.hashicorp.com/packer/${PACKER_VERSION}/packer_${PACKER_VERSION}_linux_amd64.zip"
   unzip packer.zip
   echo $PASSWORD | sudo -S mv packer /usr/bin/packer
   rm packer.zip
+
+  echo -e '\n****************************************\n'
+  echo '  Install Vagrant ${VAGRANT_VERSION}'
+  echo -e '\n****************************************\n'
+
+  curl -o "vagrant.zip" "https://releases.hashicorp.com/vagrant/${VAGRANT_VERSION}/vagrant_${VAGRANT_VERSION}_linux_amd64.zip"
+  unzip vagrant.zip
+  echo $PASSWORD | sudo -S mv vagrant /usr/bin/vagrant
+  rm vagrant.zip
 }
 
 gnomeConfig() {
   echo -e '\n****************************************\n'
   echo '  Configuring desktop favorites'
   echo -e '\n****************************************\n'
+
   gsettings set org.gnome.shell favorite-apps "['org.gnome.Nautilus.desktop', 'org.gnome.Terminal.desktop', 'code.desktop', 'org.gnome.gedit.desktop', 'firefox.desktop', 'update-manager.desktop', 'gnome-control-center.desktop']"
   gsettings set org.gnome.desktop.interface text-scaling-factor 1.25
   gsettings set org.gnome.shell.extensions.dash-to-dock click-action minimize
@@ -144,10 +162,11 @@ gnomeConfig() {
   echo -e '\n****************************************\n'
   echo '  Configuring terminal theme'
   echo -e '\n****************************************\n'
+
   profile=$(gsettings get org.gnome.Terminal.ProfilesList default | xargs)
   gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:$profile/ default-size-rows 30
   gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:$profile/ default-size-columns 120
-  gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:$profile/ font 'CaskaydiaCove Nerd Font 12'
+  gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:$profile/ font 'Hack Nerd Font 12'
   gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:$profile/ use-system-font false
   gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:$profile/ use-theme-colors false
   gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:$profile/ background-color '#0D0D17'
@@ -159,13 +178,16 @@ vsCodeConfig() {
   echo -e '\n****************************************\n'
   echo '  Installing VS Code extensions'
   echo -e '\n****************************************\n'
+
   #remove whitespace from list
   sed -i 's/[[:space:]]*$//' ~/files/code_extensions.list
   cat ~/files/code_extensions.list | xargs -L 1 code --install-extension
   rm ~/files/code_extensions.list
+
   echo -e '\n****************************************\n'
   echo '  Copying VS Code settings'
   echo -e '\n****************************************\n'
+
   mkdir -p ~/.config/Code/User
   mv ~/files/settings.json ~/.config/Code/User/settings.json
 }
@@ -174,6 +196,7 @@ changePassword() {
   echo -e '\n****************************************\n'
   echo '  Implementing password change prompt'
   echo -e '\n****************************************\n'
+
   echo $PASSWORD | sudo -S mkdir -p /usr/local/scripts
   echo $PASSWORD | sudo -S mv ~/files/passwd.sh /usr/local/scripts/passwd.sh
   echo $PASSWORD | sudo -S sed -i -e 's/\r$//' /usr/local/scripts/passwd.sh
@@ -201,6 +224,7 @@ reboot() {
   echo -e '\n****************************************\n'
   echo '  Rebooting'
   echo -e '\n****************************************\n'
+  
   echo $PASSWORD | sudo -S reboot
 }
 

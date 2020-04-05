@@ -23,12 +23,14 @@ linuxVmTools() {
     echo -e '\n****************************************\n'
     echo '  Installing prerequirements for Bionic'
     echo -e '\n****************************************\n'
+
     echo $PASSWORD | sudo -S apt-get install -y xserver-xorg-core xserver-xorg-input-all
   fi
 
   echo -e '\n****************************************\n'
   echo '  Installing Microsoft Linux-VM-Tools'
   echo -e '\n****************************************\n'
+
   wget https://raw.githubusercontent.com/Microsoft/linux-vm-tools/master/ubuntu/18.04/install.sh
   sed -i 's/apt/apt-get/g' install.sh
   chmod +x install.sh
@@ -40,6 +42,7 @@ autoremove() {
   echo -e '\n****************************************\n'
   echo '  Autoremove'
   echo -e '\n****************************************\n'
+  
   echo $PASSWORD | sudo -S apt-get update
   echo $PASSWORD | sudo -S apt-get autoremove -y
 }
