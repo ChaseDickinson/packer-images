@@ -4,12 +4,13 @@
 
 ## TODO
 
-1) Troublshoot Eoan Install
-2) Add Virtualbox builder
-3) Vagrant boxes for servers
-4) Docker images for servers
-5) Split desktop builds - base & additions
-6) Password retry logic
+1) Change boot command to be a variable
+2) Troublshoot Eoan Install
+3) Add Virtualbox builder
+4) Vagrant boxes for servers
+5) Docker images for servers
+6) Split desktop builds - base & additions
+7) Password retry logic
 
 ## Problem Statement
 
