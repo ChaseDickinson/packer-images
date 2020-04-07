@@ -1,52 +1,140 @@
-# Preseeding only locale sets language, country and locale.
+# List found in the successful logs:
+# debian-installer/locale en_US.UTF-8
+# debian-installer/language en
+# debian-installer/country US
+# console-setup/ask_detect false
+# keyboard-configuration/layoutcode us
+# ubiquity/use_nonfree false
+# ubiquity/download_updates false
+# ubiquity/minimal_install true
+# grub-installer/bootdev /dev/sda
+# ubiquity/use_zfs false
+# partman-auto/select_disk /var/lib/partman/devices/=dev=sda
+# partman-auto/choose_recipe /lib/partman/recipes-amd64-efi/30atomic
+# partman-lvm/confirm_nooverwrite true
+# ubiquity/partman-confirm confirm_nooverwrite
+# partman/confirm_nooverwrite true
+# time/zone America/Chicago
+# passwd/user-fullname ubuntu
+# passwd/username ubuntu
+# passwd/user-password ubuntu
+# passwd/user-password-again ubuntu
+# passwd/auto-login false
+# user-setup/encrypt-home false
+# netcfg/get_hostname eoan
+# grub-installer/with_other_os false
+# grub-installer/only_debian false
+# ubiquity/install_bootloader true
+
+# Trying to leave these out:
+# debconf/language en
+# localechooser/languagelist en
+# localechooser/shortlist US
+# localechooser/preferred-locale en_US.UTF-8
+# localechooser/supported-locales en_US.UTF-8
+# partman-auto/init_automatically_partition 20some_device__________regular
+# partman-auto/init_automatically_partition 60some_device_lvm__________lvm
+# ubiquity/partman-rebuild-cache /var/lib/partman/devices/=dev=sda//17408-1048575
+# partman-auto-lvm/new_vg_name vgubuntu
+# partman-auto-lvm/guided_size 26.3 GB
+# user-setup/force-encrypt-home false
+# clock-setup/system-time-changed true
+# clock-setup/utc true
+
+# Locale
+d-i debian-installer/locale string en_US.UTF-8
 d-i debian-installer/language string en
 d-i debian-installer/country string US
-d-i debian-installer/locale string en_US.UTF-8
-d-i console-setup/ask_detect boolean false
-d-i console-setup/layout string us
 
-# Clock
-d-i time/zone select US/Central
-d-i clock-setup/utc boolean false
-
-# Partitioning
-ubiquity partman-auto/disk string /dev/sda
-ubiquity partman-auto/method string regular
-ubiquity partman-lvm/device_remove_lvm boolean true
-ubiquity partman-md/device_remove_md boolean true
-ubiquity partman-auto/choose_recipe select atomic
-
-# This makes partman automatically partition without confirmation
-d-i partman-partitioning/confirm_write_new_label boolean true
-d-i partman/choose_partition select finish
-d-i partman/confirm boolean true
-d-i partman/confirm_nooverwrite boolean true
-
-# Network
-d-i netcfg/get_hostname string eoan
-d-i netcfg/get_domain string unassigned-domain
-d-i netcfg/choose_interface select auto
-
-# Minimal desktop install
+# Misc
+ubiquity console-setup/ask_detect boolean false
+ubiquity keyboard-configuration/layoutcode string us
+ubiquity ubiquity/use_nonfree boolean false
+ubiquity ubiquity/download_updates boolean false
 ubiquity ubiquity/minimal_install boolean true
 
-# Default user
+# Grub
+d-i grub-installer/bootdev string /dev/sda
+d-i grub-installer/with_other_os boolean false
+d-i grub-installer/only_debian boolean true
+
+# Partitioning
+ubiquity ubiquity/use_zfs boolean false
+ubiquity partman-auto/select_disk string /var/lib/partman/devices/=dev=sda
+ubiquity partman-auto/choose_recipe string /lib/partman/recipes-amd64-efi/30atomic
+ubiquity partman-lvm/confirm_nooverwrite boolean true
+
+# Automatically partition without configuration
+ubiquity ubiquity/partman-confirm string confirm_nooverwrite
+d-i partman/confirm_nooverwrite boolean true
+
+# Clock
+d-i time/zone select America/Chicago
+
+# Account
 d-i passwd/user-fullname string ubuntu
 d-i passwd/username string ubuntu
 d-i passwd/user-password password ubuntu
 d-i passwd/user-password-again password ubuntu
+d-i passwd/auto-login boolean false
 d-i user-setup/encrypt-home boolean false
 
-# Install prerequisites
-ubiquity ubiquity/success_command \
-string ip link set up dev eth0; \
-dhclient eth0; \
-in-target /usr/bin/apt-get update; \
-in-target /usr/bin/apt-get install -y openssh-server ntp linux-tools-$(uname -r) linux-cloud-tools-$(uname -r) linux-cloud-tools-common;
+# Network
+d-i netcfg/get_hostname string eoan
 
-# Grub
-d-i grub-installer/grub2_instead_of_grub_legacy boolean true
-d-i grub-installer/only_debian boolean true
-
-# Reboot
+# Finish Up
+ubiquity ubiquity/install_bootloader boolean true
 ubiquity ubiquity/reboot boolean true
+
+# Original file tried
+## Preseeding only locale sets language, country and locale.
+#d-i debian-installer/language string en
+#d-i debian-installer/country string US
+#d-i debian-installer/locale string en_US.UTF-8
+#
+#
+## Clock
+#d-i time/zone select US/Central
+#d-i clock-setup/utc boolean false
+#
+## Partitioning
+#ubiquity partman-auto/disk string /dev/sda
+#ubiquity partman-auto/method string regular
+#ubiquity partman-lvm/device_remove_lvm boolean true
+#ubiquity partman-md/device_remove_md boolean true
+#ubiquity partman-auto/choose_recipe select atomic
+#
+## This makes partman automatically partition without confirmation
+#d-i partman-partitioning/confirm_write_new_label boolean true
+#d-i partman/choose_partition select finish
+#d-i partman/confirm boolean true
+#d-i partman/confirm_nooverwrite boolean true
+#
+## Network
+#d-i netcfg/get_hostname string eoan
+#d-i netcfg/get_domain string unassigned-domain
+#d-i netcfg/choose_interface select auto
+#
+## Minimal desktop install
+#ubiquity ubiquity/minimal_install boolean true
+#
+## Default user
+#d-i passwd/user-fullname string ubuntu
+#d-i passwd/username string ubuntu
+#d-i passwd/user-password password ubuntu
+#d-i passwd/user-password-again password ubuntu
+#d-i user-setup/encrypt-home boolean false
+#
+## Install prerequisites
+#ubiquity ubiquity/success_command \
+#string ip link set up dev eth0; \
+#dhclient eth0; \
+#in-target /usr/bin/apt-get update; \
+#in-target /usr/bin/apt-get install -y openssh-server ntp linux-tools-$(uname -r) linux-cloud-tools-$(uname -r) linux-cloud-tools-common;
+#
+## Grub
+#d-i grub-installer/grub2_instead_of_grub_legacy boolean true
+#d-i grub-installer/only_debian boolean true
+#
+## Reboot
+#ubiquity ubiquity/reboot boolean true
