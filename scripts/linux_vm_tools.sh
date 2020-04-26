@@ -151,10 +151,10 @@ main() {
 
   sleep 10
 
-  if [ "${OS_NAME}" = "bionic" ]
+  if [ "${OS_NAME}" = "bionic" ];
   then
     linuxVmTools.bionic
-  else if [ "${OS_NAME}" = "focal" ]
+  else if [ "${OS_NAME}" = "focal" ];
   then
     linuxVmTools.focal
   else

@@ -76,7 +76,7 @@ docker() {
   echo -e "\n****************************************\n"
 
   # Accounting for Ubuntu version 20.04 not officially being supported yet
-  if [ "${OS_NAME}" != "bionic" ]
+  if [ "${OS_NAME}" != "bionic" ];
   then
     # Adding Docker repo    
     echo $PASSWORD | curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo -S apt-key add -
