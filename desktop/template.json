@@ -13,7 +13,7 @@
     "skip_export": "true",
     "ssh_username": "ubuntu",
     "ssh_password": "ubuntu",
-    "timestamp": "{{isotime \"06.01.02.15.04\"}}",
+    "timestamp": "{{isotime \"0601021504\"}}",
     "vm_name": "{{user `timestamp`}}.{{user `os_name`}}-{{user `os_type`}}"
   },
   "builders": [
