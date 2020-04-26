@@ -10,6 +10,7 @@ set -o nounset
 TERRAFORM_VERSION="0.12.21"
 PACKER_VERSION="1.5.5"
 VAGRANT_VERSION="2.2.7"
+OS_NAME=$(lsb_release -cs)
 
 validateArguments() {
   if [ -z "${PASSWORD-}" ]; then
@@ -25,11 +26,12 @@ basePackages() {
   echo -e "\n****************************************\n"
 
   echo $PASSWORD | sudo -S apt-get install -y \
-  git \
-  python3-pip \
   apt-transport-https \
-  ca-certificates curl \
+  ca-certificates \
+  curl \
+  git \
   gnupg-agent \
+  python3-pip \
   software-properties-common \
   zsh
 }
@@ -58,6 +60,8 @@ vsCode() {
   echo "  Installing Visual Studio Code"
   echo -e "\n****************************************\n"
 
+  sleep 1
+
   curl https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > packages.microsoft.gpg
   echo $PASSWORD | sudo -S install -o root -g root -m 644 packages.microsoft.gpg /usr/share/keyrings/
   echo $PASSWORD | sudo -S sh -c 'echo "deb [arch=amd64 signed-by=/usr/share/keyrings/packages.microsoft.gpg] https://packages.microsoft.com/repos/vscode stable main" > /etc/apt/sources.list.d/vscode.list'
@@ -71,12 +75,29 @@ docker() {
   echo "  Installing Docker"
   echo -e "\n****************************************\n"
 
-  # Adding Docker repo    
-  echo $PASSWORD | curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo -S apt-key add -
-  echo $PASSWORD | sudo -S add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
-  # Installing Docker
-  echo $PASSWORD | sudo -S apt-get update
-  echo $PASSWORD | sudo -S apt-get install -y docker-ce docker-ce-cli containerd.io
+  # Accounting for Ubuntu version 20.04 not officially being supported yet
+  if [ "${OS_NAME}" != "bionic" ]
+  then
+    # Adding Docker repo    
+    echo $PASSWORD | curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo -S apt-key add -
+    echo $PASSWORD | sudo -S add-apt-repository \
+      "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
+      bionic \
+      stable"
+    # Installing Docker
+    echo $PASSWORD | sudo -S apt-get update
+    echo $PASSWORD | sudo -S apt-get install -y docker-ce docker-ce-cli containerd.io
+  else
+    # Adding Docker repo    
+    echo $PASSWORD | curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo -S apt-key add -
+    echo $PASSWORD | sudo -S add-apt-repository \
+      "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
+      $(lsb_release -cs) \
+      stable"
+    # Installing Docker
+    echo $PASSWORD | sudo -S apt-get update
+    echo $PASSWORD | sudo -S apt-get install -y docker-ce docker-ce-cli containerd.io
+  fi
 }
 
 node() {
@@ -111,8 +132,8 @@ cli() {
   # Oh-My-Zsh
   sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
 
-  # Powerlevel9K
-  git clone https://github.com/bhilburn/powerlevel9k.git ~/.oh-my-zsh/custom/themes/powerlevel9k
+  # Powerlevel10K
+  git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/themes/powerlevel10k
 
   # Copy .zshrc file
   mv ~/files/.zshrc ~/.zshrc
@@ -150,6 +171,9 @@ hashicorp() {
   rm vagrant.zip
 }
 
+# TODO - Fix these for 20.04
+# dconf-WARNING **: 17:41:33.704: failed to commit changes to dconf: Cannot autolaunch D-Bus without X11 $DISPLAY
+# dconf-WARNING **: 17:41:33.736: failed to commit changes to dconf: Cannot autolaunch D-Bus without X11 $DISPLAY
 gnomeConfig() {
   echo -e "\n****************************************\n"
   echo "  Configuring desktop favorites"
