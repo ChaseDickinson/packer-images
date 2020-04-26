@@ -1,6 +1,7 @@
 #!/bin/bash
 
 # --------------------------------------------------------------------------------
+# Original source is pending PR & available at: https://github.com/microsoft/linux-vm-tools/blob/768d98eed5f18c63fd36e33884fbbeb6855653cd/ubuntu/20.04/install.sh
 # This script is for Ubuntu 20.04 Focal Fossa to download and install XRDP+XORGXRDP via
 # source.
 #

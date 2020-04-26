@@ -1,6 +1,7 @@
 #!/bin/bash
 
 # --------------------------------------------------------------------------------
+# Original source available at: https://github.com/microsoft/linux-vm-tools/blob/master/ubuntu/18.04/install.sh
 # This script is for Ubuntu 18.04 Bionic Beaver to download and install XRDP+XORGXRDP via
 # source.
 #
