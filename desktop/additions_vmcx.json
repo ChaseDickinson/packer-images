@@ -3,6 +3,7 @@
     "cpus": "1",
     "disk_size": "25600",
     "files": "../files",
+    "file_prefix": "{{isotime \"06.01.02.\"}}{{user `os_name`}}_{{user `template_name`}}",
     "headless": "true",
     "home": "/home/{{user `ssh_username`}}/",
     "keep_registered": "false",
@@ -13,16 +14,14 @@
     "skip_export": "true",
     "ssh_username": "ubuntu",
     "ssh_password": "ubuntu",
+    "template_name": "additions",
     "timestamp": "{{isotime \"0601021504\"}}",
     "vm_name": "{{user `timestamp`}}.{{user `os_name`}}-{{user `os_type`}}"
   },
   "builders": [
     {
-      "type": "hyperv-iso",
-      "boot_command": [
-        "{{user `boot_command`}}"
-      ],
-      "boot_wait": "2s",
+      "type": "hyperv-vmcx",
+      "clone_from_vmcx_path": "TODO",
       "communicator": "ssh",
       "cpus": "{{user `cpus`}}",
       "disk_block_size": "1",
@@ -32,9 +31,6 @@
       "enable_virtualization_extensions": true,
       "generation": "2",
       "headless": "{{user `headless`}}",
-      "http_directory": "./",
-      "iso_url": "http://releases.ubuntu.com/{{user `os_version`}}/ubuntu-{{user `os_version`}}-{{user `os_type`}}-amd64.iso",
-      "iso_checksum": "{{user `iso_checksum`}}",
       "keep_registered": "{{user `keep_registered`}}",
       "memory": "{{user `memory`}}",
       "output_directory": "..\\..\\{{user `timestamp`}}.{{user `os_name`}}",
@@ -44,7 +40,6 @@
       "ssh_timeout": "2h",
       "ssh_username": "{{user `ssh_username`}}",
       "switch_name": "Default Switch",
-      "temp_path": "{{user `temp_path`}}",
       "vm_name": "{{user `vm_name`}}"
     }
   ],
@@ -52,9 +47,6 @@
     {
       "type": "file",
       "destination": "{{user `home`}}",
-      "only": [
-        "hyperv-iso"
-      ],
       "source": "{{user `files`}}"
     },
     {
@@ -64,9 +56,6 @@
         "PASSWORD={{user `ssh_password`}}"
       ],
       "expect_disconnect": true,
-      "only": [
-        "hyperv-iso"
-      ],
       "pause_before": "10s",
       "scripts": [
         "{{user `scripts`}}/base.sh",
@@ -78,13 +67,9 @@
   "post-processors": [
     {
       "type": "compress",
-      "compression_level": 9,
       "format": ".zip",
       "keep_input_artifact": false,
-      "only": [
-        "hyperv-iso"
-      ],
-      "output": "{{user `output_drive`}}\\vms\\{{user `timestamp`}}_{{.BuildName}}.zip"
+      "output": "{{user `output_drive`}}\\vms\\{{user `file_prefix`}}_{{.BuildName}}.zip"
     }
   ]
 }

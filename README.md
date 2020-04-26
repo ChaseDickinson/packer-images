@@ -47,7 +47,7 @@ My primary goals are:
 
 ## Usage
 
-There's one template per OS type (desktop or server). You'll need to invoke the Packer build command with the desired OS version:
+You'll need to invoke the Packer build command with the desired OS version:
 
 PowerShell example for Bionic:
 

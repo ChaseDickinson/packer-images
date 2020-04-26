@@ -1,15 +1,22 @@
 #!/bin/bash
 
+# ----------------------------------------
+# Reset user's password
+# ----------------------------------------
+set -o errexit
+set -o errtrace
+set -o nounset
+
 password_check () {
-    hash_current=$(echo $current_password | sudo -S cat /etc/shadow 2>/dev/null | grep "$username" | awk -F: '{print $2}')
+    hash_current=$(echo "${current_password}" | sudo -S cat /etc/shadow 2>/dev/null | grep "$username" | awk -F: '{print $2}')
     IFS='$'; arr_hash_current=($hash_current); unset IFS;
 
     if [ "${#arr_hash_current[*]}" -gt 0 ]
     then
-        hash_validate=$(echo $current_password | openssl passwd -stdin -${arr_hash_current[1]} -salt ${arr_hash_current[2]})
+        hash_validate=$(echo "${current_password}" | openssl passwd -stdin -"${arr_hash_current[1]}" -salt "${arr_hash_current[2]}")
         IFS='$'; arr_hash_validate=($hash_validate); unset IFS;
 
-        if [ ${arr_hash_validate[3]} == ${arr_hash_current[3]} ]
+        if [ "${arr_hash_validate[3]}" == "${arr_hash_current[3]}" ]
         then
             validated=true
         else
@@ -23,18 +30,18 @@ password_check () {
 }
 
 password_change () {
-    new_password=$(cat /dev/urandom | tr -dc '[:alnum:]' | head -c 10)
+    new_password=$(< /dev/urandom tr -dc '[:alnum:]' | head -c 10)
 
-    echo -e "$current_password\n$new_password\n$new_password" | passwd &> /dev/null
+    echo -e "${current_password}\n$new_password\n$new_password" | passwd &> /dev/null
 
     message="New password for user $username is: \n$new_password\n"
-    echo -e $message
+    echo -e "${message}"
 }
 
 main () {
     username=$(whoami)
 
-    read -sp "Please enter current password for username $username: " current_password
+    read -rsp "Please enter current password for username $username: " current_password
 
     echo " "
 

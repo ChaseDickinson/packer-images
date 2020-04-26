@@ -20,8 +20,8 @@ installUpdates() {
   echo "  Installing Latest Upgrades"
   echo -e "\n****************************************\n"
 
-  echo $PASSWORD | sudo -S apt-get update
-  echo $PASSWORD | sudo -S apt-get dist-upgrade -y
+  echo "${PASSWORD}" | sudo -S -- sh -c 'apt-get update'
+  echo "${PASSWORD}" | sudo -S -- sh -c 'apt-get dist-upgrade -y'
 }
 
 cleanup() {
@@ -29,13 +29,13 @@ cleanup() {
   echo "  Removing outdated dependencies"
   echo -e "\n****************************************\n"
 
-  echo $PASSWORD | sudo -S apt-get autoremove -y
+  echo "${PASSWORD}" | sudo -S -- sh -c 'apt-get autoremove -y'
 
   echo -e "\n****************************************\n"
   echo "  Create working directory"
   echo -e "\n****************************************\n"
 
-  mkdir ~/wip
+  mkdir "${HOME}"/wip
 }
 
 reboot() {
@@ -43,7 +43,7 @@ reboot() {
   echo "  Rebooting"
   echo -e "\n****************************************\n"
   
-  echo $PASSWORD | sudo -S reboot
+  echo "${PASSWORD}" | sudo -S -- sh -c 'reboot'
 }
 
 main() {

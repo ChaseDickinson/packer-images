@@ -17,6 +17,10 @@ validateArguments() {
     printf "\n\nError: 'PASSWORD' is required.\n\n"
     exit 1
   fi
+  if [ -z "${USERNAME-}" ]; then
+    printf "\n\nError: 'USERNAME' is required.\n\n"
+    exit 1
+  fi
 }
 
 basePackages() {
@@ -25,15 +29,7 @@ basePackages() {
   echo "  Installing base packages"
   echo -e "\n****************************************\n"
 
-  echo $PASSWORD | sudo -S apt-get install -y \
-  apt-transport-https \
-  ca-certificates \
-  curl \
-  git \
-  gnupg-agent \
-  python3-pip \
-  software-properties-common \
-  zsh
+  echo "${PASSWORD}" | sudo -S -- sh -c 'apt-get install -y apt-transport-https ca-certificates curl git gnupg-agent python3-pip software-properties-common zsh'
 }
 
 fonts() {
@@ -41,18 +37,18 @@ fonts() {
   echo "  Installing fonts"
   echo -e "\n****************************************\n"
 
-  mkdir ~/nerd-fonts
-  cd ~/nerd-fonts
+  mkdir "${HOME}"/nerd-fonts
+  cd "${HOME}"/nerd-fonts
   # Hack
   curl -fLo "Hack.ttf" https://github.com/ryanoasis/nerd-fonts/blob/master/patched-fonts/Hack/Regular/complete/Hack%20Regular%20Nerd%20Font%20Complete.ttf?raw=true
 
-  cd ~
-  echo $PASSWORD | sudo -S mv ~/nerd-fonts /usr/share/fonts/truetype/nerd-fonts
-  echo $PASSWORD | sudo -S chown -R root:root /usr/share/fonts/truetype/nerd-fonts
-  echo $PASSWORD | sudo -S chmod 755 /usr/share/fonts/truetype/nerd-fonts
-  echo $PASSWORD | sudo -S find /usr/share/fonts/truetype/nerd-fonts -type f -iname "*.ttf" -exec chmod 644 {} \;
+  cd "${HOME}"
+  echo "${PASSWORD}" | sudo -S -- sh -c 'mv /home/'"${USERNAME}"'/nerd-fonts /usr/share/fonts/truetype/nerd-fonts'
+  echo "${PASSWORD}" | sudo -S -- sh -c 'chown -R root:root /usr/share/fonts/truetype/nerd-fonts'
+  echo "${PASSWORD}" | sudo -S -- sh -c 'chmod 755 /usr/share/fonts/truetype/nerd-fonts'
+  echo "${PASSWORD}" | sudo -S -- sh -c 'find /usr/share/fonts/truetype/nerd-fonts -type f -iname "*.ttf" -exec chmod 644 {} \;'
 
-  echo $PASSWORD | sudo -S fc-cache -fv
+  echo "${PASSWORD}" | sudo -S -- sh -c 'fc-cache -fv'
 }
 
 vsCode() {
@@ -63,10 +59,10 @@ vsCode() {
   sleep 1
 
   curl https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > packages.microsoft.gpg
-  echo $PASSWORD | sudo -S install -o root -g root -m 644 packages.microsoft.gpg /usr/share/keyrings/
-  echo $PASSWORD | sudo -S sh -c 'echo "deb [arch=amd64 signed-by=/usr/share/keyrings/packages.microsoft.gpg] https://packages.microsoft.com/repos/vscode stable main" > /etc/apt/sources.list.d/vscode.list'
-  echo $PASSWORD | sudo -S apt-get update
-  echo $PASSWORD | sudo -S apt-get install -y code 
+  echo "${PASSWORD}" | sudo -S -- sh -c 'install -o root -g root -m 644 packages.microsoft.gpg /usr/share/keyrings/'
+  echo "${PASSWORD}" | sudo -S -- sh -c 'echo "deb [arch=amd64 signed-by=/usr/share/keyrings/packages.microsoft.gpg] https://packages.microsoft.com/repos/vscode stable main" > /etc/apt/sources.list.d/vscode.list'
+  echo "${PASSWORD}" | sudo -S -- sh -c 'apt-get update'
+  echo "${PASSWORD}" | sudo -S -- sh -c 'apt-get install -y code'
   rm packages.microsoft.gpg
 }
 
@@ -79,24 +75,18 @@ docker() {
   if [ "${OS_NAME}" != "bionic" ];
   then
     # Adding Docker repo    
-    echo $PASSWORD | curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo -S apt-key add -
-    echo $PASSWORD | sudo -S add-apt-repository \
-      "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
-      bionic \
-      stable"
+    echo "${PASSWORD}" | curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo -S -- sh -c 'apt-key add -'
+    echo "${PASSWORD}" | sudo -S -- sh -c 'add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu bionic stable"'
     # Installing Docker
-    echo $PASSWORD | sudo -S apt-get update
-    echo $PASSWORD | sudo -S apt-get install -y docker-ce docker-ce-cli containerd.io
+    echo "${PASSWORD}" | sudo -S -- sh -c 'apt-get update'
+    echo "${PASSWORD}" | sudo -S -- sh -c 'apt-get install -y docker-ce docker-ce-cli containerd.io'
   else
     # Adding Docker repo    
-    echo $PASSWORD | curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo -S apt-key add -
-    echo $PASSWORD | sudo -S add-apt-repository \
-      "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
-      $(lsb_release -cs) \
-      stable"
+    echo "${PASSWORD}" | curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo -S -- sh -c 'apt-key add -'
+    echo "${PASSWORD}" | sudo -S -- sh -c 'add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"'
     # Installing Docker
-    echo $PASSWORD | sudo -S apt-get update
-    echo $PASSWORD | sudo -S apt-get install -y docker-ce docker-ce-cli containerd.io
+    echo "${PASSWORD}" | sudo -S -- sh -c 'apt-get update'
+    echo "${PASSWORD}" | sudo -S -- sh -c 'apt-get install -y docker-ce docker-ce-cli containerd.io'
   fi
 }
 
@@ -105,8 +95,8 @@ node() {
   echo "  Installing Node"
   echo -e "\n****************************************\n"
 
-  echo $PASSWORD | curl -sL https://deb.nodesource.com/setup_12.x | sudo -S -E bash -
-  echo $PASSWORD | sudo -S apt-get install -y nodejs
+  echo "${PASSWORD}" | curl -sL https://deb.nodesource.com/setup_12.x | sudo -SE -- sh -c 'bash -'
+  echo "${PASSWORD}" | sudo -S -- sh -c 'apt-get install -y nodejs'
 }
 
 aws() {
@@ -116,7 +106,7 @@ aws() {
 
   curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
   unzip awscliv2.zip
-  echo $PASSWORD | sudo -S ./aws/install
+  echo "${PASSWORD}" | sudo -S -- sh -c './aws/install'
   rm -rf aws
   rm awscliv2.zip
 }
@@ -132,14 +122,23 @@ cli() {
   # Oh-My-Zsh
   sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
 
-  # Powerlevel10K
-  git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/themes/powerlevel10k
+  sleep 1
 
-  # Copy .zshrc file
-  mv ~/files/.zshrc ~/.zshrc
+  # Powerlevel10K
+  git clone --depth=1 https://github.com/romkatv/powerlevel10k.git "${HOME}"/.oh-my-zsh/custom/themes/powerlevel10k
+
+  # Copy dotfiles
+  if [ "${OS_NAME}" = "focal" ];
+  then
+    sed -i 's/python3.6/python3.8/' "${HOME}"/files/.zshrc
+  fi
+
+  mv "${HOME}"/files/.zshrc "${HOME}"/.zshrc
+
+  mv "${HOME}"/files/.p10k.zsh "${HOME}"/.p10k.zsh
 
   # Set default shell
-  echo $PASSWORD | sudo -S usermod --shell $(which zsh) $(whoami)
+  echo "${PASSWORD}" | sudo -S -- sh -c 'usermod --shell '"$(which zsh)"' '"$(whoami)"''
 }
 
 hashicorp() {
@@ -149,7 +148,7 @@ hashicorp() {
 
   curl -o "terraform.zip" "https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip"
   unzip terraform.zip
-  echo $PASSWORD | sudo -S mv terraform /usr/bin/terraform
+  echo "${PASSWORD}" | sudo -S -- sh -c 'mv terraform /usr/bin/terraform'
   rm terraform.zip
 
   echo -e "\n****************************************\n"
@@ -158,7 +157,7 @@ hashicorp() {
 
   curl -o "packer.zip" "https://releases.hashicorp.com/packer/${PACKER_VERSION}/packer_${PACKER_VERSION}_linux_amd64.zip"
   unzip packer.zip
-  echo $PASSWORD | sudo -S mv packer /usr/bin/packer
+  echo "${PASSWORD}" | sudo -S -- sh -c 'mv packer /usr/bin/packer'
   rm packer.zip
 
   echo -e "\n****************************************\n"
@@ -167,13 +166,10 @@ hashicorp() {
 
   curl -o "vagrant.zip" "https://releases.hashicorp.com/vagrant/${VAGRANT_VERSION}/vagrant_${VAGRANT_VERSION}_linux_amd64.zip"
   unzip vagrant.zip
-  echo $PASSWORD | sudo -S mv vagrant /usr/bin/vagrant
+  echo "${PASSWORD}" | sudo -S -- sh -c 'mv vagrant /usr/bin/vagrant'
   rm vagrant.zip
 }
 
-# TODO - Fix these for 20.04
-# dconf-WARNING **: 17:41:33.704: failed to commit changes to dconf: Cannot autolaunch D-Bus without X11 $DISPLAY
-# dconf-WARNING **: 17:41:33.736: failed to commit changes to dconf: Cannot autolaunch D-Bus without X11 $DISPLAY
 gnomeConfig() {
   echo -e "\n****************************************\n"
   echo "  Configuring desktop favorites"
@@ -188,14 +184,14 @@ gnomeConfig() {
   echo -e "\n****************************************\n"
 
   profile=$(gsettings get org.gnome.Terminal.ProfilesList default | xargs)
-  gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:$profile/ default-size-rows 30
-  gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:$profile/ default-size-columns 120
-  gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:$profile/ font 'Hack Nerd Font 12'
-  gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:$profile/ use-system-font false
-  gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:$profile/ use-theme-colors false
-  gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:$profile/ background-color '#0D0D17'
-  gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:$profile/ foreground-color '#E6E5E5'
-  gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:$profile/ palette "['#4D4D4D', '#F12D52', '#09CD7E', '#F5F17A', '#3182E0', '#FF2B6D', '#09C87A', '#FCFCFC', '#808080', '#F16D86', '#0AE78D', '#FFFC67', '#6096FF', '#FF78A2', '#0AE78D', '#FFFFFF']"
+  gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:"${profile}"/ default-size-rows 30
+  gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:"${profile}"/ default-size-columns 120
+  gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:"${profile}"/ font 'Hack Nerd Font 14'
+  gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:"${profile}"/ use-system-font false
+  gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:"${profile}"/ use-theme-colors false
+  gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:"${profile}"/ background-color '#0D0D17'
+  gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:"${profile}"/ foreground-color '#E6E5E5'
+  gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:"${profile}"/ palette "['#4D4D4D', '#F12D52', '#09CD7E', '#F5F17A', '#3182E0', '#FF2B6D', '#09C87A', '#FCFCFC', '#808080', '#F16D86', '#0AE78D', '#FFFC67', '#6096FF', '#FF78A2', '#0AE78D', '#FFFFFF']"
 }
 
 vsCodeConfig() {
@@ -204,16 +200,16 @@ vsCodeConfig() {
   echo -e "\n****************************************\n"
 
   #remove whitespace from list
-  sed -i 's/[[:space:]]*$//' ~/files/code_extensions.list
-  cat ~/files/code_extensions.list | xargs -L 1 code --install-extension
-  rm ~/files/code_extensions.list
+  sed -i 's/[[:space:]]*$//' "${HOME}"/files/code_extensions.list
+  < "${HOME}"/files/code_extensions.list xargs -L 1 code --install-extension
+  rm "${HOME}"/files/code_extensions.list
 
   echo -e "\n****************************************\n"
   echo "  Copying VS Code settings"
   echo -e "\n****************************************\n"
 
-  mkdir -p ~/.config/Code/User
-  mv ~/files/settings.json ~/.config/Code/User/settings.json
+  mkdir -p "${HOME}"/.config/Code/User
+  mv "${HOME}"/files/settings.json "${HOME}"/.config/Code/User/settings.json
 }
 
 changePassword() {
@@ -221,11 +217,11 @@ changePassword() {
   echo "  Implementing password change prompt"
   echo -e "\n****************************************\n"
 
-  echo $PASSWORD | sudo -S mkdir -p /usr/local/scripts
-  echo $PASSWORD | sudo -S mv ~/files/passwd.sh /usr/local/scripts/passwd.sh
-  echo $PASSWORD | sudo -S sed -i -e 's/\r$//' /usr/local/scripts/passwd.sh
-  echo $PASSWORD | sudo -S chmod +x /usr/local/scripts/passwd.sh
-  cat <<EOF > ~/files/change_password.desktop
+  echo "${PASSWORD}" | sudo -S -- sh -c 'mkdir -p /usr/local/scripts'
+  echo "${PASSWORD}" | sudo -S -- sh -c 'mv /home/'"${USERNAME}"'/files/passwd.sh /usr/local/scripts/passwd.sh'
+  echo "${PASSWORD}" | sudo -S -- sh -c 'sed -i -e 's/\\r$//' /usr/local/scripts/passwd.sh'
+  echo "${PASSWORD}" | sudo -S -- sh -c 'chmod +x /usr/local/scripts/passwd.sh'
+  cat <<EOF > "${HOME}"/files/change_password.desktop
 [Desktop Entry]
 Name=Change Password
 Icon=preferences-system
@@ -239,9 +235,11 @@ OnlyShowIn=GNOME;Unity;
 NoDisplay=true
 AutostartCondition=unless-exists password-reset-done
 EOF
-  echo $PASSWORD | sudo -S mv /etc/xdg/autostart/gnome-initial-setup-first-login.desktop /etc/xdg/autostart/gnome-initial-setup-first-login.desktop.old
-  echo $PASSWORD | sudo -S mv ~/files/change_password.desktop /etc/xdg/autostart/change_password.desktop
-  rm -Rf ~/files
+  # echo "${PASSWORD}" | sudo -S -- sh -c 'mv /etc/xdg/autostart/gnome-initial-setup-first-login.desktop /etc/xdg/autostart/gnome-initial-setup-first-login.desktop.old'
+  touch "${HOME}"/.config/gnome-initial-setup-done
+  echo "${PASSWORD}" | sudo -S -- sh -c 'mv /home/'"${USERNAME}"'/files/change_password.desktop /etc/xdg/autostart/change_password.desktop'
+  mv "${HOME}"/files/install-"${OS_NAME}".sh "${HOME}"/install.sh
+  rm -Rf "${HOME}"/files
 }
 
 reboot() {
@@ -249,7 +247,7 @@ reboot() {
   echo "  Rebooting"
   echo -e "\n****************************************\n"
   
-  echo $PASSWORD | sudo -S reboot
+  echo "${PASSWORD}" | sudo -S -- sh -c 'reboot'
 }
 
 main() {

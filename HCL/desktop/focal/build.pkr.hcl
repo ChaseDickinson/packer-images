@@ -1,7 +1,7 @@
-# Builds for bionic desktop image
+# Builds for focal desktop image
 
 build {
-  sources = ["source.hyperv-iso.desktop"]
+  sources = ["source.hyperv-iso.focal_desktop"]
 
   provisioner "file" {
     destination = local.home

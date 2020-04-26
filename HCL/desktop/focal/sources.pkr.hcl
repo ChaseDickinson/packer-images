@@ -9,15 +9,26 @@ locals {
   keep_vm          = false
   output_directory = format("..\\..\\..\\vms\\%s", local.date_time)
   skip_export      = true
-  vm_name          = "${var.os_version}-${var.os_type}-packer"
+  vm_name          = "${var.os_version}-${var.os_type}-packer1.5"
+}
+
+locals {
+  boot_command = <<EOF
+<esc><esc><esc><esc><esc><esc><esc><esc><esc><esc><esc><esc>
+linux /casper/vmlinuz 
+url=http://{{.HTTPIP}}:{{.HTTPPort}}/${var.os_name}/preseed.cfg 
+boot=casper debug-ubiquity noninteractive noprompt --- <enter>
+initrd /casper/initrd <enter>
+boot<enter>
+EOF
 }
 
 # ----------------------------------------
-# Source for bionic desktop build
+# Source for focal desktop build
 # ----------------------------------------
 
-source "hyperv-iso" "desktop" {
-  boot_command                     = [var.boot_command]
+source "hyperv-iso" "focal_desktop" {
+  boot_command                     = [local.boot_command]
   boot_wait                        = "2s"
   communicator                     = "ssh"
   cpus                             = 1
