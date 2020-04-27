@@ -6,7 +6,7 @@
     "file_prefix": "{{isotime \"06.01.02.\"}}{{user `os_name`}}_{{user `template_name`}}",
     "headless": "true",
     "home": "/home/{{user `ssh_username`}}/",
-    "keep_registered": "true",
+    "keep_registered": "false",
     "memory": "4096",
     "os_type": "desktop",
     "output_drive": "{{env `ONEDRIVE`}}",
@@ -80,7 +80,7 @@
     {
       "type": "compress",
       "format": ".zip",
-      "keep_input_artifact": true,
+      "keep_input_artifact": false,
       "only": [
         "hyperv-iso"
       ],

@@ -3,20 +3,16 @@
     "cpus": "1",
     "disk_size": "25600",
     "files": "../files",
-    "file_prefix": "{{isotime \"06.01.02.\"}}{{user `os_name`}}_{{user `template_name`}}",
     "headless": "true",
     "home": "/home/{{user `ssh_username`}}/",
     "keep_registered": "false",
     "memory": "4096",
     "os_type": "desktop",
-    "output_drive": "{{env `ONEDRIVE`}}",
     "scripts": "../scripts",
-    "skip_export": "true",
+    "skip_export": "false",
     "ssh_username": "ubuntu",
     "ssh_password": "ubuntu",
-    "template_name": "base",
-    "timestamp": "{{isotime \"0601021504\"}}",
-    "vm_name": "{{user `timestamp`}}.{{user `os_name`}}-{{user `os_type`}}"
+    "vm_name": "{{user `os_name`}}-{{user `os_type`}}-base"
   },
   "builders": [
     {
@@ -39,7 +35,7 @@
       "iso_checksum": "{{user `iso_checksum`}}",
       "keep_registered": "{{user `keep_registered`}}",
       "memory": "{{user `memory`}}",
-      "output_directory": "..\\..\\{{user `timestamp`}}.{{user `os_name`}}",
+      "output_directory": "..\\..\\{{user `os_version`}}-base",
       "shutdown_command": "echo '{{user `ssh_password`}}' | sudo -S shutdown -P now",
       "skip_export": "{{user `skip_export`}}",
       "ssh_password": "{{user `ssh_password`}}",
@@ -50,15 +46,5 @@
     }
   ],
   "provisioners": [],
-  "post-processors": [
-    {
-      "type": "compress",
-      "format": ".zip",
-      "keep_input_artifact": true,
-      "only": [
-        "hyperv-iso"
-      ],
-      "output": "{{user `output_drive`}}\\vms\\{{user `file_prefix`}}_{{.BuildName}}.zip"
-    }
-  ]
+  "post-processors": []
 }

@@ -1,7 +1,6 @@
 {
   "variables": {
     "cpus": "1",
-    "disk_size": "25600",
     "files": "../files",
     "file_prefix": "{{isotime \"06.01.02.\"}}{{user `os_name`}}_{{user `template_name`}}",
     "headless": "true",
@@ -21,11 +20,10 @@
   "builders": [
     {
       "type": "hyperv-vmcx",
-      "clone_from_vmcx_path": "TODO",
+      "clone_from_vmcx_path": "..\\..\\{{user `os_version`}}-base",
       "communicator": "ssh",
       "cpus": "{{user `cpus`}}",
       "disk_block_size": "1",
-      "disk_size": "{{user `disk_size`}}",
       "enable_dynamic_memory": false,
       "enable_mac_spoofing": true,
       "enable_virtualization_extensions": true,
