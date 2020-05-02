@@ -29,7 +29,7 @@ basePackages() {
   echo "  Installing base packages"
   echo -e "\n****************************************\n"
 
-  echo "${PASSWORD}" | sudo -S -- sh -c 'apt-get install -y apt-transport-https ca-certificates curl git gnupg-agent python3-pip software-properties-common zsh'
+  echo "${PASSWORD}" | sudo -S -- sh -c 'apt-get install -y apt-transport-https ca-certificates curl git gnupg-agent python3-pip software-properties-common zsh tldr neofetch shellcheck'
 }
 
 fonts() {
