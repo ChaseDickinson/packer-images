@@ -36,6 +36,13 @@ cleanup() {
   echo -e "\n****************************************\n"
 
   mkdir "${HOME}"/wip
+
+  echo -e "\n****************************************\n"
+  echo "  Create SSH keys"
+  echo -e "\n****************************************\n"
+
+  mkdir "${HOME}"/.ssh
+  ssh-keygen -t rsa -N "" -f "${HOME}"/.ssh/id_rsa.key
 }
 
 reboot() {
