@@ -10,7 +10,6 @@ set -o nounset
 TERRAFORM_VERSION="0.12.21"
 PACKER_VERSION="1.5.5"
 VAGRANT_VERSION="2.2.7"
-VIRTUALBOX_VERSION="6.1"
 OS_NAME=$(lsb_release -cs)
 
 validateArguments() {
@@ -72,37 +71,49 @@ docker() {
   echo "  Installing Docker"
   echo -e "\n****************************************\n"
 
+  echo "${PASSWORD}" | curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo -S -- sh -c 'apt-key add -'
+
   # Accounting for Ubuntu version 20.04 not officially being supported yet
   if [ "${OS_NAME}" != "bionic" ];
   then
     # Adding Docker repo    
-    echo "${PASSWORD}" | curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo -S -- sh -c 'apt-key add -'
     echo "${PASSWORD}" | sudo -S -- sh -c 'add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu bionic stable"'
-    # Installing Docker
-    echo "${PASSWORD}" | sudo -S -- sh -c 'apt-get update'
-    echo "${PASSWORD}" | sudo -S -- sh -c 'apt-get install -y docker-ce docker-ce-cli containerd.io'
   else
     # Adding Docker repo    
-    echo "${PASSWORD}" | curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo -S -- sh -c 'apt-key add -'
     echo "${PASSWORD}" | sudo -S -- sh -c 'add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"'
-    # Installing Docker
-    echo "${PASSWORD}" | sudo -S -- sh -c 'apt-get update'
-    echo "${PASSWORD}" | sudo -S -- sh -c 'apt-get install -y docker-ce docker-ce-cli containerd.io'
   fi
+
+  # Installing Docker
+  echo "${PASSWORD}" | sudo -S -- sh -c 'apt-get update'
+  echo "${PASSWORD}" | sudo -S -- sh -c 'apt-get install -y docker-ce docker-ce-cli containerd.io'
 }
 
 virtualbox() {
   echo -e "\n****************************************\n"
-  echo "  Installing VirtualBox"
+  echo "  Capturing VirtualBox Version"
+  echo -e "\n****************************************\n"
+
+  version=$(curl https://download.virtualbox.org/virtualbox/LATEST-STABLE.TXT)
+
+  echo -e "\n****************************************\n"
+  echo "  Installing VirtualBox ${version}"
   echo -e "\n****************************************\n"
 
   echo "${PASSWORD}" | wget –q https://www.virtualbox.org/download/oracle_vbox_2016.asc -O- | sudo -S -- sh -c 'apt-key add -'
   echo "${PASSWORD}" | wget -q https://www.virtualbox.org/download/oracle_vbox.asc -O- | sudo -S -- sh -c 'apt-key add –'
-  echo "${PASSWORD}" | sudo -S -- sh -c 'add-apt-repository "deb http://download.virtualbox.org/virtualbox/debian bionic contrib"'
+
+  # Accounting for Ubuntu version 20.04 not officially being supported yet
+  if [ "${OS_NAME}" != "bionic" ];
+  then
+    echo "${PASSWORD}" | sudo -S -- sh -c 'add-apt-repository "deb http://download.virtualbox.org/virtualbox/debian bionic contrib"'
+  else
+    echo "${PASSWORD}" | sudo -S -- sh -c 'add-apt-repository "deb http://download.virtualbox.org/virtualbox/debian $(lsb_release -cs) contrib"'
+  fi
+
   echo "${PASSWORD}" | sudo -S -- sh -c 'apt update'
-  echo "${PASSWORD}" | sudo -S -- sh -c 'apt install virtualbox-'"${VIRTUALBOX_VERSION}"''
-  wget https://download.virtualbox.org/virtualbox/"${VIRTUALBOX_VERSION}"/Oracle_VM_VirtualBox_Extension_Pack-"${VIRTUALBOX_VERSION}".vbox-extpack
-  echo "${PASSWORD}" | sudo -S -- sh -c 'VBoxManage extpack install Oracle_VM_VirtualBox_Extension_Pack-'"${VIRTUALBOX_VERSION}"'.vbox-extpack'
+  echo "${PASSWORD}" | sudo -S -- sh -c 'apt install virtualbox-'"${version}"''
+  wget https://download.virtualbox.org/virtualbox/"${version}"/Oracle_VM_VirtualBox_Extension_Pack-"${version}".vbox-extpack
+  echo "${PASSWORD}" | sudo -S -- sh -c 'VBoxManage extpack install Oracle_VM_VirtualBox_Extension_Pack-'"${version}"'.vbox-extpack'
 }
 
 node() {
