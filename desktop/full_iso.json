@@ -4,7 +4,7 @@
     "disk_size": "25600",
     "files": "../files",
     "file_prefix": "{{isotime \"06.01.02.\"}}{{user `os_name`}}_{{user `template_name`}}",
-    "headless": "false",
+    "headless": "true",
     "home": "/home/{{user `ssh_username`}}/",
     "keep_registered": "false",
     "memory": "4096",

@@ -90,7 +90,7 @@ docker() {
 
 virtualbox() {
   echo -e "\n****************************************\n"
-  echo "  Capturing VirtualBox Version"
+  echo "  Capturing VirtualBox Version Variables"
   echo -e "\n****************************************\n"
 
   version=$(curl https://download.virtualbox.org/virtualbox/LATEST-STABLE.TXT)
@@ -100,20 +100,19 @@ virtualbox() {
   echo -e "\n****************************************\n"
 
   echo "${PASSWORD}" | wget –q https://www.virtualbox.org/download/oracle_vbox_2016.asc -O- | sudo -S -- sh -c 'apt-key add -'
-  echo "${PASSWORD}" | wget -q https://www.virtualbox.org/download/oracle_vbox.asc -O- | sudo -S -- sh -c 'apt-key add –'
+  echo "${PASSWORD}" | wget -q https://www.virtualbox.org/download/oracle_vbox.asc -O- | sudo -S -- sh -c 'apt-key add -'
 
   # Accounting for Ubuntu version 20.04 not officially being supported yet
-  if [ "${OS_NAME}" != "bionic" ];
+  if [ "${OS_NAME}" == "focal" ];
   then
-    echo "${PASSWORD}" | sudo -S -- sh -c 'add-apt-repository "deb http://download.virtualbox.org/virtualbox/debian bionic contrib"'
+    echo "${PASSWORD}" | sudo -S -- sh -c 'add-apt-repository "deb [arch=amd64] http://download.virtualbox.org/virtualbox/debian eoan contrib"'
   else
-    echo "${PASSWORD}" | sudo -S -- sh -c 'add-apt-repository "deb http://download.virtualbox.org/virtualbox/debian $(lsb_release -cs) contrib"'
+    echo "${PASSWORD}" | sudo -S -- sh -c 'add-apt-repository "deb [arch=amd64] http://download.virtualbox.org/virtualbox/debian $(lsb_release -cs) contrib"'
   fi
 
-  echo "${PASSWORD}" | sudo -S -- sh -c 'apt update'
-  echo "${PASSWORD}" | sudo -S -- sh -c 'apt install virtualbox-'"${version}"''
-  wget https://download.virtualbox.org/virtualbox/"${version}"/Oracle_VM_VirtualBox_Extension_Pack-"${version}".vbox-extpack
-  echo "${PASSWORD}" | sudo -S -- sh -c 'VBoxManage extpack install Oracle_VM_VirtualBox_Extension_Pack-'"${version}"'.vbox-extpack'
+  # Install
+  echo "${PASSWORD}" | sudo -S -- sh -c 'apt-get update'
+  echo "${PASSWORD}" | sudo -S -- sh -c 'apt-get install -y virtualbox-'"${version%.*}"''
 }
 
 node() {
@@ -201,7 +200,7 @@ gnomeConfig() {
   echo "  Configuring desktop favorites"
   echo -e "\n****************************************\n"
 
-  gsettings set org.gnome.shell favorite-apps "['org.gnome.Nautilus.desktop', 'org.gnome.Terminal.desktop', 'code.desktop', 'virtualbox.desktop', 'org.gnome.gedit.desktop', 'firefox.desktop', 'update-manager.desktop', 'gnome-control-center.desktop']"
+  gsettings set org.gnome.shell favorite-apps "['org.gnome.Nautilus.desktop', 'org.gnome.Terminal.desktop', 'code.desktop', 'virtualbox.desktop', 'org.gnome.gedit.desktop', 'firefox.desktop', 'gnome-control-center.desktop']"
   gsettings set org.gnome.desktop.interface text-scaling-factor 1.25
   gsettings set org.gnome.shell.extensions.dash-to-dock click-action minimize
 

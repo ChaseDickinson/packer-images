@@ -43,6 +43,15 @@ cleanup() {
 
   mkdir "${HOME}"/.ssh
   ssh-keygen -t rsa -N "" -f "${HOME}"/.ssh/id_rsa.key
+
+  echo -e "\n****************************************\n"
+  echo "  Disable auto updates"
+  echo -e "\n****************************************\n"
+
+  echo "${PASSWORD}" | sudo -S -- sh -c 'systemctl stop apt-daily.timer'
+  echo "${PASSWORD}" | sudo -S -- sh -c 'systemctl disable apt-daily.timer'
+  echo "${PASSWORD}" | sudo -S -- sh -c 'systemctl mask apt-daily.service'
+  echo "${PASSWORD}" | sudo -S -- sh -c 'systemctl daemon-reload'
 }
 
 reboot() {
