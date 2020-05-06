@@ -45,6 +45,19 @@
       "vm_name": "{{user `vm_name`}}"
     }
   ],
-  "provisioners": [],
+  "provisioners": [
+    {
+      "type": "shell",
+      "environment_vars": [
+        "USERNAME={{user `ssh_username`}}",
+        "PASSWORD={{user `ssh_password`}}"
+      ],
+      "expect_disconnect": true,
+      "pause_before": "10s",
+      "scripts": [
+        "{{user `scripts`}}/base.sh",
+      ]
+    }
+  ],
   "post-processors": []
 }

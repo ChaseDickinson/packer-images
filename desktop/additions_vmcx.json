@@ -2,7 +2,7 @@
   "variables": {
     "cpus": "1",
     "files": "../files",
-    "file_prefix": "{{isotime \"06.01.02.\"}}{{user `os_name`}}_{{user `template_name`}}",
+    "file_prefix": "{{isotime \"06.01.02.\"}}{{user `os_name`}}_{{user `os_type`}}_{{user `template_name`}}",
     "headless": "true",
     "home": "/home/{{user `ssh_username`}}/",
     "keep_registered": "false",
@@ -56,7 +56,6 @@
       "expect_disconnect": true,
       "pause_before": "10s",
       "scripts": [
-        "{{user `scripts`}}/base.sh",
         "{{user `scripts`}}/desktop.sh",
         "{{user `scripts`}}/linux_vm_tools.sh"
       ]

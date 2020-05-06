@@ -88,33 +88,6 @@ docker() {
   echo "${PASSWORD}" | sudo -S -- sh -c 'apt-get install -y docker-ce docker-ce-cli containerd.io'
 }
 
-virtualbox() {
-  echo -e "\n****************************************\n"
-  echo "  Capturing VirtualBox Version Variables"
-  echo -e "\n****************************************\n"
-
-  version=$(curl https://download.virtualbox.org/virtualbox/LATEST-STABLE.TXT)
-
-  echo -e "\n****************************************\n"
-  echo "  Installing VirtualBox ${version}"
-  echo -e "\n****************************************\n"
-
-  echo "${PASSWORD}" | wget –q https://www.virtualbox.org/download/oracle_vbox_2016.asc -O- | sudo -S -- sh -c 'apt-key add -'
-  echo "${PASSWORD}" | wget -q https://www.virtualbox.org/download/oracle_vbox.asc -O- | sudo -S -- sh -c 'apt-key add -'
-
-  # Accounting for Ubuntu version 20.04 not officially being supported yet
-  if [ "${OS_NAME}" == "focal" ];
-  then
-    echo "${PASSWORD}" | sudo -S -- sh -c 'add-apt-repository "deb [arch=amd64] http://download.virtualbox.org/virtualbox/debian eoan contrib"'
-  else
-    echo "${PASSWORD}" | sudo -S -- sh -c 'add-apt-repository "deb [arch=amd64] http://download.virtualbox.org/virtualbox/debian $(lsb_release -cs) contrib"'
-  fi
-
-  # Install
-  echo "${PASSWORD}" | sudo -S -- sh -c 'apt-get update'
-  echo "${PASSWORD}" | sudo -S -- sh -c 'apt-get install -y virtualbox-'"${version%.*}"''
-}
-
 node() {
   echo -e "\n****************************************\n"
   echo "  Installing Node"
@@ -200,7 +173,7 @@ gnomeConfig() {
   echo "  Configuring desktop favorites"
   echo -e "\n****************************************\n"
 
-  gsettings set org.gnome.shell favorite-apps "['org.gnome.Nautilus.desktop', 'org.gnome.Terminal.desktop', 'code.desktop', 'virtualbox.desktop', 'org.gnome.gedit.desktop', 'firefox.desktop', 'gnome-control-center.desktop']"
+  gsettings set org.gnome.shell favorite-apps "['org.gnome.Nautilus.desktop', 'org.gnome.Terminal.desktop', 'code.desktop', 'org.gnome.gedit.desktop', 'firefox.desktop', 'gnome-control-center.desktop']"
   gsettings set org.gnome.desktop.interface text-scaling-factor 1.25
   gsettings set org.gnome.shell.extensions.dash-to-dock click-action minimize
 
@@ -285,8 +258,6 @@ main() {
   vsCode
   
   docker
-
-  virtualbox
 
   node
   

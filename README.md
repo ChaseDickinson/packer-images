@@ -4,11 +4,9 @@
 
 ## TODO
 
-1) Split desktop builds - base & additions
-2) Add Virtualbox builder
-3) Vagrant boxes for servers
-4) Docker images for servers
-5) Password retry logic
+1) Vagrant boxes for servers
+2) Docker images for servers
+3) Password retry logic
 
 ## Problem Statement
 

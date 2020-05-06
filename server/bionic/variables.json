@@ -1,5 +1,5 @@
 {
-  "boot_command": "",
+  "boot_command": "<esc><esc><esc><esc>set gfxpayload=1024x768 <enter>linux /install/vmlinuz preseed/url=http://{{.HTTPIP}}:{{.HTTPPort}}/{{user `os_name`}}/preseed.cfg debian-installer=en_US auto locale=en_US kbd-chooser/method=us hostname={{.Name}} fb=false debconf/frontend=noninteractive keyboard-configuration/modelcode=SKIP keyboard-configuration/layout=USA keyboard-configuration/variant=USA console-setup/ask_detect=false <enter>initrd /install/initrd.gz <enter>boot <enter>",
   "iso_checksum": "e2ecdace33c939527cbc9e8d23576381c493b071107207d2040af72595f8990b",
   "os_name": "bionic",
   "os_version": "18.04.4"
