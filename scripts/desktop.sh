@@ -7,9 +7,9 @@ set -o errexit
 set -o errtrace
 set -o nounset
 
-TERRAFORM_VERSION="0.12.21"
-PACKER_VERSION="1.5.5"
-VAGRANT_VERSION="2.2.7"
+TERRAFORM_VERSION="0.12.28"
+PACKER_VERSION="1.6.0"
+VAGRANT_VERSION="2.2.9"
 OS_NAME=$(lsb_release -cs)
 
 validateArguments() {
@@ -71,19 +71,9 @@ docker() {
   echo "  Installing Docker"
   echo -e "\n****************************************\n"
 
-  echo "${PASSWORD}" | curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo -S -- sh -c 'apt-key add -'
-
-  # Accounting for Ubuntu version 20.04 not officially being supported yet
-  if [ "${OS_NAME}" != "bionic" ];
-  then
-    # Adding Docker repo    
-    echo "${PASSWORD}" | sudo -S -- sh -c 'add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu bionic stable"'
-  else
-    # Adding Docker repo    
-    echo "${PASSWORD}" | sudo -S -- sh -c 'add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"'
-  fi
-
   # Installing Docker
+  echo "${PASSWORD}" | curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo -S -- sh -c 'apt-key add -'
+  echo "${PASSWORD}" | sudo -S -- sh -c 'add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"'
   echo "${PASSWORD}" | sudo -S -- sh -c 'apt-get update'
   echo "${PASSWORD}" | sudo -S -- sh -c 'apt-get install -y docker-ce docker-ce-cli containerd.io'
 }
@@ -107,6 +97,14 @@ aws() {
   echo "${PASSWORD}" | sudo -S -- sh -c './aws/install'
   rm -rf aws
   rm awscliv2.zip
+}
+
+azure() {
+  echo -e "\n****************************************\n"
+  echo "  Installing Azure CLI"
+  echo -e "\n****************************************\n"
+
+  echo "${PASSWORD}" | sudo -S -- sh -c 'apt-get install -y azure-cli'
 }
 
 cli() {
@@ -262,6 +260,8 @@ main() {
   node
   
   aws
+
+  azure
   
   cli
 
