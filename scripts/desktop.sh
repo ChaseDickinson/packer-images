@@ -9,6 +9,7 @@ set -o errexit
 set -o errtrace
 set -o nounset
 
+CHEF_WORKSTATION_VERSION="20.7.81"
 PACKER_VERSION="1.6.0"
 TERRAFORM_VERSION="0.12.28"
 VAGRANT_VERSION="2.2.9"
@@ -185,6 +186,16 @@ hashicorp() {
   rm vagrant.zip
 }
 
+chef() {
+  echo -e "\n****************************************\n"
+  echo "  Installing Chef Workstation ${CHEF_WORKSTATION_VERSION}"
+  echo -e "\n****************************************\n"
+
+  curl -o "chef-workstation.deb" "https://packages.chef.io/files/stable/chef-workstation/${CHEF_WORKSTATION_VERSION}/ubuntu/$(lsb_release -rs)/chef-workstation_${CHEF_WORKSTATION_VERSION}-1_amd64.deb"
+  echo "${PASSWORD}" | sudo -S -- sh -c 'dpkg -i chef-workstation.deb'
+  rm chef-workstation.deb
+}
+
 gnomeConfig() {
   echo -e "\n****************************************\n"
   echo "  Configuring desktop favorites"
@@ -287,7 +298,9 @@ main() {
   cli
 
   hashicorp
-  
+
+  chef
+
   gnomeConfig
   
   vsCodeConfig
