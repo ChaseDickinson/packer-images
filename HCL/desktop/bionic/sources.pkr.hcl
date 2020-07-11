@@ -17,7 +17,7 @@ locals {
 <esc><esc><esc><esc><esc><esc><esc><esc><esc><esc><esc><esc>
 linux /casper/vmlinuz 
 url=http://{{.HTTPIP}}:{{.HTTPPort}}/${var.os_name}/preseed.cfg 
-boot=casper debug-ubiquity noninteractive noprompt --- <enter>
+boot=casper automatic-ubiquity noninteractive noprompt --- <enter>
 initrd /casper/initrd <enter>
 boot<enter>
 EOF

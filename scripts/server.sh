@@ -104,7 +104,7 @@ cli() {
   rm -rf "${HOME}"/files
 
   # Set default shell
-  echo "${PASSWORD}" | sudo -S -- sh -c 'usermod --shell '"$(which zsh)"' '"$(whoami)"''
+  echo "${PASSWORD}" | sudo -S -- sh -c 'usermod --shell '"$(command -v zsh)"' '"$(whoami)"''
 }
 
 hashicorp() {

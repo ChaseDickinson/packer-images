@@ -1,5 +1,5 @@
 {
-  "boot_command": "<esc><esc><esc><esc>linux /casper/vmlinuz url=http://{{.HTTPIP}}:{{.HTTPPort}}/{{user `os_name`}}/preseed.cfg boot=casper debug-ubiquity noninteractive noprompt --- <enter>initrd /casper/initrd <enter>boot<enter>",
+  "boot_command": "<esc><esc><esc><esc>linux /casper/vmlinuz url=http://{{.HTTPIP}}:{{.HTTPPort}}/{{user `os_name`}}/preseed.cfg boot=casper automatic-ubiquity noninteractive noprompt --- <enter>initrd /casper/initrd <enter>boot<enter>",
   "iso_checksum": "c0d025e560d54434a925b3707f8686a7f588c42a5fbc609b8ea2447f88847041",
   "os_name": "bionic",
   "os_version": "18.04.4"

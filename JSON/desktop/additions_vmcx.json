@@ -1,7 +1,7 @@
 {
   "variables": {
     "cpus": "1",
-    "files": "../files",
+    "files": "../../files",
     "file_prefix": "{{isotime \"06.01.02.\"}}{{user `os_name`}}_{{user `os_type`}}_{{user `template_name`}}",
     "headless": "true",
     "home": "/home/{{user `ssh_username`}}/",
@@ -9,7 +9,7 @@
     "memory": "4096",
     "os_type": "desktop",
     "output_drive": "{{env `ONEDRIVE`}}",
-    "scripts": "../scripts",
+    "scripts": "../../scripts",
     "skip_export": "true",
     "ssh_username": "ubuntu",
     "ssh_password": "ubuntu",

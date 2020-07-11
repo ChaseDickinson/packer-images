@@ -134,7 +134,7 @@ cli() {
   mv "${HOME}"/files/.p10k.zsh "${HOME}"/.p10k.zsh
 
   # Set default shell
-  echo "${PASSWORD}" | sudo -S -- sh -c 'usermod --shell '"$(which zsh)"' '"$(whoami)"''
+  echo "${PASSWORD}" | sudo -S -- sh -c 'usermod --shell '"$(command -v zsh)"' '"$(whoami)"''
 }
 
 hashicorp() {
