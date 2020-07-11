@@ -1,16 +1,18 @@
 #!/bin/bash
 
-# ----------------------------------------
+# TODO - Add Chef Workstation
+
+# --------------------------------------------------------------------------------
 # Configure Ubuntu desktop environment
-# ----------------------------------------
+# --------------------------------------------------------------------------------
 set -o errexit
 set -o errtrace
 set -o nounset
 
-TERRAFORM_VERSION="0.12.28"
 PACKER_VERSION="1.6.0"
+TERRAFORM_VERSION="0.12.28"
 VAGRANT_VERSION="2.2.9"
-OS_NAME=$(lsb_release -cs)
+VIRTUALBOX_VERSION="6.1.10"
 
 validateArguments() {
   if [ -z "${PASSWORD-}" ]; then
@@ -66,6 +68,23 @@ vsCode() {
   rm packages.microsoft.gpg
 }
 
+virtualbox() {
+  echo -e "\n****************************************\n"
+  echo "  Installing VirtualBox ${VIRTUALBOX_VERSION}"
+  echo -e "\n****************************************\n"
+
+  echo "${PASSWORD}" | wget -q https://www.virtualbox.org/download/oracle_vbox_2016.asc -O- | sudo -S -- sh -c 'apt-key add -'
+  echo "${PASSWORD}" | wget -q https://www.virtualbox.org/download/oracle_vbox.asc -O- | sudo -S -- sh -c 'apt-key add -'
+  echo "${PASSWORD}" | sudo -S -- sh -c 'echo "deb [arch=amd64] http://download.virtualbox.org/virtualbox/debian $(lsb_release -cs) contrib" > /etc/apt/sources.list.d/virtualbox.list'
+
+  echo "${PASSWORD}" | sudo -S -- sh -c 'apt-get update'
+  echo "${PASSWORD}" | sudo -S -- sh -c 'apt-get install -y virtualbox-'"${VIRTUALBOX_VERSION%.*}"''
+  
+  wget https://download.virtualbox.org/virtualbox/"${VIRTUALBOX_VERSION}"/Oracle_VM_VirtualBox_Extension_Pack-"${VIRTUALBOX_VERSION}".vbox-extpack
+  echo "${PASSWORD}" | sudo -SE -- sh -c 'yes | VBoxManage extpack install Oracle_VM_VirtualBox_Extension_Pack-'"${VIRTUALBOX_VERSION}"'.vbox-extpack'
+  rm Oracle_VM_VirtualBox_Extension_Pack-"${VIRTUALBOX_VERSION}".vbox-extpack
+}
+
 docker() {
   echo -e "\n****************************************\n"
   echo "  Installing Docker"
@@ -104,7 +123,7 @@ azure() {
   echo "  Installing Azure CLI"
   echo -e "\n****************************************\n"
 
-  echo "${PASSWORD}" | sudo -S -- sh -c 'apt-get install -y azure-cli'
+  echo "${PASSWORD}" | curl -sL https://aka.ms/InstallAzureCLIDeb | sudo -SE -- sh -c 'bash -'
 }
 
 cli() {
@@ -124,7 +143,7 @@ cli() {
   git clone --depth=1 https://github.com/romkatv/powerlevel10k.git "${HOME}"/.oh-my-zsh/custom/themes/powerlevel10k
 
   # Copy dotfiles
-  if [ "${OS_NAME}" = "focal" ];
+  if [ "$(lsb_release -cs)" = "focal" ];
   then
     sed -i 's/python3.6/python3.8/' "${HOME}"/files/.zshrc
   fi
@@ -171,7 +190,7 @@ gnomeConfig() {
   echo "  Configuring desktop favorites"
   echo -e "\n****************************************\n"
 
-  gsettings set org.gnome.shell favorite-apps "['org.gnome.Nautilus.desktop', 'org.gnome.Terminal.desktop', 'code.desktop', 'org.gnome.gedit.desktop', 'firefox.desktop', 'gnome-control-center.desktop']"
+  gsettings set org.gnome.shell favorite-apps "['org.gnome.Nautilus.desktop', 'org.gnome.Terminal.desktop', 'code.desktop', 'virtualbox.desktop', 'org.gnome.gedit.desktop', 'firefox.desktop', 'gnome-control-center.desktop']"
   gsettings set org.gnome.desktop.interface text-scaling-factor 1.25
   gsettings set org.gnome.shell.extensions.dash-to-dock click-action minimize
 
@@ -234,7 +253,7 @@ EOF
   # echo "${PASSWORD}" | sudo -S -- sh -c 'mv /etc/xdg/autostart/gnome-initial-setup-first-login.desktop /etc/xdg/autostart/gnome-initial-setup-first-login.desktop.old'
   touch "${HOME}"/.config/gnome-initial-setup-done
   echo "${PASSWORD}" | sudo -S -- sh -c 'mv /home/'"${USERNAME}"'/files/change_password.desktop /etc/xdg/autostart/change_password.desktop'
-  mv "${HOME}"/files/install-"${OS_NAME}".sh "${HOME}"/install.sh
+  mv "${HOME}"/files/install-"$(lsb_release -cs)".sh "${HOME}"/install.sh
   rm -Rf "${HOME}"/files
 }
 
@@ -254,7 +273,9 @@ main() {
   fonts
   
   vsCode
-  
+
+  virtualbox
+
   docker
 
   node

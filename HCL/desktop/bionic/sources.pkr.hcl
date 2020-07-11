@@ -1,6 +1,6 @@
-# ----------------------------------------
+# --------------------------------------------------------------------------------
 # Define locals
-# ----------------------------------------
+# --------------------------------------------------------------------------------
 
 locals {
   date_time        = formatdate("YYYY.MM.DD.hh.mm.ss", timestamp())
@@ -23,9 +23,9 @@ boot<enter>
 EOF
 }
 
-# ----------------------------------------
+# --------------------------------------------------------------------------------
 # Source for bionic desktop build
-# ----------------------------------------
+# --------------------------------------------------------------------------------
 
 source "hyperv-iso" "bionic_desktop" {
   boot_command                     = [local.boot_command]
@@ -34,9 +34,6 @@ source "hyperv-iso" "bionic_desktop" {
   cpus                             = 1
   disk_block_size                  = 1
   disk_size                        = 25600
-  enable_dynamic_memory            = false
-  enable_mac_spoofing              = true
-  enable_virtualization_extensions = true
   generation                       = 2
   http_directory                   = "./"
   iso_url                          = local.iso_url

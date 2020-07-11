@@ -1,8 +1,8 @@
 #!/bin/bash
 
-# ----------------------------------------
+# ------------------------------------------------------------
 # Configure Ubuntu server environment
-# ----------------------------------------
+# ------------------------------------------------------------
 set -o errexit
 set -o errtrace
 set -o nounset
@@ -10,7 +10,6 @@ set -o nounset
 TERRAFORM_VERSION="0.12.21"
 PACKER_VERSION="1.5.5"
 VAGRANT_VERSION="2.2.7"
-OS_NAME=$(lsb_release -cs)
 
 validateArguments() {
   if [ -z "${PASSWORD-}" ]; then
@@ -40,7 +39,7 @@ docker() {
   echo "${PASSWORD}" | curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo -S -- sh -c 'apt-key add -'
 
   # Accounting for Ubuntu version 20.04 not officially being supported yet
-  if [ "${OS_NAME}" != "bionic" ];
+  if [ "$(lsb_release -cs)" != "bionic" ];
   then
     # Adding Docker repo    
     echo "${PASSWORD}" | sudo -S -- sh -c 'add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu bionic stable"'
@@ -92,7 +91,7 @@ cli() {
   git clone --depth=1 https://github.com/romkatv/powerlevel10k.git "${HOME}"/.oh-my-zsh/custom/themes/powerlevel10k
 
   # Copy dotfiles
-  if [ "${OS_NAME}" = "focal" ];
+  if [ "$(lsb_release -cs)" = "focal" ];
   then
     sed -i 's/python3.6/python3.8/' "${HOME}"/files/.zshrc
   fi

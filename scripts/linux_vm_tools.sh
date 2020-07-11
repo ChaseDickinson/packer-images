@@ -1,13 +1,11 @@
 #!/bin/bash
 
-# ----------------------------------------
+# --------------------------------------------------------------------------------
 # Enable Enhanced VM functionality for Hyper-V
-# ----------------------------------------
+# --------------------------------------------------------------------------------
 set -o errexit
 set -o errtrace
 set -o nounset
-
-OS_NAME=$(lsb_release -cs)
 
 validateArguments() {
   if [ -z "${PASSWORD-}" ]; then
@@ -26,7 +24,7 @@ prerequirements() {
 
 linuxVmTools() {
   echo -e "\n****************************************\n"
-  echo "  Installing Microsoft Linux-VM-Tools - ${OS_NAME}"
+  echo "  Installing Microsoft Linux-VM-Tools - $(lsb_release -cs)"
   echo -e "\n****************************************\n"
 
   cd "${HOME}"
@@ -49,7 +47,7 @@ main() {
 
   sleep 10
 
-  if [ "${OS_NAME}" = "bionic" ];
+  if [ "$(lsb_release -cs)" = "bionic" ];
   then
     prerequirements
   fi
