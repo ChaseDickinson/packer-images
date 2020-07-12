@@ -52,7 +52,8 @@
       "expect_disconnect": true,
       "pause_before": "10s",
       "scripts": [
-        "{{user `scripts`}}/base.sh"
+        "{{user `scripts`}}/base.sh",
+        "{{user `scripts`}}/linux_cloud_tools.sh"
       ]
     }
   ],

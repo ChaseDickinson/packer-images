@@ -1,8 +1,9 @@
 {
   "variables": {
     "cpus": "1",
+    "disk_size": "25600",
     "files": "../../files",
-    "file_prefix": "{{isotime \"06.01.02.\"}}{{user `os_name`}}_{{user `os_type`}}_{{user `template_name`}}",
+    "filename": "{{isotime \"06.01.02.\"}}_{{user `template_name`}}",
     "headless": "true",
     "home": "/home/{{user `ssh_username`}}/",
     "keep_registered": "false",
@@ -13,19 +14,26 @@
     "skip_export": "true",
     "ssh_username": "ubuntu",
     "ssh_password": "ubuntu",
-    "template_name": "additions",
+    "template_name": "full",
     "timestamp": "{{isotime \"0601021504\"}}",
     "vm_name": "{{user `timestamp`}}.{{user `os_name`}}-{{user `os_type`}}"
   },
   "builders": [
     {
-      "type": "hyperv-vmcx",
-      "clone_from_vmcx_path": "..\\..\\..\\{{user `os_version`}}-base",
+      "type": "hyperv-iso",
+      "boot_command": [
+        "{{user `boot_command`}}"
+      ],
+      "boot_wait": "2s",
       "communicator": "ssh",
       "cpus": "{{user `cpus`}}",
       "disk_block_size": "1",
+      "disk_size": "{{user `disk_size`}}",
       "generation": "2",
       "headless": "{{user `headless`}}",
+      "http_directory": "./",
+      "iso_url": "http://releases.ubuntu.com/{{user `os_version`}}/ubuntu-{{user `os_version`}}-{{user `os_type`}}-amd64.iso",
+      "iso_checksum": "{{user `iso_checksum`}}",
       "keep_registered": "{{user `keep_registered`}}",
       "memory": "{{user `memory`}}",
       "output_directory": "..\\..\\..\\{{user `timestamp`}}.{{user `os_name`}}",
@@ -42,6 +50,9 @@
     {
       "type": "file",
       "destination": "{{user `home`}}",
+      "only": [
+        "hyperv-iso"
+      ],
       "source": "{{user `files`}}"
     },
     {
@@ -53,7 +64,22 @@
       "expect_disconnect": true,
       "pause_before": "10s",
       "scripts": [
-        "{{user `scripts`}}/desktop.sh",
+        "{{user `scripts`}}/base.sh",
+        "{{user `scripts`}}/linux_cloud_tools.sh",
+        "{{user `scripts`}}/desktop.sh"
+      ]
+    },
+    {
+      "type": "shell",
+      "environment_vars": [
+        "PASSWORD={{user `ssh_password`}}"
+      ],
+      "expect_disconnect": true,
+      "only": [
+        "hyperv-iso"
+      ],
+      "pause_before": "10s",
+      "scripts": [
         "{{user `scripts`}}/linux_vm_tools.sh"
       ]
     }
@@ -63,7 +89,10 @@
       "type": "compress",
       "format": ".zip",
       "keep_input_artifact": false,
-      "output": "{{user `output_drive`}}\\vms\\{{user `file_prefix`}}_{{.BuildName}}.zip"
+      "only": [
+        "hyperv-iso"
+      ],
+      "output": "{{user `output_drive`}}\\vms\\{{user `os_name`}}_{{user `os_type`}}\\{{user `filename`}}.zip"
     }
   ]
 }

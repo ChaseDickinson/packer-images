@@ -24,14 +24,6 @@ installUpdates() {
   echo "${PASSWORD}" | sudo -S -- sh -c 'apt-get dist-upgrade -y'
 }
 
-cloudtools() {
-  echo -e "\n****************************************\n"
-  echo "  Reinstalling Cloud Tools"
-  echo -e "\n****************************************\n"
-
-  echo "${PASSWORD}" | sudo -S -- sh -c 'apt-get install -y linux-cloud-tools-'"$(uname -r)"''
-}
-
 cleanup() {
   echo -e "\n****************************************\n"
   echo "  Removing outdated dependencies"
@@ -74,11 +66,9 @@ main() {
   validateArguments
   
   installUpdates
-  
-  cloudtools
 
   cleanup
-  
+
   reboot
 }
 
