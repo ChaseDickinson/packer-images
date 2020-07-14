@@ -101,6 +101,9 @@ docker() {
   # Installing Docker Compose
   echo "${PASSWORD}" | sudo -S -- sh -c 'curl -L "https://github.com/docker/compose/releases/download/'"${DOCKER_COMPOSE_VERSION}"'/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose'
   echo "${PASSWORD}" | sudo -S -- sh -c 'chmod +x /usr/local/bin/docker-compose'
+
+  # Grant user permissions to Docker
+  echo "${PASSWORD}" | sudo -S -- sh -c 'usermod -aG docker $USER'
 }
 
 node() {
