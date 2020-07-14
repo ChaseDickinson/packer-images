@@ -10,6 +10,7 @@ set -o errtrace
 set -o nounset
 
 CHEF_WORKSTATION_VERSION="20.7.81"
+DOCKER_COMPOSE_VERSION="1.26.2"
 PACKER_VERSION="1.6.0"
 TERRAFORM_VERSION="0.12.28"
 VAGRANT_VERSION="2.2.9"
@@ -96,6 +97,10 @@ docker() {
   echo "${PASSWORD}" | sudo -S -- sh -c 'add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"'
   echo "${PASSWORD}" | sudo -S -- sh -c 'apt-get update'
   echo "${PASSWORD}" | sudo -S -- sh -c 'apt-get install -y docker-ce docker-ce-cli containerd.io'
+  
+  # Installing Docker Compose
+  echo "${PASSWORD}" | sudo -S -- sh -c 'curl -L "https://github.com/docker/compose/releases/download/'"${DOCKER_COMPOSE_VERSION}"'/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose'
+  echo "${PASSWORD}" | sudo -S -- sh -c 'chmod +x /usr/local/bin/docker-compose'
 }
 
 node() {
