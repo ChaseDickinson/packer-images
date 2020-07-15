@@ -5,7 +5,7 @@
 ## TODO
 
 1) Vagrant boxes for servers
-2) Docker images for servers
+2) Remote development configuration for VS Code to Vagrant boxes
 3) Password retry logic
 
 ## Problem Statement
@@ -48,13 +48,13 @@ You'll need to invoke the Packer build command with the desired OS version:
 PowerShell example for Bionic:
 
 ```powershell
-packer build -var-file .\bionic\variables.json .\template.json
+packer build -var-file .\bionic\variables.json .\full.json
 ```
 
-Linux example for Eoan:
+Linux example for Focal:
 
 ```bash
-packer build -var-file=./eoan/variables.json template.json
+packer build -var-file=./focal/variables.json full.json
 ```
 
 Hyper-V only for now.
@@ -75,11 +75,17 @@ More on Microsoft's linux-vm-tools can be found on [their repo](https://github.c
 
 - What are you installing?
   - AWS CLI
-  - Docker
+  - Azure CLI
+  - Chef Workstation
+  - Docker & Docker-Compose
   - GIT
   - Microsoft's [linux-vm-tools](https://github.com/microsoft/linux-vm-tools) (enable "Enhanced Mode" for Ubuntu VMs)
   - Node.js 12.x
   - Oh-My-Zsh
+  - Packer
   - Python3
+  - Terraform
+  - Vagrant
+  - Virtual Box
   - VS Code
     - Also installing some of my preferred VS Code extensions and configuration settings
