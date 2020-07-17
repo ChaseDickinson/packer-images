@@ -4,9 +4,12 @@
 
 ## TODO
 
-1) Vagrant boxes for servers
-2) Remote development configuration for VS Code to Vagrant boxes
-3) Password retry logic
+1) Consolidate JSON builds into one set of templates; name variable files for OS type
+2) Vagrant boxes for servers
+3) Remote development configuration for VS Code to Vagrant boxes
+4) Convert to HCL
+5) Password retry logic
+6) Validate/cleanup preseed files
 
 ## Problem Statement
 
