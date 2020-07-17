@@ -19,7 +19,7 @@ prerequirements() {
   echo "  Installing prerequirements for Bionic"
   echo -e "\n****************************************\n"  
 
-  echo "${PASSWORD}" | sudo -S -- sh -c 'apt-get install -y xserver-xorg-core xserver-xorg-input-all'
+  echo "${PASSWORD}" | sudo -S -- sh -c "apt-get install -y xserver-xorg-core xserver-xorg-input-all"
 }
 
 linuxVmTools() {
@@ -29,7 +29,7 @@ linuxVmTools() {
 
   cd "${HOME}"
   chmod +x install.sh
-  echo "${PASSWORD}" | sudo -S -- bash -c './install.sh'
+  echo "${PASSWORD}" | sudo -S -- bash -c "./install.sh"
   rm install.sh
 }
 
@@ -38,8 +38,8 @@ autoremove() {
   echo "  Autoremove"
   echo -e "\n****************************************\n"
 
-  echo "${PASSWORD}" | sudo -S -- sh -c 'apt-get update'
-  echo "${PASSWORD}" | sudo -S -- sh -c 'apt-get autoremove -y'
+  echo "${PASSWORD}" | sudo -S -- sh -c "apt-get update"
+  echo "${PASSWORD}" | sudo -S -- sh -c "apt-get autoremove -y"
 }
 
 main() {

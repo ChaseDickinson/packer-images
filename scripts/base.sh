@@ -20,8 +20,8 @@ installUpdates() {
   echo "  Installing Latest Upgrades"
   echo -e "\n****************************************\n"
 
-  echo "${PASSWORD}" | sudo -S -- sh -c 'apt-get update'
-  echo "${PASSWORD}" | sudo -S -- sh -c 'apt-get dist-upgrade -y'
+  echo "${PASSWORD}" | sudo -S -- sh -c "apt-get update"
+  echo "${PASSWORD}" | sudo -S -- sh -c "apt-get dist-upgrade -y"
 }
 
 cleanup() {
@@ -29,7 +29,7 @@ cleanup() {
   echo "  Removing outdated dependencies"
   echo -e "\n****************************************\n"
 
-  echo "${PASSWORD}" | sudo -S -- sh -c 'apt-get autoremove -y'
+  echo "${PASSWORD}" | sudo -S -- sh -c "apt-get autoremove -y"
 
   echo -e "\n****************************************\n"
   echo "  Create working directory"
@@ -48,10 +48,10 @@ cleanup() {
   echo "  Disable auto updates"
   echo -e "\n****************************************\n"
 
-  echo "${PASSWORD}" | sudo -S -- sh -c 'systemctl stop apt-daily.timer'
-  echo "${PASSWORD}" | sudo -S -- sh -c 'systemctl disable apt-daily.timer'
-  echo "${PASSWORD}" | sudo -S -- sh -c 'systemctl mask apt-daily.service'
-  echo "${PASSWORD}" | sudo -S -- sh -c 'systemctl daemon-reload'
+  echo "${PASSWORD}" | sudo -S -- sh -c "systemctl stop apt-daily.timer"
+  echo "${PASSWORD}" | sudo -S -- sh -c "systemctl disable apt-daily.timer"
+  echo "${PASSWORD}" | sudo -S -- sh -c "systemctl mask apt-daily.service"
+  echo "${PASSWORD}" | sudo -S -- sh -c "systemctl daemon-reload"
 }
 
 reboot() {
@@ -59,7 +59,7 @@ reboot() {
   echo "  Rebooting"
   echo -e "\n****************************************\n"
   
-  echo "${PASSWORD}" | sudo -S -- sh -c 'reboot'
+  echo "${PASSWORD}" | sudo -S -- sh -c "reboot"
 }
 
 main() {

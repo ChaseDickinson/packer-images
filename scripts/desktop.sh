@@ -33,7 +33,19 @@ basePackages() {
   echo "  Installing base packages"
   echo -e "\n****************************************\n"
 
-  echo "${PASSWORD}" | sudo -S -- sh -c 'apt-get install -y apt-transport-https ca-certificates curl git gnupg-agent python3-pip software-properties-common zsh tldr neofetch shellcheck tree'
+  echo "${PASSWORD}" | sudo -S -- sh -c "apt-get install -y \
+    apt-transport-https \
+    ca-certificates \
+    curl \
+    git \
+    gnupg-agent \
+    neofetch \
+    python3-pip \
+    shellcheck \
+    software-properties-common \
+    tldr \
+    tree \
+    zsh"
 }
 
 fonts() {
@@ -47,12 +59,12 @@ fonts() {
   curl -fLo "Hack.ttf" https://github.com/ryanoasis/nerd-fonts/blob/master/patched-fonts/Hack/Regular/complete/Hack%20Regular%20Nerd%20Font%20Complete.ttf?raw=true
 
   cd "${HOME}"
-  echo "${PASSWORD}" | sudo -S -- sh -c 'mv /home/'"${USERNAME}"'/nerd-fonts /usr/share/fonts/truetype/nerd-fonts'
-  echo "${PASSWORD}" | sudo -S -- sh -c 'chown -R root:root /usr/share/fonts/truetype/nerd-fonts'
-  echo "${PASSWORD}" | sudo -S -- sh -c 'chmod 755 /usr/share/fonts/truetype/nerd-fonts'
-  echo "${PASSWORD}" | sudo -S -- sh -c 'find /usr/share/fonts/truetype/nerd-fonts -type f -iname "*.ttf" -exec chmod 644 {} \;'
+  echo "${PASSWORD}" | sudo -S -- sh -c "mv /home/${USERNAME}/nerd-fonts /usr/share/fonts/truetype/nerd-fonts"
+  echo "${PASSWORD}" | sudo -S -- sh -c "chown -R root:root /usr/share/fonts/truetype/nerd-fonts"
+  echo "${PASSWORD}" | sudo -S -- sh -c "chmod 755 /usr/share/fonts/truetype/nerd-fonts"
+  echo "${PASSWORD}" | sudo -S -- sh -c "find /usr/share/fonts/truetype/nerd-fonts -type f -iname *.ttf -exec chmod 644 {} \;"
 
-  echo "${PASSWORD}" | sudo -S -- sh -c 'fc-cache -fv'
+  echo "${PASSWORD}" | sudo -S -- sh -c "fc-cache -fv"
 }
 
 vsCode() {
@@ -63,10 +75,10 @@ vsCode() {
   sleep 1
 
   curl https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > packages.microsoft.gpg
-  echo "${PASSWORD}" | sudo -S -- sh -c 'install -o root -g root -m 644 packages.microsoft.gpg /usr/share/keyrings/'
-  echo "${PASSWORD}" | sudo -S -- sh -c 'echo "deb [arch=amd64 signed-by=/usr/share/keyrings/packages.microsoft.gpg] https://packages.microsoft.com/repos/vscode stable main" > /etc/apt/sources.list.d/vscode.list'
-  echo "${PASSWORD}" | sudo -S -- sh -c 'apt-get update'
-  echo "${PASSWORD}" | sudo -S -- sh -c 'apt-get install -y code'
+  echo "${PASSWORD}" | sudo -S -- sh -c "install -o root -g root -m 644 packages.microsoft.gpg /usr/share/keyrings/"
+  echo "${PASSWORD}" | sudo -S -- sh -c "echo \"deb [arch=amd64 signed-by=/usr/share/keyrings/packages.microsoft.gpg] https://packages.microsoft.com/repos/vscode stable main\" > /etc/apt/sources.list.d/vscode.list"
+  echo "${PASSWORD}" | sudo -S -- sh -c "apt-get update"
+  echo "${PASSWORD}" | sudo -S -- sh -c "apt-get install -y code"
   rm packages.microsoft.gpg
 }
 
@@ -75,15 +87,15 @@ virtualbox() {
   echo "  Installing VirtualBox ${VIRTUALBOX_VERSION}"
   echo -e "\n****************************************\n"
 
-  echo "${PASSWORD}" | wget -q https://www.virtualbox.org/download/oracle_vbox_2016.asc -O- | sudo -S -- sh -c 'apt-key add -'
-  echo "${PASSWORD}" | wget -q https://www.virtualbox.org/download/oracle_vbox.asc -O- | sudo -S -- sh -c 'apt-key add -'
-  echo "${PASSWORD}" | sudo -S -- sh -c 'echo "deb [arch=amd64] http://download.virtualbox.org/virtualbox/debian $(lsb_release -cs) contrib" > /etc/apt/sources.list.d/virtualbox.list'
+  echo "${PASSWORD}" | wget -q https://www.virtualbox.org/download/oracle_vbox_2016.asc -O- | sudo -S -- sh -c "apt-key add -"
+  echo "${PASSWORD}" | wget -q https://www.virtualbox.org/download/oracle_vbox.asc -O- | sudo -S -- sh -c "apt-key add -"
+  echo "${PASSWORD}" | sudo -S -- sh -c "echo \"deb [arch=amd64] http://download.virtualbox.org/virtualbox/debian $(lsb_release -cs) contrib\" > /etc/apt/sources.list.d/virtualbox.list"
 
-  echo "${PASSWORD}" | sudo -S -- sh -c 'apt-get update'
-  echo "${PASSWORD}" | sudo -S -- sh -c 'apt-get install -y virtualbox-'"${VIRTUALBOX_VERSION%.*}"''
+  echo "${PASSWORD}" | sudo -S -- sh -c "apt-get update"
+  echo "${PASSWORD}" | sudo -S -- sh -c "apt-get install -y virtualbox-${VIRTUALBOX_VERSION%.*}"
   
   wget https://download.virtualbox.org/virtualbox/"${VIRTUALBOX_VERSION}"/Oracle_VM_VirtualBox_Extension_Pack-"${VIRTUALBOX_VERSION}".vbox-extpack
-  echo "${PASSWORD}" | sudo -SE -- sh -c 'yes | VBoxManage extpack install Oracle_VM_VirtualBox_Extension_Pack-'"${VIRTUALBOX_VERSION}"'.vbox-extpack'
+  echo "${PASSWORD}" | sudo -SE -- sh -c "yes | VBoxManage extpack install Oracle_VM_VirtualBox_Extension_Pack-${VIRTUALBOX_VERSION}.vbox-extpack"
   rm Oracle_VM_VirtualBox_Extension_Pack-"${VIRTUALBOX_VERSION}".vbox-extpack
 }
 
@@ -93,17 +105,17 @@ docker() {
   echo -e "\n****************************************\n"
 
   # Installing Docker
-  echo "${PASSWORD}" | curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo -S -- sh -c 'apt-key add -'
-  echo "${PASSWORD}" | sudo -S -- sh -c 'add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"'
-  echo "${PASSWORD}" | sudo -S -- sh -c 'apt-get update'
-  echo "${PASSWORD}" | sudo -S -- sh -c 'apt-get install -y docker-ce docker-ce-cli containerd.io'
+  echo "${PASSWORD}" | curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo -S -- sh -c "apt-key add -"
+  echo "${PASSWORD}" | sudo -S -- sh -c "add-apt-repository \"deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable\""
+  echo "${PASSWORD}" | sudo -S -- sh -c "apt-get update"
+  echo "${PASSWORD}" | sudo -S -- sh -c "apt-get install -y docker-ce docker-ce-cli containerd.io"
   
   # Installing Docker Compose
-  echo "${PASSWORD}" | sudo -S -- sh -c 'curl -L "https://github.com/docker/compose/releases/download/'"${DOCKER_COMPOSE_VERSION}"'/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose'
-  echo "${PASSWORD}" | sudo -S -- sh -c 'chmod +x /usr/local/bin/docker-compose'
+  echo "${PASSWORD}" | sudo -S -- sh -c "curl -L \"https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-$(uname -s)-$(uname -m)\" -o /usr/local/bin/docker-compose"
+  echo "${PASSWORD}" | sudo -S -- sh -c "chmod +x /usr/local/bin/docker-compose"
 
   # Grant user permissions to Docker
-  echo "${PASSWORD}" | sudo -S -- sh -c 'usermod -aG docker $USER'
+  echo "${PASSWORD}" | sudo -S -- sh -c "usermod -aG docker $USER"
 }
 
 node() {
@@ -111,8 +123,8 @@ node() {
   echo "  Installing Node"
   echo -e "\n****************************************\n"
 
-  echo "${PASSWORD}" | curl -sL https://deb.nodesource.com/setup_12.x | sudo -SE -- sh -c 'bash -'
-  echo "${PASSWORD}" | sudo -S -- sh -c 'apt-get install -y nodejs'
+  echo "${PASSWORD}" | curl -sL https://deb.nodesource.com/setup_12.x | sudo -SE -- sh -c "bash -"
+  echo "${PASSWORD}" | sudo -S -- sh -c "apt-get install -y nodejs"
 }
 
 aws() {
@@ -122,7 +134,7 @@ aws() {
 
   curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
   unzip awscliv2.zip
-  echo "${PASSWORD}" | sudo -S -- sh -c './aws/install'
+  echo "${PASSWORD}" | sudo -S -- sh -c "./aws/install"
   rm -rf aws
   rm awscliv2.zip
 }
@@ -132,7 +144,7 @@ azure() {
   echo "  Installing Azure CLI"
   echo -e "\n****************************************\n"
 
-  echo "${PASSWORD}" | curl -sL https://aka.ms/InstallAzureCLIDeb | sudo -SE -- sh -c 'bash -'
+  echo "${PASSWORD}" | curl -sL https://aka.ms/InstallAzureCLIDeb | sudo -SE -- sh -c "bash -"
 }
 
 cli() {
@@ -162,7 +174,7 @@ cli() {
   mv "${HOME}"/files/.p10k.zsh "${HOME}"/.p10k.zsh
 
   # Set default shell
-  echo "${PASSWORD}" | sudo -S -- sh -c 'usermod --shell '"$(command -v zsh)"' '"$(whoami)"''
+  echo "${PASSWORD}" | sudo -S -- sh -c "usermod --shell $(command -v zsh) $(whoami)"
 }
 
 hashicorp() {
@@ -172,7 +184,7 @@ hashicorp() {
 
   curl -o "terraform.zip" "https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip"
   unzip terraform.zip
-  echo "${PASSWORD}" | sudo -S -- sh -c 'mv terraform /usr/bin/terraform'
+  echo "${PASSWORD}" | sudo -S -- sh -c "mv terraform /usr/bin/terraform"
   rm terraform.zip
 
   echo -e "\n****************************************\n"
@@ -181,7 +193,7 @@ hashicorp() {
 
   curl -o "packer.zip" "https://releases.hashicorp.com/packer/${PACKER_VERSION}/packer_${PACKER_VERSION}_linux_amd64.zip"
   unzip packer.zip
-  echo "${PASSWORD}" | sudo -S -- sh -c 'mv packer /usr/bin/packer'
+  echo "${PASSWORD}" | sudo -S -- sh -c "mv packer /usr/bin/packer"
   rm packer.zip
 
   echo -e "\n****************************************\n"
@@ -190,7 +202,7 @@ hashicorp() {
 
   curl -o "vagrant.zip" "https://releases.hashicorp.com/vagrant/${VAGRANT_VERSION}/vagrant_${VAGRANT_VERSION}_linux_amd64.zip"
   unzip vagrant.zip
-  echo "${PASSWORD}" | sudo -S -- sh -c 'mv vagrant /usr/bin/vagrant'
+  echo "${PASSWORD}" | sudo -S -- sh -c "mv vagrant /usr/bin/vagrant"
   rm vagrant.zip
 }
 
@@ -200,7 +212,7 @@ chef() {
   echo -e "\n****************************************\n"
 
   curl -o "chef-workstation.deb" "https://packages.chef.io/files/stable/chef-workstation/${CHEF_WORKSTATION_VERSION}/ubuntu/$(lsb_release -rs)/chef-workstation_${CHEF_WORKSTATION_VERSION}-1_amd64.deb"
-  echo "${PASSWORD}" | sudo -S -- sh -c 'dpkg -i chef-workstation.deb'
+  echo "${PASSWORD}" | sudo -S -- sh -c "dpkg -i chef-workstation.deb"
   rm chef-workstation.deb
 }
 
@@ -251,10 +263,10 @@ changePassword() {
   echo "  Implementing password change prompt"
   echo -e "\n****************************************\n"
 
-  echo "${PASSWORD}" | sudo -S -- sh -c 'mkdir -p /usr/local/scripts'
-  echo "${PASSWORD}" | sudo -S -- sh -c 'mv /home/'"${USERNAME}"'/files/passwd.sh /usr/local/scripts/passwd.sh'
-  echo "${PASSWORD}" | sudo -S -- sh -c 'sed -i -e 's/\\r$//' /usr/local/scripts/passwd.sh'
-  echo "${PASSWORD}" | sudo -S -- sh -c 'chmod +x /usr/local/scripts/passwd.sh'
+  echo "${PASSWORD}" | sudo -S -- sh -c "mkdir -p /usr/local/scripts"
+  echo "${PASSWORD}" | sudo -S -- sh -c "mv /home/${USERNAME}/files/passwd.sh /usr/local/scripts/passwd.sh"
+  echo "${PASSWORD}" | sudo -S -- sh -c "sed -i -e 's/\\r$//' /usr/local/scripts/passwd.sh"
+  echo "${PASSWORD}" | sudo -S -- sh -c "chmod +x /usr/local/scripts/passwd.sh"
   cat <<EOF > "${HOME}"/files/change_password.desktop
 [Desktop Entry]
 Name=Change Password
@@ -269,9 +281,9 @@ OnlyShowIn=GNOME;Unity;
 NoDisplay=true
 AutostartCondition=unless-exists password-reset-done
 EOF
-  # echo "${PASSWORD}" | sudo -S -- sh -c 'mv /etc/xdg/autostart/gnome-initial-setup-first-login.desktop /etc/xdg/autostart/gnome-initial-setup-first-login.desktop.old'
+  # echo "${PASSWORD}" | sudo -S -- sh -c "mv /etc/xdg/autostart/gnome-initial-setup-first-login.desktop /etc/xdg/autostart/gnome-initial-setup-first-login.desktop.old"
   touch "${HOME}"/.config/gnome-initial-setup-done
-  echo "${PASSWORD}" | sudo -S -- sh -c 'mv /home/'"${USERNAME}"'/files/change_password.desktop /etc/xdg/autostart/change_password.desktop'
+  echo "${PASSWORD}" | sudo -S -- sh -c "mv /home/${USERNAME}/files/change_password.desktop /etc/xdg/autostart/change_password.desktop"
   mv "${HOME}"/files/install-"$(lsb_release -cs)".sh "${HOME}"/install.sh
   rm -Rf "${HOME}"/files
 }
@@ -281,7 +293,7 @@ reboot() {
   echo "  Rebooting"
   echo -e "\n****************************************\n"
   
-  echo "${PASSWORD}" | sudo -S -- sh -c 'reboot'
+  echo "${PASSWORD}" | sudo -S -- sh -c "reboot"
 }
 
 main() {

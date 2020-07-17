@@ -19,7 +19,10 @@ cloudtools() {
   echo "  Reinstalling Cloud Tools"
   echo -e "\n****************************************\n"
 
-  echo "${PASSWORD}" | sudo -S -- sh -c 'apt-get install -y linux-tools-virtual linux-cloud-tools-virtual linux-cloud-tools-'"$(uname -r)"''
+  echo "${PASSWORD}" | sudo -S -- sh -c "apt-get install -y \
+    linux-tools-virtual \
+    linux-cloud-tools-virtual \
+    linux-cloud-tools-$(uname -r)"
 }
 
 main() {
