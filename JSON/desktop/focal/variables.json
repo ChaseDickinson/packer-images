@@ -1,6 +1,0 @@
-{
-  "boot_command": "<esc><esc><esc><esc>linux /casper/vmlinuz url=http://{{.HTTPIP}}:{{.HTTPPort}}/{{user `os_name`}}/preseed.cfg boot=casper automatic-ubiquity noninteractive noprompt --- <enter>initrd /casper/initrd <enter>boot<enter>",
-  "iso_checksum": "e5b72e9cfe20988991c9cd87bde43c0b691e3b67b01f76d23f8150615883ce11",
-  "os_name": "focal",
-  "os_version": "20.04"
-}

@@ -7,13 +7,6 @@ set -o errexit
 set -o errtrace
 set -o nounset
 
-CHEF_WORKSTATION_VERSION="20.7.81"
-DOCKER_COMPOSE_VERSION="1.26.2"
-PACKER_VERSION="1.6.0"
-TERRAFORM_VERSION="0.12.28"
-VAGRANT_VERSION="2.2.9"
-VIRTUALBOX_VERSION="6.1.12"
-
 validateArguments() {
   if [ -z "${PASSWORD-}" ]; then
     printf "\n\nError: 'PASSWORD' is required.\n\n"
@@ -23,27 +16,6 @@ validateArguments() {
     printf "\n\nError: 'USERNAME' is required.\n\n"
     exit 1
   fi
-}
-
-basePackages() {
-  #install latest updates available
-  echo -e "\n****************************************\n"
-  echo "  Installing base packages"
-  echo -e "\n****************************************\n"
-
-  echo "${PASSWORD}" | sudo -S -- sh -c "apt-get install -y \
-    apt-transport-https \
-    ca-certificates \
-    curl \
-    git \
-    gnupg-agent \
-    neofetch \
-    python3-pip \
-    shellcheck \
-    software-properties-common \
-    tldr \
-    tree \
-    zsh"
 }
 
 fonts() {
@@ -80,71 +52,6 @@ vsCode() {
   rm packages.microsoft.gpg
 }
 
-virtualbox() {
-  echo -e "\n****************************************\n"
-  echo "  Installing VirtualBox ${VIRTUALBOX_VERSION}"
-  echo -e "\n****************************************\n"
-
-  echo "${PASSWORD}" | wget -q https://www.virtualbox.org/download/oracle_vbox_2016.asc -O- | sudo -S -- sh -c "apt-key add -"
-  echo "${PASSWORD}" | wget -q https://www.virtualbox.org/download/oracle_vbox.asc -O- | sudo -S -- sh -c "apt-key add -"
-  echo "${PASSWORD}" | sudo -S -- sh -c "echo \"deb [arch=amd64] http://download.virtualbox.org/virtualbox/debian $(lsb_release -cs) contrib\" > /etc/apt/sources.list.d/virtualbox.list"
-
-  echo "${PASSWORD}" | sudo -S -- sh -c "apt-get update"
-  echo "${PASSWORD}" | sudo -S -- sh -c "apt-get install -y virtualbox-${VIRTUALBOX_VERSION%.*}"
-  
-  wget https://download.virtualbox.org/virtualbox/"${VIRTUALBOX_VERSION}"/Oracle_VM_VirtualBox_Extension_Pack-"${VIRTUALBOX_VERSION}".vbox-extpack
-  echo "${PASSWORD}" | sudo -SE -- sh -c "yes | VBoxManage extpack install Oracle_VM_VirtualBox_Extension_Pack-${VIRTUALBOX_VERSION}.vbox-extpack"
-  rm Oracle_VM_VirtualBox_Extension_Pack-"${VIRTUALBOX_VERSION}".vbox-extpack
-}
-
-docker() {
-  echo -e "\n****************************************\n"
-  echo "  Installing Docker"
-  echo -e "\n****************************************\n"
-
-  # Installing Docker
-  echo "${PASSWORD}" | curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo -S -- sh -c "apt-key add -"
-  echo "${PASSWORD}" | sudo -S -- sh -c "add-apt-repository \"deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable\""
-  echo "${PASSWORD}" | sudo -S -- sh -c "apt-get update"
-  echo "${PASSWORD}" | sudo -S -- sh -c "apt-get install -y docker-ce docker-ce-cli containerd.io"
-  
-  # Installing Docker Compose
-  echo "${PASSWORD}" | sudo -S -- sh -c "curl -L \"https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-$(uname -s)-$(uname -m)\" -o /usr/local/bin/docker-compose"
-  echo "${PASSWORD}" | sudo -S -- sh -c "chmod +x /usr/local/bin/docker-compose"
-
-  # Grant user permissions to Docker
-  echo "${PASSWORD}" | sudo -S -- sh -c "usermod -aG docker $USER"
-}
-
-node() {
-  echo -e "\n****************************************\n"
-  echo "  Installing Node"
-  echo -e "\n****************************************\n"
-
-  echo "${PASSWORD}" | curl -sL https://deb.nodesource.com/setup_12.x | sudo -SE -- sh -c "bash -"
-  echo "${PASSWORD}" | sudo -S -- sh -c "apt-get install -y nodejs"
-}
-
-aws() {
-  echo -e "\n****************************************\n"
-  echo "  Installing AWS CLI"
-  echo -e "\n****************************************\n"
-
-  curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
-  unzip awscliv2.zip
-  echo "${PASSWORD}" | sudo -S -- sh -c "./aws/install"
-  rm -rf aws
-  rm awscliv2.zip
-}
-
-azure() {
-  echo -e "\n****************************************\n"
-  echo "  Installing Azure CLI"
-  echo -e "\n****************************************\n"
-
-  echo "${PASSWORD}" | curl -sL https://aka.ms/InstallAzureCLIDeb | sudo -SE -- sh -c "bash -"
-}
-
 cli() {
   echo -e "\n****************************************\n"
   echo "  Installing CLI customizations"
@@ -173,45 +80,6 @@ cli() {
 
   # Set default shell
   echo "${PASSWORD}" | sudo -S -- sh -c "usermod --shell $(command -v zsh) $(whoami)"
-}
-
-hashicorp() {
-  echo -e "\n****************************************\n"
-  echo "  Install Terraform  ${TERRAFORM_VERSION}"
-  echo -e "\n****************************************\n"
-
-  curl -o "terraform.zip" "https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip"
-  unzip terraform.zip
-  echo "${PASSWORD}" | sudo -S -- sh -c "mv terraform /usr/bin/terraform"
-  rm terraform.zip
-
-  echo -e "\n****************************************\n"
-  echo "  Install Packer ${PACKER_VERSION}"
-  echo -e "\n****************************************\n"
-
-  curl -o "packer.zip" "https://releases.hashicorp.com/packer/${PACKER_VERSION}/packer_${PACKER_VERSION}_linux_amd64.zip"
-  unzip packer.zip
-  echo "${PASSWORD}" | sudo -S -- sh -c "mv packer /usr/bin/packer"
-  rm packer.zip
-
-  echo -e "\n****************************************\n"
-  echo "  Install Vagrant ${VAGRANT_VERSION}"
-  echo -e "\n****************************************\n"
-
-  curl -o "vagrant.zip" "https://releases.hashicorp.com/vagrant/${VAGRANT_VERSION}/vagrant_${VAGRANT_VERSION}_linux_amd64.zip"
-  unzip vagrant.zip
-  echo "${PASSWORD}" | sudo -S -- sh -c "mv vagrant /usr/bin/vagrant"
-  rm vagrant.zip
-}
-
-chef() {
-  echo -e "\n****************************************\n"
-  echo "  Installing Chef Workstation ${CHEF_WORKSTATION_VERSION}"
-  echo -e "\n****************************************\n"
-
-  curl -o "chef-workstation.deb" "https://packages.chef.io/files/stable/chef-workstation/${CHEF_WORKSTATION_VERSION}/ubuntu/$(lsb_release -rs)/chef-workstation_${CHEF_WORKSTATION_VERSION}-1_amd64.deb"
-  echo "${PASSWORD}" | sudo -S -- sh -c "dpkg -i chef-workstation.deb"
-  rm chef-workstation.deb
 }
 
 gnomeConfig() {
@@ -286,46 +154,49 @@ EOF
   rm -Rf "${HOME}"/files
 }
 
-reboot() {
+linuxVmTools() {
+  if [ "$(lsb_release -cs)" = "bionic" ];
+  then
+    echo -e "\n****************************************\n"
+    echo "  Installing prerequirements for Bionic"
+    echo -e "\n****************************************\n"  
+
+    echo "${PASSWORD}" | sudo -S -- sh -c "apt-get install -y xserver-xorg-core xserver-xorg-input-all"
+  fi
+
   echo -e "\n****************************************\n"
-  echo "  Rebooting"
+  echo "  Installing Microsoft Linux-VM-Tools - $(lsb_release -cs)"
   echo -e "\n****************************************\n"
-  
-  echo "${PASSWORD}" | sudo -S -- sh -c "reboot"
+
+  cd "${HOME}"
+  chmod +x install.sh
+  echo "${PASSWORD}" | sudo -S -- bash -c "./install.sh"
+  rm install.sh
+
+  echo -e "\n****************************************\n"
+  echo "  Autoremove"
+  echo -e "\n****************************************\n"
+
+  echo "${PASSWORD}" | sudo -S -- sh -c "apt-get update"
+  echo "${PASSWORD}" | sudo -S -- sh -c "apt-get autoremove -y"
 }
 
 main() {
-  validateArguments
-  
-  basePackages
+  validateArguments  
 
   fonts
   
   vsCode
-
-  virtualbox
-
-  docker
-
-  node
-  
-  aws
-
-  azure
   
   cli
-
-  hashicorp
-
-  chef
 
   gnomeConfig
   
   vsCodeConfig
   
   changePassword
-  
-  reboot
+
+  linuxVmTools
 }
 
 main

@@ -4,10 +4,10 @@
 
 ## TODO
 
-1) Consolidate JSON builds into one set of templates; name variable files for OS type
-2) PowerShell script for validating, building, debugging, enabling enhanced VM, etc.
-3) Vagrant boxes for servers
-4) Remote development configuration for VS Code to Vagrant boxes
+1) Create makefile
+2) Vagrant boxes for servers
+3) Remote development configuration for VS Code to Vagrant boxes
+4) Create Chef cookbooks
 5) Convert to HCL
 6) Password retry logic
 7) Validate/cleanup preseed files
