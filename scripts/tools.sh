@@ -7,7 +7,7 @@ set -o errexit
 set -o errtrace
 set -o nounset
 
-CHEF_WORKSTATION_VERSION="20.7.81"
+CHEF_WORKSTATION_VERSION="20.7.96"
 DOCKER_COMPOSE_VERSION="latest"
 PACKER_VERSION="latest"
 TERRAFORM_VERSION="latest"

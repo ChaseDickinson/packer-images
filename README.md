@@ -4,13 +4,12 @@
 
 ## TODO
 
-1) Create makefile
-2) Vagrant boxes for servers
-3) Remote development configuration for VS Code to Vagrant boxes
-4) Create Chef cookbooks
-5) Convert to HCL
-6) Password retry logic
-7) Validate/cleanup preseed files
+1) Vagrant boxes for servers
+2) Remote development configuration for VS Code to Vagrant boxes
+3) Create Chef cookbooks
+4) Convert to HCL
+5) Password retry logic
+6) Validate/cleanup preseed files
 
 ## Problem Statement
 
