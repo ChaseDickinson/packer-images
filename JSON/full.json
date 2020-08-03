@@ -31,7 +31,7 @@
       "generation": "2",
       "headless": "{{user `headless`}}",
       "http_directory": "./{{ template_dir }}",
-      "iso_url": "http://releases.ubuntu.com/{{user `os_version`}}/ubuntu-{{user `os_version`}}-{{user `os_type`}}-amd64.iso",
+      "iso_url": "{{user `iso_url`}}",
       "iso_checksum": "{{user `iso_checksum`}}",
       "keep_registered": "{{user `keep_registered`}}",
       "memory": "{{user `memory`}}",
