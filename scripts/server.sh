@@ -19,7 +19,9 @@ validateArguments() {
 }
 
 main() {
-
+  echo -e "\n****************************************\n"
+  echo "  Installing Ubuntu Server"
+  echo -e "\n****************************************\n"
 }
 
 main

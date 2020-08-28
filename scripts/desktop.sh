@@ -84,10 +84,11 @@ cli() {
 
 gnomeConfig() {
   echo -e "\n****************************************\n"
-  echo "  Configuring desktop favorites"
+  echo "  Configuring GNOME settings"
   echo -e "\n****************************************\n"
 
   gsettings set org.gnome.shell favorite-apps "['org.gnome.Nautilus.desktop', 'org.gnome.Terminal.desktop', 'code.desktop', 'virtualbox.desktop', 'org.gnome.gedit.desktop', 'firefox.desktop', 'gnome-control-center.desktop']"
+  gsettings set org.gnome.desktop.session idle-delay 0
   gsettings set org.gnome.desktop.interface text-scaling-factor 1.25
   gsettings set org.gnome.shell.extensions.dash-to-dock click-action minimize
 
@@ -150,7 +151,7 @@ EOF
   # echo "${PASSWORD}" | sudo -S -- sh -c "mv /etc/xdg/autostart/gnome-initial-setup-first-login.desktop /etc/xdg/autostart/gnome-initial-setup-first-login.desktop.old"
   touch "${HOME}"/.config/gnome-initial-setup-done
   echo "${PASSWORD}" | sudo -S -- sh -c "mv /home/${USERNAME}/files/change_password.desktop /etc/xdg/autostart/change_password.desktop"
-  mv "${HOME}"/files/install-"$(lsb_release -cs)".sh "${HOME}"/install.sh
+  mv "${HOME}"/files/install.sh "${HOME}"/install.sh
   rm -Rf "${HOME}"/files
 }
 

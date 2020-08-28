@@ -4,9 +4,9 @@
 
 ## TODO
 
-1) Figure out correct boot command for live servers
-2) Vagrant boxes for servers
-3) Remote development configuration for VS Code to Vagrant boxes
+1) Vagrant boxes for servers
+2) Remote development configuration for VS Code to Vagrant boxes
+3) Convert focal server to new installer
 4) Create Chef cookbooks
 5) Convert to HCL
 6) Password retry logic
@@ -26,23 +26,37 @@ My primary goals are:
 
 ```ascii
 .
-+-- [desktop]
-|   +-- template.json - Packer template for OS type
-|   +-- OS Version (bionic, eoan, etc.)
-    |   +-- preseed.cfg - preseed file for specific OS version
-    |   +-- variables.json - variable file for specific OS version
-+-- files
-|   +-- .zshrc - ZSH configuration
-|   +-- code_extensions.list - list of VS Code extensions to install
-|   +-- passwd.sh - Script to set random password at first login
-|   +-- settings.json - JSON settings for VS Code
-+-- HCL - Entire directory is still a WIP
-+-- scripts
-|   +-- base.sh - simple upgrade & cleanup
-|   +-- desktop.sh - install packages and configuration settings for desktop images
-|   +-- linux_vm_tools.sh - Microsoft linux-vm-tools install; enables enhanced mode
-+-- .gitignore
-+-- README.md
+├── JSON
+│   ├── bionic
+│   │   ├── desktop.cfg - preseed for desktop image
+│   │   ├── desktop.json - variables for desktop image
+│   │   ├── server.cfg - preseed for server image
+│   │   └── server.json - variables for server image
+│   ├── focal
+│   │   ├── desktop.cfg
+│   │   ├── desktop.json
+│   │   ├── server.cfg
+│   │   └── server.json
+│   ├── adds.json - template to add customizations to base image
+│   ├── base.json - template for base image
+│   └── full.json - template for full image
+├── Makefile
+├── README.md
+├── cookbooks - future use
+├── files
+│   ├── .p10k.zsh - Powerlevel10k dotfile
+│   ├── .zshrc - Zsh dotfile
+│   ├── code_extensions.list - VS Code extensions to be installed
+│   ├── install-bionic.sh - enable enhanced experience for Hyper-V
+│   ├── install-focal.sh - enable enhanced experience for Hyper-V
+│   ├── passwd.sh - prompt for password to be changed at first login
+│   └── settings.json - VS Code settings
+└── scripts
+    ├── base.sh - configuration of base image
+    ├── desktop.sh - configuration of desktop image
+    ├── linux_cloud_tools.sh - enable enhanced experience for Hyper-V
+    ├── server.sh - configuration of server image
+    └── tools.sh - configuration of various tools
 ```
 
 ## Usage
@@ -61,9 +75,19 @@ Linux example for Focal:
 packer build -var-file=./focal/variables.json full.json
 ```
 
+Alternatively, you can use the makefile by abbreviating the version and type of image desired. `fd` will build a Focal desktop image, and `bs` will build a Bionic server image. Requires Make to be installed to work correctly.
+
+```powershell
+make fd
+```
+
+```powershell
+make bs
+```
+
 Hyper-V only for now.
 
-VMs will output to a directory at the same level as the repository root, as a timestamped directory.
+VMs will output to whatever is defined as the `output_drive` variable.
 
 Don't forget to disable Secure Boot after you create a VM!
 
@@ -71,6 +95,12 @@ Once the build completes, copy the VHD to a different directory, then point a ne
 
 ```powershell
 Set-VM -VMName <your_vm_name> -EnhancedSessionTransportType HvSocket
+```
+
+If you want to be able to use virtualization within the guest OS, you will need to enable that as well:
+
+```powershell
+Set-VMProcessor -VMName <your_vm_name> -ExposeVirtualizationExtensions $true
 ```
 
 More on Microsoft's linux-vm-tools can be found on [their repo](https://github.com/microsoft/linux-vm-tools).

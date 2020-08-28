@@ -1,9 +1,9 @@
 #!/bin/bash
 
 # --------------------------------------------------------------------------------
-# Original source is pending PR & available at: https://github.com/microsoft/linux-vm-tools/blob/768d98eed5f18c63fd36e33884fbbeb6855653cd/ubuntu/20.04/install.sh
-# This script is for Ubuntu 20.04 Focal Fossa to download and install XRDP+XORGXRDP via
-# source.
+# Original source available at: https://github.com/microsoft/linux-vm-tools/blob/master/ubuntu/18.04/install.sh
+# This script is for Ubuntu 18.04 Bionic Beaver and Ubuntu 20.04 Focal Fossa to download and install 
+# XRDP+XORGXRDP via source.
 #
 # Major thanks to: http://c-nergy.be/blog/?p=11336 for the tips.
 # --------------------------------------------------------------------------------
@@ -18,16 +18,16 @@ HWE=""
 # Update our machine to the latest code if we need to.
 
 if [ "$(id -u)" -ne 0 ]; then
-  echo 'This script must be run with root privileges' >&2
-  exit 1
+    echo 'This script must be run with root privileges' >&2
+    exit 1
 fi
 
 apt-get update && apt-get upgrade -y
 
 if [ -f /var/run/reboot-required ]; then
-  echo "A reboot is required in order to proceed with the install." >&2
-  echo "Please reboot and re-run this script to finish the install." >&2
-  exit 1
+    echo "A reboot is required in order to proceed with the install." >&2
+    echo "Please reboot and re-run this script to finish the install." >&2
+    exit 1
 fi
 
 # --------------------------------------------------------------------------------
@@ -45,8 +45,17 @@ systemctl stop xrdp
 systemctl stop xrdp-sesman
 
 # Configure the installed XRDP ini files.
-# use vsock transport.
-sed -i_orig -e 's/port=3389/port=vsock:\/\/-1:3389/g' /etc/xrdp/xrdp.ini
+# configure vsock transport.
+  if [ "$(lsb_release -cs)" = "bionic" ]
+  then
+    sed -i_orig -e 's/use_vsock=false/use_vsock=true/g' /etc/xrdp/xrdp.ini
+  elif [ "$(lsb_release -cs)" = "focal" ]
+  then
+    sed -i_orig -e 's/port=3389/port=vsock:\/\/-1:3389/g' /etc/xrdp/xrdp.ini
+  else
+    echo "Error: Unsupported Codename"
+    exit 1
+  fi
 # use rdp security.
 sed -i_orig -e 's/security_layer=negotiate/security_layer=rdp/g' /etc/xrdp/xrdp.ini
 # remove encryption validation.

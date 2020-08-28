@@ -9,12 +9,12 @@ set -o nounset
 
 password_check () {
     hash_current=$(echo "${current_password}" | sudo -S cat /etc/shadow 2>/dev/null | grep "$username" | awk -F: '{print $2}')
-    IFS='$'; arr_hash_current=($hash_current); unset IFS;
+    IFS='$'; arr_hash_current=("${hash_current}"); unset IFS;
 
     if [ "${#arr_hash_current[*]}" -gt 0 ]
     then
         hash_validate=$(echo "${current_password}" | openssl passwd -stdin -"${arr_hash_current[1]}" -salt "${arr_hash_current[2]}")
-        IFS='$'; arr_hash_validate=($hash_validate); unset IFS;
+        IFS='$'; arr_hash_validate=("${hash_validate}"); unset IFS;
 
         if [ "${arr_hash_validate[3]}" == "${arr_hash_current[3]}" ]
         then

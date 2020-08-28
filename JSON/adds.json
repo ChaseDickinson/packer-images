@@ -1,39 +1,27 @@
 {
   "variables": {
-    "cpus": "1",
-    "files": "files",
-    "filename": "{{isotime \"06.01.02.\"}}_{{user `template_name`}}",
-    "headless": "true",
-    "home": "/home/{{user `ssh_username`}}/",
-    "keep_registered": "false",
-    "memory": "4096",
-    "output_drive": "{{env `ONEDRIVE`}}",
-    "scripts_dir": "scripts",
-    "skip_export": "true",
-    "ssh_username": "ubuntu",
-    "ssh_password": "ubuntu",
-    "template_name": "additions",
-    "timestamp": "{{isotime \"0601021504\"}}",
-    "vm_name": "{{user `timestamp`}}.{{user `os_name`}}-{{user `os_type`}}"
+    "adds_output_directory": "{{user `export_drive`}}\\{{user `timestamp`}}.{{user `os_name`}}.adds",
+    "adds_vm_name": "{{user `vm_name`}}.adds",
+    "filename": "{{isotime \"06.01.02\"}}.adds.zip"
   },
   "builders": [
     {
       "type": "hyperv-vmcx",
-      "clone_from_vmcx_path": "..\\{{user `os_version`}}-base",
-      "communicator": "ssh",
+      "clone_from_vmcx_path": "{{user `base_output_directory`}}",
+      "communicator": "{{user `communicator`}}",
       "cpus": "{{user `cpus`}}",
-      "disk_block_size": "1",
-      "generation": "2",
+      "disk_block_size": "{{user `disk_block_size`}}",
+      "generation": "{{user `generation`}}",
       "headless": "{{user `headless`}}",
       "keep_registered": "{{user `keep_registered`}}",
       "memory": "{{user `memory`}}",
-      "output_directory": "..\\{{user `timestamp`}}.{{user `os_name`}}",
-      "shutdown_command": "echo '{{user `ssh_password`}}' | sudo -S shutdown -P now",
+      "output_directory": "{{user `adds_output_directory`}}",
+      "shutdown_command": "{{user `shutdown_command`}}",
       "skip_export": "{{user `skip_export`}}",
       "ssh_password": "{{user `ssh_password`}}",
-      "ssh_timeout": "2h",
+      "ssh_timeout": "{{user `ssh_timeout`}}",
       "ssh_username": "{{user `ssh_username`}}",
-      "switch_name": "Default Switch",
+      "switch_name": "{{user `switch_name`}}",
       "vm_name": "{{user `vm_name`}}"
     }
   ],
@@ -41,7 +29,7 @@
     {
       "type": "file",
       "destination": "{{user `home`}}",
-      "source": "{{user `files`}}"
+      "source": "{{user `files_dir`}}"
     },
     {
       "type": "shell",
@@ -52,20 +40,7 @@
       "expect_disconnect": true,
       "pause_before": "10s",
       "scripts": [
-        "{{user `scripts_dir`}}/tools.sh"
-      ]
-    },
-    {
-      "type": "shell",
-      "environment_vars": [
-        "OS_TYPE={{user `os_type`}}",
-        "PASSWORD={{user `ssh_password`}}",
-        "USERNAME={{user `ssh_username`}}",
-        "SCRIPTS_DIR={{user `scripts_dir`}}"
-      ],
-      "expect_disconnect": true,
-      "pause_before": "10s",
-      "scripts": [
+        "{{user `scripts_dir`}}/tools.sh",
         "{{user `scripts_dir`}}/{{user `os_type`}}.sh"
       ]
     }
@@ -75,7 +50,7 @@
       "type": "compress",
       "format": ".zip",
       "keep_input_artifact": false,
-      "output": "{{user `output_drive`}}\\vms\\{{user `os_name`}}_{{user `os_type`}}\\{{user `filename`}}.zip"
+      "output": "{{user `zip_directory`}}\\{{user `filename`}}"
     }
   ]
 }

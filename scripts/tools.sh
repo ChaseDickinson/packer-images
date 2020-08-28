@@ -7,8 +7,9 @@ set -o errexit
 set -o errtrace
 set -o nounset
 
-CHEF_WORKSTATION_VERSION="20.7.96"
+CHEF_WORKSTATION_VERSION="latest"
 DOCKER_COMPOSE_VERSION="latest"
+OS_VERSION=$(lsb_release -rs)
 PACKER_VERSION="latest"
 TERRAFORM_VERSION="latest"
 VAGRANT_VERSION="latest"
@@ -44,6 +45,7 @@ basePackages() {
     software-properties-common \
     tldr \
     tree \
+    unzip \
     zsh"
 }
 
@@ -54,7 +56,9 @@ setVersions() {
 
   if [ "${CHEF_WORKSTATION_VERSION}" = "latest" ]
   then
-    CHEF_WORKSTATION_VERSION=$(curl -s https://raw.githubusercontent.com/chef/chef-workstation/master/VERSION)
+    wget -O website.html https://downloads.chef.io/products/workstation/stable
+    CHEF_WORKSTATION_VERSION=$(grep -Po "[0-9]+\.[0-9]+\.[0-9]+(?=/ubuntu/${OS_VERSION}/)"  website.html | head -1)
+    rm website.html
   fi
   echo -e "\nCHEF_WORKSTATION_VERSION set to ${CHEF_WORKSTATION_VERSION}\n"
 

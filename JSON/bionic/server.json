@@ -1,8 +1,0 @@
-{
-  "boot_command": "<esc><esc><esc><esc>linux /casper/vmlinuz <enter>preseed/url=http://{{.HTTPIP}}:{{.HTTPPort}}/{{user `os_name`}}/{{user `os_type`}}.cfg hostname={{.Name}} debconf/frontend=noninteractive <enter>initrd /casper/initrd <enter>boot <enter>",
-  "iso_checksum": "73b8d860e421000a6e35fdefbb0ec859b9385b0974cf8089f5d70a87de72f6b9",
-  "iso_url": "http://releases.ubuntu.com/{{user `os_version`}}/ubuntu-{{user `os_version`}}-live-server-amd64.iso",
-  "os_name": "bionic",
-  "os_type": "server",
-  "os_version": "18.04.4"
-}
