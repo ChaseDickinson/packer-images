@@ -2,15 +2,16 @@
 
 ## This repo is a work in progress
 
-## TODO
+## TODO: 
 
-1) Vagrant boxes for servers
-2) Remote development configuration for VS Code to Vagrant boxes
-3) Convert focal server to new installer
-4) Create Chef cookbooks
-5) Convert to HCL
-6) Password retry logic
-7) Validate/cleanup preseed files
+- Add Packer debug configuration
+- Vagrant boxes for servers
+- Remote development configuration for VS Code to Vagrant boxes
+- Convert focal server to new installer
+- Create Chef cookbooks
+- Convert to HCL
+- Password retry logic
+- Validate/cleanup preseed files
 
 ## Problem Statement
 
