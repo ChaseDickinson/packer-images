@@ -56,16 +56,13 @@ setVersions() {
 
   if [ "${CHEF_WORKSTATION_VERSION}" = "latest" ]
   then
-    wget -O website.html https://downloads.chef.io/products/workstation/stable
-    CHEF_WORKSTATION_VERSION=$(grep -Po "[0-9]+\.[0-9]+\.[0-9]+(?=/ubuntu/${OS_VERSION}/)"  website.html | head -1)
-    rm website.html
+    CHEF_WORKSTATION_VERSION=$(curl -s https://downloads.chef.io/products/workstation/stable | grep -Po '[0-9]+\.[0-9]+\.[0-9]+(?=/ubuntu/'"${OS_VERSION}"'/)' | head -1)
   fi
   echo -e "\nCHEF_WORKSTATION_VERSION set to ${CHEF_WORKSTATION_VERSION}\n"
 
   if [ "${DOCKER_COMPOSE_VERSION}" = "latest" ]
   then
-    latest_tag=$(curl -s https://api.github.com/repos/docker/compose/git/refs/tags | jq -r '.[-1].ref')
-    DOCKER_COMPOSE_VERSION="${latest_tag##*/}"
+    DOCKER_COMPOSE_VERSION=$(curl -s https://api.github.com/repos/docker/compose/git/refs/tags | jq -r '.[].ref' | grep -Po '[0-9]+\.[0-9]+\.[0-9](?!-)' | tail -1)
   fi
   echo -e "\nDOCKER_COMPOSE_VERSION set to ${DOCKER_COMPOSE_VERSION}\n"
 
