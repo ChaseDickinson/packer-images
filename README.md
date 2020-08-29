@@ -7,9 +7,9 @@
 - Add Packer debug configuration
 - Vagrant boxes for servers
 - Remote development configuration for VS Code to Vagrant boxes
-- Convert focal server to new installer
 - Create Chef cookbooks
 - Convert to HCL
+- Convert focal server to new installer
 - Password retry logic
 - Validate/cleanup preseed files
 
