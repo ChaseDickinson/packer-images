@@ -29,36 +29,34 @@ My primary goals are:
 ```ascii
 .
 ├── JSON
-│   ├── bionic
-│   │   ├── desktop.cfg - preseed for desktop image
-│   │   ├── desktop.json - variables for desktop image
-│   │   ├── server.cfg - preseed for server image
-│   │   └── server.json - variables for server image
-│   ├── focal
-│   │   ├── desktop.cfg
-│   │   ├── desktop.json
-│   │   ├── server.cfg
-│   │   └── server.json
-│   ├── adds.json - template to add customizations to base image
-│   ├── base.json - template for base image
-│   └── full.json - template for full image
-├── Makefile
-├── README.md
+│   ├── config
+│   │   ├── common.json - common variables across all builders
+│   │   ├── bionic - config files for Bionic Beaver
+│   │   │   ├── desktop.cfg - preseed file for desktop
+│   │   │   ├── desktop.json - variables needed for desktop build
+│   │   │   ├── server.cfg - preseed file for server
+│   │   │   └── server.json - variables needed for server build
+│   │   └── focal - config files for Focal Fossa
+│   │       ├── desktop.cfg
+│   │       ├── desktop.json
+│   │       ├── server.cfg
+│   │       └── server.json
+│   ├── adds.json - template to utilize base build and install customizations
+│   └── template.json - template to build a full customized image and a base image
+├── Makefile - requires Make to be installed
+├── README.md - you are here
 ├── cookbooks - future use
 ├── files
-│   ├── .p10k.zsh - Powerlevel10k dotfile
-│   ├── .zshrc - Zsh dotfile
-│   ├── code_extensions.list - VS Code extensions to be installed
-│   ├── install-bionic.sh - enable enhanced experience for Hyper-V
-│   ├── install-focal.sh - enable enhanced experience for Hyper-V
-│   ├── passwd.sh - prompt for password to be changed at first login
+│   ├── code_extensions.list - list of VS Code extensions to be installed
+│   ├── install.sh - install script to enable enhanced VM functionality in Hyper-V
+│   ├── passwd.sh - script to change user's password at first login
 │   └── settings.json - VS Code settings
 └── scripts
-    ├── base.sh - configuration of base image
-    ├── desktop.sh - configuration of desktop image
-    ├── linux_cloud_tools.sh - enable enhanced experience for Hyper-V
-    ├── server.sh - configuration of server image
-    └── tools.sh - configuration of various tools
+    ├── base.sh - configure base image
+    ├── desktop.sh - configure desktop image
+    ├── linux_cloud_tools.sh - enable enhanced VM functionality in Hyper-V
+    ├── server.sh - configure server image
+    └── tools.sh - install desired tools
 ```
 
 ## Usage
