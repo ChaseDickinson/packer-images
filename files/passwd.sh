@@ -8,24 +8,24 @@ set -o errtrace
 set -o nounset
 
 password_check () {
-    hash_current=$(echo "${current_password}" | sudo -S cat /etc/shadow 2>/dev/null | grep "$username" | awk -F: '{print $2}')
-    IFS='$'; arr_hash_current=("${hash_current}"); unset IFS;
+    current_shadow=$(echo "${current_password}" | sudo -S cat /etc/shadow 2>/dev/null | grep -Po '(?<='"${username}"':)(.*?)(?=:)')
 
-    if [ "${#arr_hash_current[*]}" -gt 0 ]
+    if [[ -z "${current_shadow}" ]]
     then
-        hash_validate=$(echo "${current_password}" | openssl passwd -stdin -"${arr_hash_current[1]}" -salt "${arr_hash_current[2]}")
-        IFS='$'; arr_hash_validate=("${hash_validate}"); unset IFS;
-
-        if [ "${arr_hash_validate[3]}" == "${arr_hash_current[3]}" ]
-        then
-            validated=true
-        else
-            echo "Error: Hashes do not match."
-            exit 1
-        fi
+      echo "Error: Incorrect password entered for ${username}."
+      exit 1
     else
-        echo "Error: Incorrect password entered for $username."
-        exit 1
+      current_algorithm=$(echo "${current_password}" | sudo -S cat /etc/shadow | grep -Po '(?<='"${username}"':\$)(\d)')
+      current_salt=$(echo "${current_password}" | sudo -S cat /etc/shadow | grep -Po '(?<='"${username}"':\$\d\$)(.+?)(?=\$)')
+      validate_shadow=$(echo "${current_password}" | openssl passwd -stdin -"${current_algorithm}" -salt "${current_salt}")
+
+      if [[ "${validate_shadow}" == "${current_shadow}" ]]
+      then
+          validated=true
+      else
+          echo "Error: Hashes do not match."
+          exit 1
+      fi
     fi
 }
 
@@ -41,16 +41,16 @@ password_change () {
 main () {
     username=$(whoami)
 
-    read -rsp "Please enter current password for username $username: " current_password
+    read -rsp "Please enter current password for username ${username}: " current_password
 
     echo " "
 
     password_check
 
-    if [ "$validated" ] && [ "${#arr_hash_current[*]}" -gt 0 ]
+    if [ "${validated}" ] && [ "${#validate_shadow}" -gt 0 ]
     then
         output=$(password_change)
-        echo -e "$output"
+        echo -e "${output}"
         read -rsp $'Once you\'ve saved the new password, press ENTER to continue.\n'
         echo -n "yes" > ~/.config/password-reset-done
     else
