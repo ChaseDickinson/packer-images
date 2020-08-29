@@ -4,6 +4,7 @@
 
 ## TODO: 
 
+- Figure out how to cut out the extra directory in the zip file export
 - Add Packer debug configuration
 - Vagrant boxes for servers
 - Remote development configuration for VS Code to Vagrant boxes
