@@ -17,7 +17,7 @@
   "http_directory": "{{template_dir}}/config/{{user `os_name`}}",
   "keep_registered": "false",
   "memory": "3072",
-  "output_directory": "..\\vms",
+  "output_directory": "..\\",
   "scripts_dir": "scripts",
   "shutdown_command": "echo '{{user `ssh_password`}}' | sudo -S shutdown -P now",
   "skip_export": "true",
