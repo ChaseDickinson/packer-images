@@ -109,7 +109,6 @@ More on Microsoft's linux-vm-tools can be found on [their repo](https://github.c
 
 - What are you installing?
   - AWS CLI
-  - Azure CLI
   - Chef Workstation
   - Docker & Docker-Compose
   - GIT

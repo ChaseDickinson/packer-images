@@ -152,14 +152,6 @@ aws() {
   rm awscliv2.zip
 }
 
-azure() {
-  echo -e "\n****************************************\n"
-  echo "  Installing Azure CLI"
-  echo -e "\n****************************************\n"
-
-  echo "${PASSWORD}" | curl -sL https://aka.ms/InstallAzureCLIDeb | sudo -SE -- sh -c "bash -"
-}
-
 hashicorp() {
   echo -e "\n****************************************\n"
   echo "  Install Packer - ${PACKER_VERSION}"
@@ -221,8 +213,6 @@ main() {
   node
   
   aws
-
-  azure
 
   hashicorp
 
