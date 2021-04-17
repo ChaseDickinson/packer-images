@@ -6,7 +6,7 @@
   "cpus": "1",
   "disk_block_size": "1",
   "disk_size": "25600",
-  "export_directory": "G:\\vms",
+  "export_directory": "C:\\vms",
   "filename_prefix": "{{isotime \"06.01.02\"}}",
   "files_dir": "files",
   "full_output_directory": "{{user `output_directory`}}\\{{user `full_vm_name`}}",

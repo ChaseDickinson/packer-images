@@ -56,7 +56,7 @@ setVersions() {
 
   if [ "${CHEF_WORKSTATION_VERSION}" = "latest" ]
   then
-    CHEF_WORKSTATION_VERSION=$(curl -s https://downloads.chef.io/products/workstation/stable | grep -Po '[0-9]+\.[0-9]+\.[0-9]+(?=/ubuntu/'"${OS_VERSION}"'/)' | head -1)
+    CHEF_WORKSTATION_VERSION=$(curl -s https://downloads.chef.io/tools/workstation/stable | grep -Po '[0-9]+\.[0-9]+\.[0-9]+(?=/ubuntu/'"${OS_VERSION}"'/)' | head -1)
   fi
   echo -e "\nCHEF_WORKSTATION_VERSION set to ${CHEF_WORKSTATION_VERSION}\n"
 
