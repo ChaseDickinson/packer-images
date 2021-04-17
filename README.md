@@ -113,7 +113,6 @@ More on Microsoft's linux-vm-tools can be found on [their repo](https://github.c
   - Docker & Docker-Compose
   - GIT
   - Microsoft's [linux-vm-tools](https://github.com/microsoft/linux-vm-tools) (enable "Enhanced Mode" for Ubuntu VMs)
-  - Node.js 12.x
   - Oh-My-Zsh
   - Packer
   - Python3

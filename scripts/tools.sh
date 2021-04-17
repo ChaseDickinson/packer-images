@@ -131,15 +131,6 @@ docker() {
   echo "${PASSWORD}" | sudo -S -- sh -c "usermod -aG docker $USER"
 }
 
-node() {
-  echo -e "\n****************************************\n"
-  echo "  Installing Node"
-  echo -e "\n****************************************\n"
-
-  echo "${PASSWORD}" | curl -sL https://deb.nodesource.com/setup_12.x | sudo -SE -- sh -c "bash -"
-  echo "${PASSWORD}" | sudo -S -- sh -c "apt-get install -y nodejs"
-}
-
 aws() {
   echo -e "\n****************************************\n"
   echo "  Installing AWS CLI"
@@ -210,8 +201,6 @@ main() {
 
   docker
 
-  node
-  
   aws
 
   hashicorp

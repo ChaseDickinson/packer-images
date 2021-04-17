@@ -5,8 +5,9 @@
   },
   "builders": [
     {
+      "name": "adds",
       "type": "hyperv-vmcx",
-      "clone_from_vmcx_path": "{{user `base_output_directory`}}",
+      "clone_from_vmcx_path": "{{user `export_directory`}}\\base\\{{user `os_name`}}_{{user `os_type`}}",
       "communicator": "{{user `communicator`}}",
       "cpus": "{{user `cpus`}}",
       "disk_block_size": "{{user `disk_block_size`}}",
