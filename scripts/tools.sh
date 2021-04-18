@@ -39,6 +39,7 @@ basePackages() {
     git \
     gnupg-agent \
     jq \
+    libarchive-tools \
     neofetch \
     python3-pip \
     shellcheck \
