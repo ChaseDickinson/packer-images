@@ -20,7 +20,7 @@ locals {
   http_directory        = "${path.cwd}/HCL/config/${var.os_name}"
   iso_url               = "http://releases.ubuntu.com/${var.os_version}/ubuntu-${var.os_version}-${var.os_type}-amd64.iso"
   keep_registered       = "false"
-  memory                = "2048"
+  memory                = "3072"
   output_directory      = "..\\"
   scripts_dir           = "scripts"
   shutdown_command      = "echo '${local.ssh_password}' | sudo -S shutdown -P now"
@@ -38,7 +38,7 @@ locals {
 # Input Variables
 ########################################
 variable "boot_command" {
-  type = string
+  type = list(string)
 }
 
 variable "iso_checksum" {

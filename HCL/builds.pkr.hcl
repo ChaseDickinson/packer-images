@@ -54,7 +54,7 @@ build {
       "echo \"Removing Directory: %DESTINATION%\"",
       "rmdir /Q /S %DESTINATION%",
       "echo \"Sleeping for 5 Seconds\"",
-      "sleep 5",
+      "timeout /t 5",
       "echo \"Copying %SOURCE% to %DESTINATION%\"",
       "xcopy %SOURCE% %DESTINATION% /E/H/I",
       "echo \"Removing Directory: %SOURCE%\"",

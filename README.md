@@ -5,11 +5,10 @@
 ## TODO: 
 
 - Figure out how to cut out the extra directory in the zip file export
-- Add Packer debug configuration
+- Initial launch of `zsh` & `VS Code`
 - Vagrant boxes for servers
 - Remote development configuration for VS Code to Vagrant boxes
 - Create Chef cookbooks
-- Convert to HCL
 - Convert focal server to new installer
 - Password retry logic
 - Validate/cleanup preseed files
