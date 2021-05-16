@@ -4,13 +4,15 @@
 
 ## TODO: 
 
-- Figure out how to cut out the extra directory in the zip file export
+- Leave oh-my-zsh theme set to default
+- Remove Powerline & Powerlevel10k
 - Initial launch of `zsh` & `VS Code`
 - Vagrant boxes for servers
 - Remote development configuration for VS Code to Vagrant boxes
-- Create Chef cookbooks
-- Convert focal server to new installer
-- Password retry logic
+- Figure out how to cut out the extra directory in the zip file export
+- Create Chef cookbooks (or Ansible playbooks?)
+- Convert focal server to new installer (or customize an existing Vagrant box?)
+- Password retry logic (or only access via Vagrant?)
 - Validate/cleanup preseed files
 
 ## Problem Statement
