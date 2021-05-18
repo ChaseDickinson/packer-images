@@ -4,12 +4,10 @@
 
 ## TODO: 
 
-- Validate the `adds` output location
-- Initial launch of `zsh` & `VS Code` - Need to test in the next build success
+- Figure out how to cut out the extra directory in the zip file export
 - Split functions & aliases into dedicated files
 - Vagrant boxes for servers
 - Remote development configuration for VS Code to Vagrant boxes
-- Figure out how to cut out the extra directory in the zip file export
 - Create Chef cookbooks (or Ansible playbooks?)
 - Convert focal server to new installer (or customize an existing Vagrant box?)
 - Password retry logic (or only access via Vagrant?)
