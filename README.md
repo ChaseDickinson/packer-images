@@ -4,9 +4,9 @@
 
 ## TODO: 
 
-- Leave oh-my-zsh theme set to default
-- Remove Powerline & Powerlevel10k
-- Initial launch of `zsh` & `VS Code`
+- Validate the `adds` output location
+- Initial launch of `zsh` & `VS Code` - Need to test in the next build success
+- Split functions & aliases into dedicated files
 - Vagrant boxes for servers
 - Remote development configuration for VS Code to Vagrant boxes
 - Figure out how to cut out the extra directory in the zip file export

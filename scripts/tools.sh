@@ -9,6 +9,7 @@ set -o nounset
 
 CHEF_WORKSTATION_VERSION="latest"
 DOCKER_COMPOSE_VERSION="latest"
+OP_VERSION="latest"
 OS_VERSION=$(lsb_release -rs)
 PACKER_VERSION="latest"
 TERRAFORM_VERSION="latest"
@@ -41,7 +42,6 @@ basePackages() {
     jq \
     libarchive-tools \
     neofetch \
-    python3-pip \
     shellcheck \
     software-properties-common \
     tldr \
@@ -66,6 +66,12 @@ setVersions() {
     DOCKER_COMPOSE_VERSION=$(curl -s https://api.github.com/repos/docker/compose/git/refs/tags | jq -r '.[].ref' | grep -Po '[0-9]+\.[0-9]+\.[0-9](?!-)' | tail -1)
   fi
   echo -e "\nDOCKER_COMPOSE_VERSION set to ${DOCKER_COMPOSE_VERSION}\n"
+
+  if [ "${OP_VERSION}" = "latest" ]
+  then
+    OP_VERSION=$(curl -s https://app-updates.agilebits.com/product_history/CLI | grep -Po '[0-9]+\.[0-9]+\.[0-9]+' | head -1)
+  fi
+  echo -e "\nOP_VERSION set to ${OP_VERSION}\n"
 
   if [ "${PACKER_VERSION}" = "latest" ]
   then
@@ -183,6 +189,17 @@ chef() {
   rm chef-workstation.deb
 }
 
+op() {
+  echo -e "\n****************************************\n"
+  echo "  Installing 1Password CLI - ${OP_VERSION}"
+  echo -e "\n****************************************\n"
+
+  curl -o "op_cli.zip" "https://cache.agilebits.com/dist/1P/op/pkg/v${OP_VERSION}/op_linux_amd64_v${OP_VERSION}.zip"
+  unzip op_cli.zip
+  echo "${PASSWORD}" | sudo -S -- sh -c "mv op /usr/bin/op"
+  rm op*
+}
+
 reboot() {
   echo -e "\n****************************************\n"
   echo "  Rebooting"
@@ -207,6 +224,8 @@ main() {
   hashicorp
 
   chef
+
+  op
 
   reboot
 }

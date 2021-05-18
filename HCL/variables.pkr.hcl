@@ -2,6 +2,11 @@
 # Local Variables
 ########################################
 locals {
+  adds_output_directory = "${local.export_directory}\\${local.timestamp}.${var.os_name}.adds"
+  adds_vm_name          = "${var.os_name}.${var.os_type}.adds"
+  artifact_directory    = "${local.export_directory}\\${var.os_name}_${var.os_type}\\"
+  artifact_output       = "${local.artifact_directory}${local.filename_prefix}"
+  base_artifact         = "${local.artifact_directory}\\base"
   base_output_directory = "${local.output_directory}\\${local.base_vm_name}"
   base_vm_name          = "${var.os_name}.${var.os_type}.base"
   boot_wait             = "2s"
@@ -31,7 +36,6 @@ locals {
   switch_name           = "Default Switch"
   timestamp             = formatdate("YYYYMMDDhhmmss", timestamp())
   vm_name               = "${local.timestamp}.${var.os_name}.${var.os_type}"
-  zip_directory         = "${local.export_directory}\\${var.os_name}_${var.os_type}\\${local.filename_prefix}"
 }
 
 ########################################

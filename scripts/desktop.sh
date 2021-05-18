@@ -57,26 +57,26 @@ cli() {
   echo "  Installing CLI customizations"
   echo -e "\n****************************************\n"
 
-  # Powerline
-  pip3 install powerline-status
+#  # Powerline
+#  pip3 install powerline-status
 
   # Oh-My-Zsh
   sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
 
   sleep 1
 
-  # Powerlevel10K
-  git clone --depth=1 https://github.com/romkatv/powerlevel10k.git "${HOME}"/.oh-my-zsh/custom/themes/powerlevel10k
+#  # Powerlevel10K
+#  git clone --depth=1 https://github.com/romkatv/powerlevel10k.git "${HOME}"/.oh-my-zsh/custom/themes/powerlevel10k
 
-  # Copy dotfiles
-  if [ "$(lsb_release -cs)" = "focal" ];
-  then
-    sed -i 's/python3.6/python3.8/' "${HOME}"/files/.zshrc
-  fi
+#  # Copy dotfiles
+#  if [ "$(lsb_release -cs)" = "focal" ];
+#  then
+#    sed -i 's/python3.6/python3.8/' "${HOME}"/files/.zshrc
+#  fi
 
   mv "${HOME}"/files/.zshrc "${HOME}"/.zshrc
 
-  mv "${HOME}"/files/.p10k.zsh "${HOME}"/.p10k.zsh
+#  mv "${HOME}"/files/.p10k.zsh "${HOME}"/.p10k.zsh
 
   # Set default shell
   echo "${PASSWORD}" | sudo -S -- sh -c "usermod --shell $(command -v zsh) $(whoami)"
@@ -182,6 +182,18 @@ linuxVmTools() {
   echo "${PASSWORD}" | sudo -S -- sh -c "apt-get autoremove -y"
 }
 
+firstLaunch() {
+    echo -e "\n****************************************\n"
+    echo "  Initial launch of VS Code"
+    echo -e "\n****************************************\n"
+    code &
+
+    echo -e "\n****************************************\n"
+    echo "  Initial launch of zsh"
+    echo -e "\n****************************************\n"
+    zsh &
+}
+
 main() {
   validateArguments  
 
@@ -198,6 +210,8 @@ main() {
   changePassword
 
   linuxVmTools
+
+  firstLaunch
 }
 
 main

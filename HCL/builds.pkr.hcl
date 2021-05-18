@@ -3,11 +3,17 @@
 ########################################
 build {
   sources = [
-    "source.hyperv-iso.base",
     "source.hyperv-iso.full",
+    "source.hyperv-iso.base",
+    "source.hyperv-vmcx.adds",
   ]
 
   provisioner "shell" {
+    only = [
+      "hyperv-iso.base",
+      "hyperv-iso.full"
+    ]
+
     environment_vars = [
       "PASSWORD=${local.ssh_password}",
       "USERNAME=${local.ssh_username}"
@@ -23,31 +29,43 @@ build {
   }
 
   provisioner "file" {
+    only = [
+      "hyperv-iso.full",
+      "hyperv-vmcx.adds"
+    ]
+
     destination = local.home
     source      = local.files_dir
-    only        = ["hyperv-iso.full"]
   }
 
   provisioner "shell" {
-    environment_vars = [
-      "PASSWORD=${local.ssh_password}",
-      "USERNAME=${local.ssh_username}"
+    only = [
+      "hyperv-iso.full",
+      "hyperv-vmcx.adds"
     ]
 
     expect_disconnect = true
     pause_before      = "10s"
 
+    environment_vars = [
+      "PASSWORD=${local.ssh_password}",
+      "USERNAME=${local.ssh_username}"
+    ]
+
     scripts = [
       "${local.scripts_dir}/tools.sh",
       "${local.scripts_dir}/${var.os_type}.sh"
     ]
-    only = ["hyperv-iso.full"]
   }
 
   post-processor "shell-local" {
+    only = ["hyperv-iso.base"]
+
+    tempfile_extension = ".cmd"
+
     environment_vars = [
       "SOURCE=${local.base_output_directory}",
-      "DESTINATION=${local.export_directory}\\base\\${var.os_name}_${var.os_type}"
+      "DESTINATION=${local.base_artifact}"
     ]
 
     inline = [
@@ -60,14 +78,15 @@ build {
       "echo \"Removing Directory: %SOURCE%\"",
       "rmdir /Q /S %SOURCE%"
     ]
-
-    tempfile_extension = ".cmd"
-    only               = ["hyperv-iso.base"]
   }
 
   post-processor "compress" {
+    only = [
+      "hyperv-iso.full",
+      "hyperv-vmcx.adds"
+    ]
+
     keep_input_artifact = false
-    output              = "${local.zip_directory}.full.zip"
-    only                = ["hyperv-iso.full"]
+    output              = "${local.artifact_output}.${source.type}.zip"
   }
 }
