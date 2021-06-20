@@ -105,7 +105,7 @@ build {
     tempfile_extension = ".cmd"
 
     environment_vars = [
-      "SOURCE=base",
+      "SOURCE=${local.vm_names.base}",
       "DESTINATION=${local.artifact_outputs.base}"
     ]
 

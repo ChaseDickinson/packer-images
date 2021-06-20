@@ -15,7 +15,7 @@ source "hyperv-iso" "full" {
   iso_url          = local.iso_url
   keep_registered  = local.keep_registered
   memory           = local.memory
-  output_directory = "full"
+  output_directory = local.vm_names.full
   shutdown_command = local.shutdown_command
   skip_export      = local.skip_export
   ssh_password     = local.ssh_password
@@ -42,9 +42,8 @@ source "hyperv-iso" "base" {
   iso_url          = local.iso_url
   keep_registered  = local.keep_registered
   memory           = local.memory
-  output_directory = "base"
+  output_directory = local.vm_names.base
   shutdown_command = local.shutdown_command
-  skip_export      = local.skip_export
   ssh_password     = local.ssh_password
   ssh_timeout      = local.ssh_timeout
   ssh_username     = local.ssh_username
@@ -64,7 +63,7 @@ source "hyperv-vmcx" "adds" {
   headless             = local.headless
   keep_registered      = local.keep_registered
   memory               = local.memory
-  output_directory     = "adds"
+  output_directory     = local.vm_names.adds
   shutdown_command     = local.shutdown_command
   skip_export          = local.skip_export
   ssh_password         = local.ssh_password

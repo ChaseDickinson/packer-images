@@ -3,16 +3,20 @@
 ########################################
 locals {
   # Output variables
-  archive_filename = "${local.timestamp}.zip"
   export_directory = "C:\\vms\\${local.os_info}"
   os_info          = "${var.os_name}_${var.os_type}"
   output_directory = "..\\..\\vms\\${local.os_info}"
   timestamp        = formatdate("YYMMDDhhmm", timestamp())
 
   # Maps
+  archive_filenames = {
+    "adds" = "adds_${local.timestamp}.zip"
+    "full" = "full_${local.timestamp}.zip"
+  }
+
   artifact_outputs = {
-    "adds" = "${local.export_directory}\\adds\\${local.archive_filename}"
-    "full" = "${local.export_directory}\\full\\${local.archive_filename}"
+    "adds" = "${local.export_directory}\\${local.archive_filenames.adds}"
+    "full" = "${local.export_directory}\\${local.archive_filenames.full}"
     "base" = "${local.export_directory}\\base"
   }
 
