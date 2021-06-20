@@ -1,8 +1,0 @@
-{
-  "boot_command": "<esc><esc><esc><esc>linux /casper/vmlinuz url=http://{{.HTTPIP}}:{{.HTTPPort}}/{{user `os_type`}}.cfg boot=casper automatic-ubiquity noninteractive noprompt --- <enter>initrd /casper/initrd <enter>boot<enter>",
-  "iso_checksum": "f295570badb09a606d97ddfc3421d7bf210b4a81c07ba81e9c040eda6ddea6a0",
-  "iso_url": "http://releases.ubuntu.com/{{user `os_version`}}/ubuntu-{{user `os_version`}}-{{user `os_type`}}-amd64.iso",
-  "os_name": "bionic",
-  "os_type": "desktop",
-  "os_version": "18.04.5"
-}

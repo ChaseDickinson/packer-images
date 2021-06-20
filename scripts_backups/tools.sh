@@ -17,6 +17,10 @@ VAGRANT_VERSION="latest"
 VIRTUALBOX_VERSION="latest"
 
 validateArguments() {
+  if [ -z "${PASSWORD-}" ]; then
+    printf "\n\nError: 'PASSWORD' is required.\n\n"
+    exit 1
+  fi
   if [ -z "${USERNAME-}" ]; then
     printf "\n\nError: 'USERNAME' is required.\n\n"
     exit 1
@@ -29,8 +33,8 @@ basePackages() {
   echo "  Installing base packages"
   echo -e "\n****************************************\n"
 
-  apt-get update
-  apt-get install -y \
+  echo "${PASSWORD}" | sudo -S -- sh -c "apt-get update"
+  echo "${PASSWORD}" | sudo -S -- sh -c "apt-get install -y \
     apt-transport-https \
     ca-certificates \
     curl \
@@ -44,7 +48,7 @@ basePackages() {
     tldr \
     tree \
     unzip \
-    zsh
+    zsh"
 }
 
 setVersions() {
@@ -100,15 +104,15 @@ virtualbox() {
   echo "  Installing VirtualBox - ${VIRTUALBOX_VERSION}"
   echo -e "\n****************************************\n"
 
-  wget -q https://www.virtualbox.org/download/oracle_vbox_2016.asc -O- | apt-key add -
-  wget -q https://www.virtualbox.org/download/oracle_vbox.asc -O- | apt-key add -
-  echo "deb [arch=amd64] https://download.virtualbox.org/virtualbox/debian $(lsb_release -cs) contrib" > /etc/apt/sources.list.d/virtualbox.list
+  echo "${PASSWORD}" | wget -q https://www.virtualbox.org/download/oracle_vbox_2016.asc -O- | sudo -S -- sh -c "apt-key add -"
+  echo "${PASSWORD}" | wget -q https://www.virtualbox.org/download/oracle_vbox.asc -O- | sudo -S -- sh -c "apt-key add -"
+  echo "${PASSWORD}" | sudo -S -- sh -c "echo \"deb [arch=amd64] http://download.virtualbox.org/virtualbox/debian $(lsb_release -cs) contrib\" > /etc/apt/sources.list.d/virtualbox.list"
 
-  apt-get update
-  apt-get install -y virtualbox-"${VIRTUALBOX_VERSION%.*}"
+  echo "${PASSWORD}" | sudo -S -- sh -c "apt-get update"
+  echo "${PASSWORD}" | sudo -S -- sh -c "apt-get install -y virtualbox-${VIRTUALBOX_VERSION%.*}"
   
   wget https://download.virtualbox.org/virtualbox/"${VIRTUALBOX_VERSION}"/Oracle_VM_VirtualBox_Extension_Pack-"${VIRTUALBOX_VERSION}".vbox-extpack
-  yes | VBoxManage extpack install Oracle_VM_VirtualBox_Extension_Pack-"${VIRTUALBOX_VERSION}".vbox-extpack
+  echo "${PASSWORD}" | sudo -SE -- sh -c "yes | VBoxManage extpack install Oracle_VM_VirtualBox_Extension_Pack-${VIRTUALBOX_VERSION}.vbox-extpack"
   rm Oracle_VM_VirtualBox_Extension_Pack-"${VIRTUALBOX_VERSION}".vbox-extpack
 }
 
@@ -118,21 +122,21 @@ docker() {
   echo -e "\n****************************************\n"
 
   # Installing Docker
-  curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add -
-  add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
-  apt-get update
-  apt-get install -y docker-ce docker-ce-cli containerd.io
+  echo "${PASSWORD}" | curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo -S -- sh -c "apt-key add -"
+  echo "${PASSWORD}" | sudo -S -- sh -c "add-apt-repository \"deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable\""
+  echo "${PASSWORD}" | sudo -S -- sh -c "apt-get update"
+  echo "${PASSWORD}" | sudo -S -- sh -c "apt-get install -y docker-ce docker-ce-cli containerd.io"
 
   echo -e "\n****************************************\n"
   echo "  Installing Docker Compose - ${DOCKER_COMPOSE_VERSION}"
   echo -e "\n****************************************\n"
 
   # Installing Docker Compose
-  curl -L "https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-  chmod +x /usr/local/bin/docker-compose
+  echo "${PASSWORD}" | sudo -S -- sh -c "curl -L \"https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-$(uname -s)-$(uname -m)\" -o /usr/local/bin/docker-compose"
+  echo "${PASSWORD}" | sudo -S -- sh -c "chmod +x /usr/local/bin/docker-compose"
 
   # Grant user permissions to Docker
-  usermod -aG docker "${USERNAME}"
+  echo "${PASSWORD}" | sudo -S -- sh -c "usermod -aG docker $USER"
 }
 
 aws() {
@@ -142,7 +146,7 @@ aws() {
 
   curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
   unzip awscliv2.zip
-  ./aws/install
+  echo "${PASSWORD}" | sudo -S -- sh -c "./aws/install"
   rm -rf aws
   rm awscliv2.zip
 }
@@ -154,7 +158,7 @@ hashicorp() {
 
   curl -o "packer.zip" "https://releases.hashicorp.com/packer/${PACKER_VERSION}/packer_${PACKER_VERSION}_linux_amd64.zip"
   unzip packer.zip
-  mv packer /usr/bin/packer
+  echo "${PASSWORD}" | sudo -S -- sh -c "mv packer /usr/bin/packer"
   rm packer.zip
 
   echo -e "\n****************************************\n"
@@ -163,7 +167,7 @@ hashicorp() {
 
   curl -o "terraform.zip" "https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip"
   unzip terraform.zip
-  mv terraform /usr/bin/terraform
+  echo "${PASSWORD}" | sudo -S -- sh -c "mv terraform /usr/bin/terraform"
   rm terraform.zip
 
   echo -e "\n****************************************\n"
@@ -172,7 +176,7 @@ hashicorp() {
 
   curl -o "vagrant.zip" "https://releases.hashicorp.com/vagrant/${VAGRANT_VERSION}/vagrant_${VAGRANT_VERSION}_linux_amd64.zip"
   unzip vagrant.zip
-  mv vagrant /usr/bin/vagrant
+  echo "${PASSWORD}" | sudo -S -- sh -c "mv vagrant /usr/bin/vagrant"
   rm vagrant.zip
 }
 
@@ -182,7 +186,7 @@ chef() {
   echo -e "\n****************************************\n"
 
   curl -o "chef-workstation.deb" "https://packages.chef.io/files/stable/chef-workstation/${CHEF_WORKSTATION_VERSION}/ubuntu/$(lsb_release -rs)/chef-workstation_${CHEF_WORKSTATION_VERSION}-1_amd64.deb"
-  dpkg -i chef-workstation.deb
+  echo "${PASSWORD}" | sudo -S -- sh -c "dpkg -i chef-workstation.deb"
   rm chef-workstation.deb
 }
 
@@ -193,8 +197,16 @@ op() {
 
   curl -o "op_cli.zip" "https://cache.agilebits.com/dist/1P/op/pkg/v${OP_VERSION}/op_linux_amd64_v${OP_VERSION}.zip"
   unzip op_cli.zip
-  mv op /usr/bin/op
+  echo "${PASSWORD}" | sudo -S -- sh -c "mv op /usr/bin/op"
   rm op*
+}
+
+reboot() {
+  echo -e "\n****************************************\n"
+  echo "  Rebooting"
+  echo -e "\n****************************************\n"
+  
+  echo "${PASSWORD}" | sudo -S -- sh -c "reboot"
 }
 
 main() {
@@ -215,6 +227,8 @@ main() {
   chef
 
   op
+
+  reboot
 }
 
 main

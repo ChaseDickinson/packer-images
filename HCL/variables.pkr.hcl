@@ -16,7 +16,6 @@ locals {
   disk_size             = "25600"
   export_directory      = "C:\\vms"
   filename_prefix       = formatdate("YY.MM.DD", timestamp())
-  files_dir             = "files"
   full_output_directory = "${local.output_directory}\\${local.full_vm_name}"
   full_vm_name          = "${local.vm_name}.full"
   generation            = "2"

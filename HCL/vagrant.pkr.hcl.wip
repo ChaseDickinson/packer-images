@@ -5,6 +5,7 @@ source "vagrant" "example" {
   add_force = true
   insert_key = true
   teardown_method = destroy
+  output_dir = "C:\vms\boxes"
 }
 
 build {

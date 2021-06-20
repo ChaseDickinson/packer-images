@@ -1,3 +1,6 @@
+# TODO
+# Figure out how to get around the lock error below!
+
 ########################################
 # Builds
 ########################################
@@ -9,22 +12,32 @@ build {
   ]
 
   provisioner "shell" {
-    only = [
-      "hyperv-iso.base",
-      "hyperv-iso.full"
-    ]
+    execute_command = "echo '${local.ssh_password}' | sudo -S sh -c '{{ .Path }}'"
+    pause_before    = "10s"
+    script          = "${local.scripts_dir}/upgrades.sh"
+  }
 
-    environment_vars = [
-      "PASSWORD=${local.ssh_password}",
-      "USERNAME=${local.ssh_username}"
-    ]
-
+  provisioner "shell" {
     expect_disconnect = true
-    pause_before      = "10s"
+    pause_before = "10s"
+    inline = [
+      "echo '${local.ssh_password}' | sudo -S shutdown -r now"
+    ]
+  }
 
-    scripts = [
-      "${local.scripts_dir}/base.sh",
+  provisioner "shell" {
+    execute_command = "echo '${local.ssh_password}' | sudo -S sh -c '{{ .Path }}'"
+    pause_before    = "10s"
+    scripts         = [
       "${local.scripts_dir}/linux_cloud_tools.sh",
+      "${local.scripts_dir}/cleanup.sh"
+    ]
+  }
+
+  provisioner "shell" {
+    pause_before = "10s"
+    scripts = [
+      "${local.scripts_dir}/user_base.sh"
     ]
   }
 
@@ -34,8 +47,8 @@ build {
       "hyperv-vmcx.adds"
     ]
 
-    destination = local.home
-    source      = local.files_dir
+    destination = "/tmp/files/"
+    source      = "guest_scripts"
   }
 
   provisioner "shell" {
@@ -44,17 +57,45 @@ build {
       "hyperv-vmcx.adds"
     ]
 
-    expect_disconnect = true
-    pause_before      = "10s"
-
     environment_vars = [
-      "PASSWORD=${local.ssh_password}",
       "USERNAME=${local.ssh_username}"
     ]
 
-    scripts = [
+    execute_command = "echo '${local.ssh_password}' | sudo -S sh -c '{{ .Vars }} {{ .Path }}'"
+    pause_before    = "10s"
+    scripts         = [
       "${local.scripts_dir}/tools.sh",
       "${local.scripts_dir}/${var.os_type}.sh"
+    ]
+  }
+
+  provisioner "shell" {
+    expect_disconnect = true
+    pause_before = "10s"
+    inline = [
+      "echo '${local.ssh_password}' | sudo -S shutdown -r now"
+    ]
+  }
+
+  provisioner "file" {
+    only = [
+      "hyperv-iso.full",
+      "hyperv-vmcx.adds"
+    ]
+
+    destination = "/tmp/files/"
+    source      = "guest_files"
+  }
+
+  provisioner "shell" {
+    only = [
+      "hyperv-iso.full",
+      "hyperv-vmcx.adds"
+    ]
+
+    pause_before = "10s"
+    scripts = [
+      "${local.scripts_dir}/user_settings.sh"
     ]
   }
 

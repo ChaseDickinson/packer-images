@@ -30,19 +30,7 @@ cleanup() {
   echo -e "\n****************************************\n"
 
   echo "${PASSWORD}" | sudo -S -- sh -c "apt-get autoremove -y"
-
-  echo -e "\n****************************************\n"
-  echo "  Create working directory"
-  echo -e "\n****************************************\n"
-
-  mkdir "${HOME}"/wip
-
-  echo -e "\n****************************************\n"
-  echo "  Create SSH keys"
-  echo -e "\n****************************************\n"
-
-  mkdir "${HOME}"/.ssh
-  ssh-keygen -t rsa -N "" -f "${HOME}"/.ssh/id_rsa.key
+  echo "${PASSWORD}" | sudo -S -- sh -c "apt-get clean"
 
   echo -e "\n****************************************\n"
   echo "  Disable auto updates"
@@ -52,6 +40,23 @@ cleanup() {
   echo "${PASSWORD}" | sudo -S -- sh -c "systemctl disable apt-daily.timer"
   echo "${PASSWORD}" | sudo -S -- sh -c "systemctl mask apt-daily.service"
   echo "${PASSWORD}" | sudo -S -- sh -c "systemctl daemon-reload"
+}
+
+baseConfig() {
+  echo -e "\n****************************************\n"
+  echo "  Create working directory"
+  echo -e "\n****************************************\n"
+
+  mkdir -p "${HOME}"/code
+  ls -lah "${HOME}"
+
+  echo -e "\n****************************************\n"
+  echo "  Create SSH keys"
+  echo -e "\n****************************************\n"
+
+  mkdir -p "${HOME}"/.ssh
+  ls -lah "${HOME}"
+  ssh-keygen -t rsa -N "" -f "${HOME}"/.ssh/id_rsa.key
 }
 
 reboot() {
@@ -68,6 +73,8 @@ main() {
   installUpdates
 
   cleanup
+
+  baseConfig
 
   reboot
 }

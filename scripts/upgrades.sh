@@ -1,25 +1,24 @@
 #!/bin/bash
 
 # --------------------------------------------------------------------------------
-# Install latest cloud tools for kernal version
+# Ensure latest upgrades are installed
 # --------------------------------------------------------------------------------
 set -o errexit
 set -o errtrace
 set -o nounset
 
-cloudtools() {
+installUpdates() {
+  #install latest updates available
   echo -e "\n****************************************\n"
-  echo "  Reinstalling Cloud Tools"
+  echo "  Install Latest Upgrades"
   echo -e "\n****************************************\n"
 
-  apt-get install -y \
-    linux-tools-virtual \
-    linux-cloud-tools-virtual \
-    linux-cloud-tools-"$(uname -r)"
+  apt-get update
+  apt-get dist-upgrade -y
 }
 
 main() {
-  cloudtools
+  installUpdates
 }
 
 main

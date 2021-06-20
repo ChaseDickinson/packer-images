@@ -8,10 +8,6 @@ set -o errtrace
 set -o nounset
 
 validateArguments() {
-  if [ -z "${PASSWORD-}" ]; then
-    printf "\n\nError: 'PASSWORD' is required.\n\n"
-    exit 1
-  fi
   if [ -z "${USERNAME-}" ]; then
     printf "\n\nError: 'USERNAME' is required.\n\n"
     exit 1
@@ -23,92 +19,40 @@ fonts() {
   echo "  Installing fonts"
   echo -e "\n****************************************\n"
 
-  mkdir "${HOME}"/nerd-fonts
-  cd "${HOME}"/nerd-fonts
+  mkdir -p /tmp/nerd-fonts
+  cd /tmp/nerd-fonts
   # Hack
   curl -fLo "Hack.ttf" https://github.com/ryanoasis/nerd-fonts/blob/master/patched-fonts/Hack/Regular/complete/Hack%20Regular%20Nerd%20Font%20Complete.ttf?raw=true
+  # Victor Mono
+  curl -fLo "VictorMono.ttf" https://github.com/ryanoasis/nerd-fonts/blob/master/patched-fonts/VictorMono/Regular/complete/Victor%20Mono%20Regular%20Nerd%20Font%20Complete%20Mono.ttf?raw=true
 
   cd "${HOME}"
-  echo "${PASSWORD}" | sudo -S -- sh -c "mv /home/${USERNAME}/nerd-fonts /usr/share/fonts/truetype/nerd-fonts"
-  echo "${PASSWORD}" | sudo -S -- sh -c "chown -R root:root /usr/share/fonts/truetype/nerd-fonts"
-  echo "${PASSWORD}" | sudo -S -- sh -c "chmod 755 /usr/share/fonts/truetype/nerd-fonts"
-  echo "${PASSWORD}" | sudo -S -- sh -c "find /usr/share/fonts/truetype/nerd-fonts -type f -iname *.ttf -exec chmod 644 {} \;"
+  mv /tmp/nerd-fonts /usr/share/fonts/truetype/nerd-fonts
+  chown -R root:root /usr/share/fonts/truetype/nerd-fonts
+  chmod 755 /usr/share/fonts/truetype/nerd-fonts
+  find /usr/share/fonts/truetype/nerd-fonts -type f -iname '*.ttf' -exec chmod 644 {} \;
 
-  echo "${PASSWORD}" | sudo -S -- sh -c "fc-cache -fv"
+  fc-cache -fv
 }
 
 vsCode() {
   echo -e "\n****************************************\n"
   echo "  Installing Visual Studio Code"
   echo -e "\n****************************************\n"
-
-  sleep 1
-
   curl https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > packages.microsoft.gpg
-  echo "${PASSWORD}" | sudo -S -- sh -c "install -o root -g root -m 644 packages.microsoft.gpg /usr/share/keyrings/"
-  echo "${PASSWORD}" | sudo -S -- sh -c "echo \"deb [arch=amd64 signed-by=/usr/share/keyrings/packages.microsoft.gpg] https://packages.microsoft.com/repos/vscode stable main\" > /etc/apt/sources.list.d/vscode.list"
-  echo "${PASSWORD}" | sudo -S -- sh -c "apt-get update"
-  echo "${PASSWORD}" | sudo -S -- sh -c "apt-get install -y code"
+  install -o root -g root -m 644 packages.microsoft.gpg /usr/share/keyrings/
+  echo "deb [arch=amd64 signed-by=/usr/share/keyrings/packages.microsoft.gpg] https://packages.microsoft.com/repos/vscode stable main" > /etc/apt/sources.list.d/vscode.list
+  apt-get update
+  apt-get install -y code
   rm packages.microsoft.gpg
 }
 
-cli() {
+shell() {
   echo -e "\n****************************************\n"
-  echo "  Installing CLI customizations"
+  echo "  Set Zsh as default shell"
   echo -e "\n****************************************\n"
-
-  # Oh-My-Zsh
-  sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
-
-  sleep 1
-
-  mv "${HOME}"/files/.zshrc "${HOME}"/.zshrc
-
   # Set default shell
-  echo "${PASSWORD}" | sudo -S -- sh -c "usermod --shell $(command -v zsh) $(whoami)"
-}
-
-gnomeConfig() {
-  echo -e "\n****************************************\n"
-  echo "  Configuring GNOME settings"
-  echo -e "\n****************************************\n"
-
-  gsettings set org.gnome.shell favorite-apps "['org.gnome.Nautilus.desktop', 'org.gnome.Terminal.desktop', 'code.desktop', 'virtualbox.desktop', 'org.gnome.gedit.desktop', 'firefox.desktop', 'gnome-control-center.desktop']"
-  gsettings set org.gnome.desktop.session idle-delay 0
-  gsettings set org.gnome.desktop.interface text-scaling-factor 1.25
-  gsettings set org.gnome.shell.extensions.dash-to-dock click-action minimize
-
-  echo -e "\n****************************************\n"
-  echo "  Configuring terminal theme"
-  echo -e "\n****************************************\n"
-
-  profile=$(gsettings get org.gnome.Terminal.ProfilesList default | xargs)
-  gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:"${profile}"/ default-size-rows 30
-  gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:"${profile}"/ default-size-columns 120
-  gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:"${profile}"/ font 'Hack Nerd Font 14'
-  gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:"${profile}"/ use-system-font false
-  gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:"${profile}"/ use-theme-colors false
-  gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:"${profile}"/ background-color '#0D0D17'
-  gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:"${profile}"/ foreground-color '#E6E5E5'
-  gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:"${profile}"/ palette "['#17384C', '#D15123', '#027C9B', '#FCA02F', '#1E4950', '#68D4F1', '#50A3B5', '#DEB88D', '#434B53', '#D48678', '#628D98', '#FDD39F', '#1BBCDD', '#BBE3EE', '#87ACB4', '#FEE4CE']"
-}
-
-vsCodeConfig() {
-  echo -e "\n****************************************\n"
-  echo "  Installing VS Code extensions"
-  echo -e "\n****************************************\n"
-
-  #remove whitespace from list
-  sed -i 's/[[:space:]]*$//' "${HOME}"/files/code_extensions.list
-  < "${HOME}"/files/code_extensions.list xargs -L 1 code --install-extension
-  rm "${HOME}"/files/code_extensions.list
-
-  echo -e "\n****************************************\n"
-  echo "  Copying VS Code settings"
-  echo -e "\n****************************************\n"
-
-  mkdir -p "${HOME}"/.config/Code/User
-  mv "${HOME}"/files/settings.json "${HOME}"/.config/Code/User/settings.json
+  usermod --shell "$(command -v zsh)" "${USERNAME}"
 }
 
 changePassword() {
@@ -116,11 +60,11 @@ changePassword() {
   echo "  Implementing password change prompt"
   echo -e "\n****************************************\n"
 
-  echo "${PASSWORD}" | sudo -S -- sh -c "mkdir -p /usr/local/scripts"
-  echo "${PASSWORD}" | sudo -S -- sh -c "mv /home/${USERNAME}/files/passwd.sh /usr/local/scripts/passwd.sh"
-  echo "${PASSWORD}" | sudo -S -- sh -c "sed -i -e 's/\\r$//' /usr/local/scripts/passwd.sh"
-  echo "${PASSWORD}" | sudo -S -- sh -c "chmod +x /usr/local/scripts/passwd.sh"
-  cat <<EOF > "${HOME}"/files/change_password.desktop
+  mkdir -p /usr/local/scripts
+  mv /tmp/files/passwd.sh /usr/local/scripts/passwd.sh
+  sed -i -e 's/\\r$//' /usr/local/scripts/passwd.sh
+  chmod +x /usr/local/scripts/passwd.sh
+  cat <<EOF > /tmp/files/change_password.desktop
 [Desktop Entry]
 Name=Change Password
 Icon=preferences-system
@@ -134,11 +78,7 @@ OnlyShowIn=GNOME;Unity;
 NoDisplay=true
 AutostartCondition=unless-exists password-reset-done
 EOF
-  # echo "${PASSWORD}" | sudo -S -- sh -c "mv /etc/xdg/autostart/gnome-initial-setup-first-login.desktop /etc/xdg/autostart/gnome-initial-setup-first-login.desktop.old"
-  touch "${HOME}"/.config/gnome-initial-setup-done
-  echo "${PASSWORD}" | sudo -S -- sh -c "mv /home/${USERNAME}/files/change_password.desktop /etc/xdg/autostart/change_password.desktop"
-  mv "${HOME}"/files/install.sh "${HOME}"/install.sh
-  rm -Rf "${HOME}"/files
+  mv /tmp/files/change_password.desktop /etc/xdg/autostart/change_password.desktop
 }
 
 linuxVmTools() {
@@ -148,39 +88,35 @@ linuxVmTools() {
     echo "  Installing prerequirements for Bionic"
     echo -e "\n****************************************\n"  
 
-    echo "${PASSWORD}" | sudo -S -- sh -c "apt-get install -y xserver-xorg-core xserver-xorg-input-all"
+    apt-get install -y xserver-xorg-core xserver-xorg-input-all
   fi
 
   echo -e "\n****************************************\n"
   echo "  Installing Microsoft Linux-VM-Tools - $(lsb_release -cs)"
   echo -e "\n****************************************\n"
 
-  cd "${HOME}"
+  cd /tmp/files
   chmod +x install.sh
-  echo "${PASSWORD}" | sudo -S -- bash -c "./install.sh"
-  rm install.sh
+  ./install.sh
 
   echo -e "\n****************************************\n"
   echo "  Autoremove"
   echo -e "\n****************************************\n"
 
-  echo "${PASSWORD}" | sudo -S -- sh -c "apt-get update"
-  echo "${PASSWORD}" | sudo -S -- sh -c "apt-get autoremove -y"
+  apt-get update
+  apt-get autoremove -y
+  apt-get clean
 }
 
 main() {
   validateArguments  
 
   fonts
-  
-  vsCode
-  
-  cli
 
-  gnomeConfig
-  
-  vsCodeConfig
-  
+  vsCode
+
+  shell
+
   changePassword
 
   linuxVmTools
