@@ -15,14 +15,14 @@ source "hyperv-iso" "full" {
   iso_url          = local.iso_url
   keep_registered  = local.keep_registered
   memory           = local.memory
-  output_directory = local.full_output_directory
+  output_directory = "full"
   shutdown_command = local.shutdown_command
   skip_export      = local.skip_export
   ssh_password     = local.ssh_password
   ssh_timeout      = local.ssh_timeout
   ssh_username     = local.ssh_username
   switch_name      = local.switch_name
-  vm_name          = local.full_vm_name
+  vm_name          = local.vm_names.full
 }
 
 ########################################
@@ -42,20 +42,21 @@ source "hyperv-iso" "base" {
   iso_url          = local.iso_url
   keep_registered  = local.keep_registered
   memory           = local.memory
-  output_directory = local.base_output_directory
+  output_directory = "base"
   shutdown_command = local.shutdown_command
+  skip_export      = local.skip_export
   ssh_password     = local.ssh_password
   ssh_timeout      = local.ssh_timeout
   ssh_username     = local.ssh_username
   switch_name      = local.switch_name
-  vm_name          = local.base_vm_name
+  vm_name          = local.vm_names.base
 }
 
 ########################################
 # Adds build
 ########################################
 source "hyperv-vmcx" "adds" {
-  clone_from_vmcx_path = local.base_artifact
+  clone_from_vmcx_path = local.artifact_outputs.base
   communicator         = local.communicator
   cpus                 = local.cpus
   disk_block_size      = local.disk_block_size
@@ -63,12 +64,12 @@ source "hyperv-vmcx" "adds" {
   headless             = local.headless
   keep_registered      = local.keep_registered
   memory               = local.memory
-  output_directory     = local.adds_output_directory
+  output_directory     = "adds"
   shutdown_command     = local.shutdown_command
   skip_export          = local.skip_export
   ssh_password         = local.ssh_password
   ssh_timeout          = local.ssh_timeout
   ssh_username         = local.ssh_username
   switch_name          = local.switch_name
-  vm_name              = local.adds_vm_name
+  vm_name              = local.vm_names.adds
 }

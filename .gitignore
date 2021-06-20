@@ -3,3 +3,8 @@
 *-base
 *logs
 *.vagrant/
+
+#prevent committing build directories
+*adds
+*base
+*full

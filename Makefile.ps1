@@ -9,6 +9,14 @@ function Test-PackerHclBuild ($nickname, $type) {
 }
 Set-Item -Path Alias:pv -Value Test-PackerHclBuild
 
+function Set-PackerHclFormat {
+  Write-Output "`n########################################`n"
+  Write-Output "  Packer Format"
+  Write-Output "`n########################################`n"  
+  packer fmt -recursive .\HCL
+}
+Set-Item -Path Alias:pfmt -Value Set-PackerHclFormat
+
 function New-PackerHclBuild ($nickname, $type) {
   $timestamp = Get-Date -Format "yyMMddHHmmss"
   $env:PACKER_LOG = 1

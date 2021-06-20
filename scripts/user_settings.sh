@@ -68,14 +68,24 @@ loadDotfiles() {
   echo -e "\n****************************************\n"
   echo "  Ensure directories are created"
   echo -e "\n****************************************\n"
-  mkdir -p "${HOME}"/.config/Code/User
-  mkdir "${HOME}"/.oh-my-zsh/custom
-  
+  if [ ! -d "${HOME}"/.config/Code/User ]; then
+    mkdir -p "${HOME}"/.config/Code/User
+    echo "VS Code config directory created."
+  else
+    echo "VS Code config directory already exists."
+  fi
+
+  if [ ! -d "${HOME}"/.oh-my-zsh/custom ]; then
+    mkdir "${HOME}"/.oh-my-zsh/custom
+    echo "OMZ custom directory created."
+  else
+    echo "OMZ custom directory already exists."
+  fi
+
   echo -e "\n****************************************\n"
   echo "  Configuring VS Code settings"
   echo -e "\n****************************************\n"
   mv "${HOME}"/dotfiles/vscode_settings.json "${HOME}"/.config/Code/User/settings.json
-  ln -sv "${HOME}"/.config/Code/User/settings.json "${HOME}"/dotfiles/vscode_settings.json
 
   echo -e "\n****************************************\n"
   echo "  Configuring Zsh profile"
@@ -85,19 +95,16 @@ loadDotfiles() {
   fi
 
   mv "${HOME}"/dotfiles/.zshrc "${HOME}"/.zshrc
-  ln -sv "${HOME}"/.zshrc "${HOME}"/dotfiles/.zshrc
 
   echo -e "\n****************************************\n"
   echo "  Configuring Zsh aliases"
   echo -e "\n****************************************\n"
   mv "${HOME}"/dotfiles/aliases.zsh "${HOME}"/.oh-my-zsh/custom/aliases.zsh
-  ln -sv "${HOME}"/.oh-my-zsh/custom/aliases.zsh "${HOME}"/dotfiles/aliases.zsh
 
   echo -e "\n****************************************\n"
   echo "  Configuring Zsh functions"
   echo -e "\n****************************************\n"
   mv "${HOME}"/dotfiles/functions.zsh "${HOME}"/.oh-my-zsh/custom/functions.zsh
-  ln -sv "${HOME}"/.oh-my-zsh/custom/functions.zsh "${HOME}"/dotfiles/functions.zsh
 }
 
 main() {

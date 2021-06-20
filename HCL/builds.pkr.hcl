@@ -19,7 +19,7 @@ build {
 
   provisioner "shell" {
     expect_disconnect = true
-    pause_before = "10s"
+    pause_before      = "10s"
     inline = [
       "echo '${local.ssh_password}' | sudo -S shutdown -r now"
     ]
@@ -28,7 +28,7 @@ build {
   provisioner "shell" {
     execute_command = "echo '${local.ssh_password}' | sudo -S sh -c '{{ .Path }}'"
     pause_before    = "10s"
-    scripts         = [
+    scripts = [
       "${local.scripts_dir}/linux_cloud_tools.sh",
       "${local.scripts_dir}/cleanup.sh"
     ]
@@ -63,7 +63,7 @@ build {
 
     execute_command = "echo '${local.ssh_password}' | sudo -S sh -c '{{ .Vars }} {{ .Path }}'"
     pause_before    = "10s"
-    scripts         = [
+    scripts = [
       "${local.scripts_dir}/tools.sh",
       "${local.scripts_dir}/${var.os_type}.sh"
     ]
@@ -71,7 +71,7 @@ build {
 
   provisioner "shell" {
     expect_disconnect = true
-    pause_before = "10s"
+    pause_before      = "10s"
     inline = [
       "echo '${local.ssh_password}' | sudo -S shutdown -r now"
     ]
@@ -105,8 +105,8 @@ build {
     tempfile_extension = ".cmd"
 
     environment_vars = [
-      "SOURCE=${local.base_output_directory}",
-      "DESTINATION=${local.base_artifact}"
+      "SOURCE=base",
+      "DESTINATION=${local.artifact_outputs.base}"
     ]
 
     inline = [
@@ -123,11 +123,19 @@ build {
 
   post-processor "compress" {
     only = [
-      "hyperv-iso.full",
+      "hyperv-iso.full"
+    ]
+
+    keep_input_artifact = false
+    output              = "${local.artifact_outputs.full}"
+  }
+
+  post-processor "compress" {
+    only = [
       "hyperv-vmcx.adds"
     ]
 
     keep_input_artifact = false
-    output              = "${local.artifact_output}.${source.type}.zip"
+    output              = "${local.artifact_outputs.adds}"
   }
 }
