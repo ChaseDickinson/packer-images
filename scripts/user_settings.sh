@@ -63,7 +63,7 @@ loadDotfiles() {
   echo -e "\n****************************************\n"
 
   cd "${HOME}"
-  git clone https://github.com/ChaseDickinson/dotfiles.git
+  git clone https://github.com/ChaseDickinson/dotfiles.git .dotfiles
 
   echo -e "\n****************************************\n"
   echo "  Ensure directories are created"
@@ -83,28 +83,26 @@ loadDotfiles() {
   fi
 
   echo -e "\n****************************************\n"
-  echo "  Configuring VS Code settings"
+  echo "  Creating symlinks"
   echo -e "\n****************************************\n"
-  mv "${HOME}"/dotfiles/vscode_settings.json "${HOME}"/.config/Code/User/settings.json
+  # VS Code
+  ln -sv "${HOME}"/.dotfiles/vscode_settings.json "${HOME}"/.config/Code/User/settings.json
 
-  echo -e "\n****************************************\n"
-  echo "  Configuring Zsh profile"
-  echo -e "\n****************************************\n"
+  # Zsh profile
   if [ -f "${HOME}"/.zshrc ]; then
     rm "${HOME}"/.zshrc
   fi
 
-  mv "${HOME}"/dotfiles/.zshrc "${HOME}"/.zshrc
+  ln -sv "${HOME}"/.dotfiles/.zshrc "${HOME}"/.zshrc
 
-  echo -e "\n****************************************\n"
-  echo "  Configuring Zsh aliases"
-  echo -e "\n****************************************\n"
-  mv "${HOME}"/dotfiles/aliases.zsh "${HOME}"/.oh-my-zsh/custom/aliases.zsh
+  # omz aliases
+  ln -sv "${HOME}"/.dotfiles/aliases.zsh "${HOME}"/.oh-my-zsh/custom/aliases.zsh
 
-  echo -e "\n****************************************\n"
-  echo "  Configuring Zsh functions"
-  echo -e "\n****************************************\n"
-  mv "${HOME}"/dotfiles/functions.zsh "${HOME}"/.oh-my-zsh/custom/functions.zsh
+  # omz functions
+  ln -sv "${HOME}"/.dotfiles/functions.zsh "${HOME}"/.oh-my-zsh/custom/functions.zsh
+
+  # omz theme
+  ln -sv "${HOME}"/.dotfiles/okie_chase.zsh-theme "${HOME}"/.oh-my-zsh/custom/themes/okie_chase.zsh-theme
 }
 
 main() {
