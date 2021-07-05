@@ -1,18 +1,18 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
 Vagrant.configure("2") do |config|
-  config.vm.box = "hashicorp/bionic64"
+  config.vm.box = "dev_env"
+  config.vm.box_url = "file:///C:/boxes/focal_desktop/virtualbox-iso_full_2107032047.box"
 
   config.vm.synced_folder ".", "/vagrant", disabled: true
-  config.vm.network "public_network", bridge: "Default Switch"
+  config.vm.synced_folder ".", "/home/vagrant/wip/packer-images"
 
-  config.vm.provider "hyperv" do |h|
-    h.vmname = "packer_dev"
-    h.memory = 4096
-    h.cpus = 2
-    h.enable_virtualization_extensions = true
+  config.vm.provider "virtualbox" do |v|
+    v.name = "dev_vm"
+    v.memory = 8192
+    v.cpus = 4
+    v.gui = true
+    v.customize ["modifyvm", :id, "--vram", "64", "--clipboard-mode", "hosttoguest", "--graphicscontroller", "vmsvga"]
   end
 end
-# TODO
-# To be able to install Virtualbox:
-#   - Upgrade available packages
-#   - Install libarchive-tools
-#   - Install Virtualbox by following instructions here: https://www.virtualbox.org/wiki/Linux_Downloads

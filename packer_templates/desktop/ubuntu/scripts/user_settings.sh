@@ -1,25 +1,21 @@
-#!/bin/bash
+#!/bin/sh -eux
 
 # --------------------------------------------------------------------------------
 # Configure Ubuntu desktop environment
 # --------------------------------------------------------------------------------
-set -o errexit
-set -o errtrace
-set -o nounset
-
 gnomeConfig() {
-  echo -e "\n****************************************\n"
+  echo "****************************************"
   echo "  Configuring GNOME settings"
-  echo -e "\n****************************************\n"
+  echo "****************************************"
 
   gsettings set org.gnome.shell favorite-apps "['org.gnome.Nautilus.desktop', 'org.gnome.Terminal.desktop', 'code.desktop', 'virtualbox.desktop', 'org.gnome.gedit.desktop', 'firefox.desktop', 'gnome-control-center.desktop']"
   gsettings set org.gnome.desktop.session idle-delay 0
   gsettings set org.gnome.desktop.interface text-scaling-factor 1.25
   gsettings set org.gnome.shell.extensions.dash-to-dock click-action minimize
 
-  echo -e "\n****************************************\n"
+  echo "****************************************"
   echo "  Configuring terminal theme"
-  echo -e "\n****************************************\n"
+  echo "****************************************"
 
   profile=$(gsettings get org.gnome.Terminal.ProfilesList default | xargs)
   gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:"${profile}"/ default-size-rows 30
@@ -31,16 +27,16 @@ gnomeConfig() {
   gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:"${profile}"/ foreground-color '#E6E5E5'
   gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:"${profile}"/ palette "['#17384C', '#D15123', '#027C9B', '#FCA02F', '#1E4950', '#68D4F1', '#50A3B5', '#DEB88D', '#434B53', '#D48678', '#628D98', '#FDD39F', '#1BBCDD', '#BBE3EE', '#87ACB4', '#FEE4CE']"
 
-  echo -e "\n****************************************\n"
+  echo "****************************************"
   echo "  Suppress Welcome Wizard"
-  echo -e "\n****************************************\n"
+  echo "****************************************"
   touch "${HOME}"/.config/gnome-initial-setup-done
 }
 
 vsCodeConfig() {
-  echo -e "\n****************************************\n"
+  echo "****************************************"
   echo "  Installing VS Code extensions"
-  echo -e "\n****************************************\n"
+  echo "****************************************"
 
   #remove whitespace from list
   sed -i 's/[[:space:]]*$//' /tmp/files/code_extensions.list
@@ -49,60 +45,24 @@ vsCodeConfig() {
 }
 
 omz() {
-  echo -e "\n****************************************\n"
+  echo "****************************************"
   echo "  Installing Oh-My-Zsh"
-  echo -e "\n****************************************\n"
+  echo "****************************************"
 
   # Oh-My-Zsh
   sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
 }
 
 loadDotfiles() {
-  echo -e "\n****************************************\n"
+  echo "****************************************"
   echo "  Cloning dotfile repo"
-  echo -e "\n****************************************\n"
+  echo "****************************************"
 
   cd "${HOME}"
   git clone https://github.com/ChaseDickinson/dotfiles.git .dotfiles
-
-  echo -e "\n****************************************\n"
-  echo "  Ensure directories are created"
-  echo -e "\n****************************************\n"
-  if [ ! -d "${HOME}"/.config/Code/User ]; then
-    mkdir -p "${HOME}"/.config/Code/User
-    echo "VS Code config directory created."
-  else
-    echo "VS Code config directory already exists."
-  fi
-
-  if [ ! -d "${HOME}"/.oh-my-zsh/custom ]; then
-    mkdir "${HOME}"/.oh-my-zsh/custom
-    echo "OMZ custom directory created."
-  else
-    echo "OMZ custom directory already exists."
-  fi
-
-  echo -e "\n****************************************\n"
-  echo "  Creating symlinks"
-  echo -e "\n****************************************\n"
-  # VS Code
-  ln -sv "${HOME}"/.dotfiles/vscode_settings.json "${HOME}"/.config/Code/User/settings.json
-
-  # Zsh profile
-  if [ -f "${HOME}"/.zshrc ]; then
-    rm "${HOME}"/.zshrc
-  fi
-
-  ln -sv "${HOME}"/.dotfiles/.zshrc "${HOME}"/.zshrc
-
-  # omz aliases
-  ln -sv "${HOME}"/.dotfiles/aliases.zsh "${HOME}"/.oh-my-zsh/custom/aliases.zsh
-
-  # omz functions
-  ln -sv "${HOME}"/.dotfiles/functions.zsh "${HOME}"/.oh-my-zsh/custom/functions.zsh
-
-  # omz theme
-  ln -sv "${HOME}"/.dotfiles/okie_chase.zsh-theme "${HOME}"/.oh-my-zsh/custom/themes/okie_chase.zsh-theme
+  cd .dotfiles
+  chmod +x install.sh
+  ./install.sh
 }
 
 main() {

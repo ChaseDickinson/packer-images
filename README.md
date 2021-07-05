@@ -4,10 +4,15 @@
 
 ## TODO: 
 
-- Analyze packages and services to see what can be removed to reduce artifact file size
-- Generate Vagrant boxes
+- Create base & adds builds for Virtualbox?
+- Break apart bash scripts to make them more simple instead of the functions?
 - Convert scripts to Ansible Playbooks
+- Create unit tests to validate builds
 - Validate/cleanup preseed files
+
+## Credit
+
+Took a lot of inspiration from [Chef's Bento project](https://github.com/chef/bento), especially for directory structure, Virtualbox & Vagrant configurations, and the minimize and cleanup scripts.
 
 ## Problem Statement
 
@@ -90,7 +95,6 @@ More on Microsoft's linux-vm-tools can be found on [their repo](https://github.c
   - Chef Workstation
   - Docker & Docker-Compose
   - GIT
-  - Microsoft's [linux-vm-tools](https://github.com/microsoft/linux-vm-tools) (enable "Enhanced Mode" for Ubuntu VMs)
   - Oh-My-Zsh
   - Packer
   - Terraform

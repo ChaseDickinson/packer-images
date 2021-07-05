@@ -1,17 +1,13 @@
-#!/bin/bash
+#!/bin/sh -eux
 
 # --------------------------------------------------------------------------------
 # Ensure latest upgrades are installed
 # --------------------------------------------------------------------------------
-set -o errexit
-set -o errtrace
-set -o nounset
-
 installUpdates() {
   #install latest updates available
-  echo -e "\n****************************************\n"
+  echo "****************************************"
   echo "  Install Latest Upgrades"
-  echo -e "\n****************************************\n"
+  echo "****************************************"
 
   apt-get update
   apt-get dist-upgrade -y
