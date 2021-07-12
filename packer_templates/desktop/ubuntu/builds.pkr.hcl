@@ -58,6 +58,6 @@ build {
     ]
 
     keep_input_artifact = false
-    output              = "${local.artifact_directory}\\${source.type}_${source.name}_${local.timestamp}.box"
+    output              = "${local.artifact_directory}/${source.type}_${source.name}_${local.timestamp}.box"
   }
 }
