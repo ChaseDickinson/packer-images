@@ -1,4 +1,4 @@
-#!/bin/sh -eux
+#!/bin/bash -eux
 
 # Whiteout root
 count=$(df --sync -kP / | tail -n1  | awk -F ' ' '{print $4}')

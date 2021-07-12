@@ -3,9 +3,9 @@
 ########################################
 locals {
   # Output variables
-  artifact_directory = "C:\\boxes\\${local.os_info}"
+  artifact_directory = "../../output/${local.os_info}"
   os_info            = "${var.os_name}_${var.os_type}"
-  build_directory    = "..\\builds\\${local.os_info}"
+  build_directory    = "../builds/${local.os_info}"
   timestamp          = formatdate("YYMMDDhhmm", timestamp())
 
   # VM Specifications

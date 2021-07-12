@@ -34,11 +34,6 @@ build {
     ]
   }
 
-  provisioner "file" {
-    destination = "/tmp/files/"
-    source      = "guest_files"
-  }
-
   provisioner "shell" {
     pause_before = "10s"
     scripts = [

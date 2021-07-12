@@ -1,4 +1,4 @@
-#!/bin/sh -eux
+#!/bin/bash -eux
 
 # --------------------------------------------------------------------------------
 # Configure Ubuntu desktop environment
@@ -38,10 +38,24 @@ vsCodeConfig() {
   echo "  Installing VS Code extensions"
   echo "****************************************"
 
-  #remove whitespace from list
-  sed -i 's/[[:space:]]*$//' /tmp/files/code_extensions.list
-  < /tmp/files/code_extensions.list xargs -L 1 code --install-extension
-  rm -Rf /tmp/files
+  ext_list=(\
+    amazonwebservices.aws-toolkit-vscode \
+    chef-software.chef \
+    coenraads.bracket-pair-colorizer-2 \
+    github.github-vscode-theme \
+    eamodio.gitlens \
+    esbenp.prettier-vscode \
+    ms-azuretools.vscode-docker \
+    ms-vscode-remote.remote-containers \
+    ms-vscode-remote.remote-ssh \
+    oderwat.indent-rainbow \
+    wayou.vscode-todo-highlight)
+
+  for i in "${ext_list[@]}"
+  do
+    echo "Installing VS Code extension: ${i}"
+    code --install-extension "${i}"
+  done
 }
 
 omz() {

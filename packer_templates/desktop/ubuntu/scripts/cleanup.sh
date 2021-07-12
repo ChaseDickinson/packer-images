@@ -1,4 +1,4 @@
-#!/bin/sh -eux
+#!/bin/bash -eux
 
 # --------------------------------------------------------------------------------
 # Establish baseline on new machine
