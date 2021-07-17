@@ -4,15 +4,10 @@
 # Establish baseline on new machine
 # --------------------------------------------------------------------------------
 disableAutoUpdates() {
-  echo "****************************************"
-  echo "  Removing unattended-upgrades package"
-  echo "****************************************"
+  # Removing unattended-upgrades package
   apt-get remove -y --purge unattended-upgrades
 
-  echo "****************************************"
-  echo "  Disable auto updates"
-  echo "****************************************"
-
+  # Disable auto updates
   systemctl stop apt-daily.timer
   systemctl disable apt-daily.timer
   systemctl mask apt-daily.service

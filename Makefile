@@ -7,6 +7,7 @@ LINE_DIVIDE=************************************************************
 SHELL:=/bin/bash
 TEMPLATE_DIR:=./packer_templates/desktop/ubuntu/
 TIMESTAMP:=$(shell /bin/date "+%y%m%d%H%M")
+LOG_PATH:=./logs/${TIMESTAMP}_ubuntu_desktop.txt
 
 # Phony rules
 .PHONY: pfmt
@@ -25,7 +26,7 @@ pv:
 
 .PHONY: pb
 pb: export PACKER_LOG=1
-pb: export PACKER_LOG_PATH=./logs/${TIMESTAMP}_ubuntu_desktop.txt
+pb: export PACKER_LOG_PATH="${LOG_PATH}"
 pb:
 	@echo "${LINE_DIVIDE}"
 	@echo "  Packer Validate"

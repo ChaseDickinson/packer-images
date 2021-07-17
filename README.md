@@ -4,6 +4,8 @@
 
 ## TODO: 
 
+- Need to ensure the ubuntu-desktop-minimal package is installed
+- Figure out how to remove the "output" drive
 - Create base & adds builds for Virtualbox?
 - Break apart bash scripts to make them more simple instead of the functions?
 - Convert scripts to Ansible Playbooks

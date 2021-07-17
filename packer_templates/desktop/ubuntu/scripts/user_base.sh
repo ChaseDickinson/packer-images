@@ -4,10 +4,7 @@
 # Configure user settings
 # --------------------------------------------------------------------------------
 baseUser() {
-  echo "****************************************"
-  echo "  Create working directory"
-  echo "****************************************"
-
+  # Create working directory
   if [ ! -d "${HOME}"/wip ]; then
     mkdir -p "${HOME}"/wip
     echo "Working directory created."
@@ -15,10 +12,7 @@ baseUser() {
     echo "Working directory already exists."
   fi
 
-  echo "****************************************"
-  echo "  Create SSH keys"
-  echo "****************************************"
-
+  # Create SSH keys
   if [ ! -d "${HOME}"/.ssh ]; then
     mkdir -p "${HOME}"/.ssh
     ssh-keygen -t rsa -b 4096 -N "" -f "${HOME}"/.ssh/id_rsa.key

@@ -21,10 +21,6 @@ validateArguments() {
 
 basePackages() {
   #install latest updates available
-  echo "****************************************"
-  echo "  Installing base packages"
-  echo "****************************************"
-
   apt-get update
   apt-get install -y \
     apt-transport-https \
@@ -44,10 +40,7 @@ basePackages() {
 }
 
 setVersions() {
-  echo "****************************************"
-  echo "  Setting versions to be installed"
-  echo "****************************************"
-
+  # Setting versions to be installed
   if [ "${CHEF_WORKSTATION_VERSION}" = "latest" ]
   then
     CHEF_WORKSTATION_VERSION=$(curl -s https://downloads.chef.io/tools/workstation/stable | grep -Po '[0-9]+\.[0-9]+\.[0-9]+(?=/ubuntu/'"${OS_VERSION}"'/)' | head -1)
@@ -92,10 +85,7 @@ setVersions() {
 }
 
 virtualbox() {
-  echo "****************************************"
-  echo "  Installing VirtualBox - ${VIRTUALBOX_VERSION}"
-  echo "****************************************"
-
+  # Installing VirtualBox
   wget -q https://www.virtualbox.org/download/oracle_vbox_2016.asc -O- | apt-key add -
   wget -q https://www.virtualbox.org/download/oracle_vbox.asc -O- | apt-key add -
   echo "deb [arch=amd64] https://download.virtualbox.org/virtualbox/debian $(lsb_release -cs) contrib" > /etc/apt/sources.list.d/virtualbox.list
@@ -110,10 +100,7 @@ virtualbox() {
 }
 
 vbGuestAdditions() {
-  echo "****************************************"
-  echo "  Installing VirtualBox Guest Additions - ${VIRTUALBOX_VERSION}"
-  echo "****************************************"
-
+  # Installing VirtualBox Guest Additions
   # set a default HOME_DIR environment variable if not set
   HOME_DIR="/home/${USERNAME}";
   ISO="VBoxGuestAdditions.iso";
@@ -147,19 +134,11 @@ vbGuestAdditions() {
 }
 
 docker() {
-  echo "****************************************"
-  echo "  Installing Docker"
-  echo "****************************************"
-
   # Installing Docker
   curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add -
   add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
   apt-get update
   apt-get install -y docker-ce docker-ce-cli containerd.io
-
-  echo "****************************************"
-  echo "  Installing Docker Compose - ${DOCKER_COMPOSE_VERSION}"
-  echo "****************************************"
 
   # Installing Docker Compose
   curl -L "https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
@@ -170,10 +149,7 @@ docker() {
 }
 
 aws() {
-  echo "****************************************"
-  echo "  Installing AWS CLI"
-  echo "****************************************"
-
+  # Installing AWS CLI
   curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
   unzip awscliv2.zip
   ./aws/install
@@ -182,28 +158,19 @@ aws() {
 }
 
 hashicorp() {
-  echo "****************************************"
-  echo "  Install Packer - ${PACKER_VERSION}"
-  echo "****************************************"
-
+  # Install Packer
   curl -o "packer.zip" "https://releases.hashicorp.com/packer/${PACKER_VERSION}/packer_${PACKER_VERSION}_linux_amd64.zip"
   unzip packer.zip
   mv packer /usr/bin/packer
   rm packer.zip
 
-  echo "****************************************"
-  echo "  Install Terraform - ${TERRAFORM_VERSION}"
-  echo "****************************************"
-
+  # Install Terraform
   curl -o "terraform.zip" "https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip"
   unzip terraform.zip
   mv terraform /usr/bin/terraform
   rm terraform.zip
 
-  echo "****************************************"
-  echo "  Install Vagrant - ${VAGRANT_VERSION}"
-  echo "****************************************"
-
+  # Install Vagrant
   curl -o "vagrant.zip" "https://releases.hashicorp.com/vagrant/${VAGRANT_VERSION}/vagrant_${VAGRANT_VERSION}_linux_amd64.zip"
   unzip vagrant.zip
   mv vagrant /usr/bin/vagrant
@@ -211,20 +178,14 @@ hashicorp() {
 }
 
 chef() {
-  echo "****************************************"
-  echo "  Installing Chef Workstation - ${CHEF_WORKSTATION_VERSION}"
-  echo "****************************************"
-
+  # Installing Chef Workstation
   curl -o "chef-workstation.deb" "https://packages.chef.io/files/stable/chef-workstation/${CHEF_WORKSTATION_VERSION}/ubuntu/$(lsb_release -rs)/chef-workstation_${CHEF_WORKSTATION_VERSION}-1_amd64.deb"
   dpkg -i chef-workstation.deb
   rm chef-workstation.deb
 }
 
 op() {
-  echo "****************************************"
-  echo "  Installing 1Password CLI - ${OP_VERSION}"
-  echo "****************************************"
-
+  # Installing 1Password CLI
   curl -o "op_cli.zip" "https://cache.agilebits.com/dist/1P/op/pkg/v${OP_VERSION}/op_linux_amd64_v${OP_VERSION}.zip"
   unzip op_cli.zip
   mv op /usr/bin/op
