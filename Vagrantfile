@@ -1,11 +1,10 @@
 Vagrant.configure("2") do |config|
-  config.vm.box_url = "file:///C:/boxes/focal_desktop/virtualbox-iso_full_2107171842.box"
+  config.vm.box_url = "file:///C:/boxes/focal_desktop/virtualbox-iso_full_2107251856.box"
 
   config.vm.define "packer_dev" do |pd|
     pd.vm.box = "packer_dev"
     pd.vm.synced_folder ".", "/vagrant", disabled: true
     pd.vm.synced_folder ".", "/home/vagrant/wip/packer-images"
-    pd.vm.synced_folder "C:/boxes", "/home/vagrant/output"
     pd.vm.provision "file", source: "../.gitconfig", destination: "/home/vagrant/.gitconfig"
     pd.vm.provision "file", source: "../keys", destination: "/home/vagrant/.ssh"
     pd.vm.provision "shell",
