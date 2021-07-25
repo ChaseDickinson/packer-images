@@ -4,7 +4,7 @@
 
 ## TODO:
 
-- Create base & adds builds for Virtualbox?
+- Troubleshoot Makefile build logs error
 - Break apart bash scripts to make them more simple instead of the functions?
 - Convert scripts to Ansible Playbooks
 - Create unit tests to validate builds

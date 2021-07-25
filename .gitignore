@@ -3,6 +3,7 @@
 *-base
 *logs
 *.vagrant/
+*.Trash*/
 
 #prevent committing build directories
 *focal_desktop*

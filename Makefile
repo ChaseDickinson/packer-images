@@ -24,10 +24,16 @@ pv:
 	@echo "${LINE_DIVIDE}"
 	packer validate ${TEMPLATE_DIR}
 
-.PHONY: pb
-pb: export PACKER_LOG=1
-pb: export PACKER_LOG_PATH="${LOG_PATH}"
-pb:
+.PHONY: pbf
+pbf: export PACKER_LOG=1
+pbf: export PACKER_LOG_PATH="${LOG_PATH}"
+pbf:
+	@echo "${LINE_DIVIDE}"
+	@echo "  Setting up build environment"
+	touch "${PACKER_LOG_PATH}"
+	ls -lh ./logs
+	@echo "  PACKER_LOG_PATH set to "${PACKER_LOG_PATH}""
+	@echo "${LINE_DIVIDE}"
 	@echo "${LINE_DIVIDE}"
 	@echo "  Packer Validate"
 	@echo "${LINE_DIVIDE}"
@@ -35,4 +41,17 @@ pb:
 	@echo "${LINE_DIVIDE}"
 	@echo "  Packer Build"
 	@echo "${LINE_DIVIDE}"
-	packer build ${TEMPLATE_DIR}
+	packer build -only=virtualbox-iso.full ${TEMPLATE_DIR}
+
+.PHONY: pbb
+pbb: export PACKER_LOG=1
+pbb: export PACKER_LOG_PATH="${LOG_PATH}"
+pbb:
+	@echo "${LINE_DIVIDE}"
+	@echo "  Packer Validate"
+	@echo "${LINE_DIVIDE}"
+	packer validate ${TEMPLATE_DIR}
+	@echo "${LINE_DIVIDE}"
+	@echo "  Packer Build"
+	@echo "${LINE_DIVIDE}"
+	packer build -only=virtualbox-iso.base ${TEMPLATE_DIR}

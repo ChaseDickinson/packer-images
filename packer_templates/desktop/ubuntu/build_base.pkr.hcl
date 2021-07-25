@@ -53,10 +53,6 @@ build {
   }
 
   post-processor "vagrant" {
-    only = [
-      "virtualbox-iso.full"
-    ]
-
     keep_input_artifact = false
     output              = "${local.artifact_directory}/${source.type}_${source.name}_${local.timestamp}.box"
   }
