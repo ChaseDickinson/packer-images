@@ -4,7 +4,6 @@
 
 ## TODO:
 
-- Troubleshoot why builds are not working within Vagrant environment
 - Break apart bash scripts to make them more simple instead of the functions?
 - Convert scripts to Ansible Playbooks
 - Create unit tests to validate builds
