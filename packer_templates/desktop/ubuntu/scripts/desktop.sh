@@ -15,6 +15,10 @@ fonts() {
 
   mkdir -p /tmp/nerd-fonts
   cd /tmp/nerd-fonts
+  # Fira Code
+  curl -fLo "FiraCode.ttf" https://github.com/ryanoasis/nerd-fonts/blob/master/patched-fonts/FiraCode/Regular/complete/Fira%20Code%20Regular%20Nerd%20Font%20Complete.ttf?raw=true
+  # Fira Code Mono
+  curl -fLo "FiraCode_Mono.ttf" https://github.com/ryanoasis/nerd-fonts/blob/master/patched-fonts/FiraCode/Regular/complete/Fira%20Code%20Regular%20Nerd%20Font%20Complete%20Mono.ttf?raw=true
   # Hack
   curl -fLo "Hack.ttf" https://github.com/ryanoasis/nerd-fonts/blob/master/patched-fonts/Hack/Regular/complete/Hack%20Regular%20Nerd%20Font%20Complete.ttf?raw=true
   # Victor Mono

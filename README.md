@@ -4,6 +4,7 @@
 
 ## TODO:
 
+- Update base box for basic Vagrant functions to work
 - Break apart bash scripts to make them more simple instead of the functions?
 - Convert scripts to Ansible Playbooks
 - Create unit tests to validate builds
