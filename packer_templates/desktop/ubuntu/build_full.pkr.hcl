@@ -36,6 +36,14 @@ build {
     ]
   }
 
+  provisioner "shell" {
+    expect_disconnect = true
+    pause_before      = "10s"
+    inline = [
+      "echo '${local.ssh_password}' | sudo -S shutdown -r now"
+    ]
+  }
+
   # Configure environment as Vagrant user
   provisioner "shell" {
     pause_before = "10s"
@@ -51,8 +59,8 @@ build {
     pause_before    = "10s"
     scripts = [
       "${local.scripts_dir}/vagrant.sh",
-      "${local.scripts_dir}/cleanup.sh",
-      "${local.scripts_dir}/minimize.sh"
+      #"${local.scripts_dir}/cleanup.sh",
+      #"${local.scripts_dir}/minimize.sh"
     ]
   }
 

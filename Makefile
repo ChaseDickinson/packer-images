@@ -3,6 +3,7 @@
 ####################################
 
 # Macros
+BUILD_ARGS:=-color=false
 LINE_DIVIDE=************************************************************
 SHELL:=/bin/bash
 TEMPLATE_DIR:=./packer_templates/desktop/ubuntu/
@@ -28,8 +29,8 @@ pv:
 	@echo "${LINE_DIVIDE}"
 	packer validate ${TEMPLATE_DIR}
 
-.PHONY: pbf
-pbf:
+.PHONY: pba
+pba:
 	@echo "${LINE_DIVIDE}"
 	@echo "  Packer Validate"
 	@echo "${LINE_DIVIDE}"
@@ -37,7 +38,7 @@ pbf:
 	@echo "${LINE_DIVIDE}"
 	@echo "  Packer Build"
 	@echo "${LINE_DIVIDE}"
-	packer build -only=virtualbox-iso.full ${TEMPLATE_DIR}
+	packer build ${BUILD_ARGS} ${TEMPLATE_DIR}
 
 .PHONY: pbb
 pbb:
@@ -48,4 +49,15 @@ pbb:
 	@echo "${LINE_DIVIDE}"
 	@echo "  Packer Build"
 	@echo "${LINE_DIVIDE}"
-	packer build -only=virtualbox-iso.base ${TEMPLATE_DIR}
+	packer build -only=virtualbox-iso.base ${BUILD_ARGS} ${TEMPLATE_DIR}
+
+.PHONY: pbf
+pbf:
+	@echo "${LINE_DIVIDE}"
+	@echo "  Packer Validate"
+	@echo "${LINE_DIVIDE}"
+	packer validate ${TEMPLATE_DIR}
+	@echo "${LINE_DIVIDE}"
+	@echo "  Packer Build"
+	@echo "${LINE_DIVIDE}"
+	packer build -only=virtualbox-iso.full ${BUILD_ARGS} ${TEMPLATE_DIR}
