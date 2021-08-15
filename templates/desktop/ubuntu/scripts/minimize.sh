@@ -1,4 +1,8 @@
-#!/bin/bash -eux
+#!/bin/bash
+
+set -o errexit
+set -o nounset
+set -o xtrace
 
 # Whiteout root
 count=$(df --sync -kP / | tail -n1  | awk -F ' ' '{print $4}')

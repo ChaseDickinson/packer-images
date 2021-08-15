@@ -1,9 +1,4 @@
-#prevent committing Packer cache to repo
+#prevent committing Packer cache
 *packer_cache
-*-base
+#prevent committing build logs
 *logs
-*.vagrant/
-*.Trash*/
-
-#prevent committing build directories
-*focal_desktop*

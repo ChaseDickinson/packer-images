@@ -1,4 +1,8 @@
-#!/bin/bash -eux
+#!/bin/bash
+
+set -o errexit
+set -o nounset
+set -o xtrace
 
 # --------------------------------------------------------------------------------
 # Configure Ubuntu desktop environment
@@ -23,7 +27,6 @@ vsCodeConfig() {
   # Installing VS Code extensions
   ext_list=(\
     amazonwebservices.aws-toolkit-vscode \
-    chef-software.chef \
     coenraads.bracket-pair-colorizer-2 \
     github.github-vscode-theme \
     eamodio.gitlens \
@@ -32,7 +35,11 @@ vsCodeConfig() {
     ms-vscode-remote.remote-containers \
     ms-vscode-remote.remote-ssh \
     oderwat.indent-rainbow \
-    wayou.vscode-todo-highlight)
+    rebornix.ruby \
+    redhat.vscode-yaml \
+    wayou.vscode-todo-highlight \
+    wingrunr21.vscode-ruby \
+    zbr.vscode-ansible)
 
   for i in "${ext_list[@]}"
   do
@@ -46,23 +53,12 @@ omz() {
   sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
 }
 
-loadDotfiles() {
-  # Cloning dotfile repo
-  cd "${HOME}"
-  git clone https://github.com/ChaseDickinson/dotfiles.git .dotfiles
-  cd .dotfiles
-  chmod +x install.sh
-  ./install.sh
-}
-
 main() {
   gnomeConfig
 
   vsCodeConfig
 
   omz
-
-  loadDotfiles
 }
 
 main

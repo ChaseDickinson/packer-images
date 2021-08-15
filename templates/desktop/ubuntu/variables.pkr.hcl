@@ -3,10 +3,11 @@
 ########################################
 locals {
   # Output variables
-  artifact_directory = "../../output/${local.os_info}"
-  os_info            = "${var.os_name}_${var.os_type}"
-  build_directory    = "../builds/${local.os_info}"
-  timestamp          = formatdate("YYMMDDhhmm", timestamp())
+  artifact_directory   = "../../output/${local.os_info}"
+  os_info              = "${var.os_name}_${var.os_type}"
+  build_directory      = "../builds/${local.os_info}"
+  timestamp            = formatdate("YYMMDDhhmm", timestamp())
+  vagrantfile_template = "./config/Vagrantfile"
 
   # VM Specifications
   communicator     = "ssh"

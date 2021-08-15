@@ -4,10 +4,9 @@
 
 ## TODO:
 
-- Remove Chef & add Ansible
-- Move dotfile configuration to Vagrantfile
 - Convert scripts to Ansible Playbooks
 - Validate/cleanup preseed files
+- Configure [pre-commit](https://pre-commit.com/#intro) and use something like [this](https://github.com/cisagov/pre-commit-packer)
 - Publish box to Vagrant Cloud
 - Create Docker image
 - Publish Docker image to Docker Hub

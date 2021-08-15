@@ -1,4 +1,8 @@
-#!/bin/bash -eux
+#!/bin/bash
+
+set -o errexit
+set -o nounset
+set -o xtrace
 
 # --------------------------------------------------------------------------------
 # Ensure latest upgrades are installed

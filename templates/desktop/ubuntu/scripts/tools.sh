@@ -1,12 +1,14 @@
-#!/bin/bash -eux
+#!/bin/bash
+
+set -o errexit
+set -o nounset
+set -o xtrace
 
 # ------------------------------------------------------------
 # Configure common tools
 # ------------------------------------------------------------
-CHEF_WORKSTATION_VERSION="latest"
 DOCKER_COMPOSE_VERSION="latest"
 OP_VERSION="latest"
-OS_VERSION=$(lsb_release -rs)
 PACKER_VERSION="latest"
 TERRAFORM_VERSION="latest"
 VAGRANT_VERSION="latest"
@@ -31,6 +33,7 @@ basePackages() {
     jq \
     libarchive-tools \
     neofetch \
+    python3-pip \
     shellcheck \
     software-properties-common \
     tldr \
@@ -40,13 +43,6 @@ basePackages() {
 }
 
 setVersions() {
-  # Setting versions to be installed
-  if [ "${CHEF_WORKSTATION_VERSION}" = "latest" ]
-  then
-    CHEF_WORKSTATION_VERSION=$(curl -s https://downloads.chef.io/tools/workstation/stable | grep -Po '[0-9]+\.[0-9]+\.[0-9]+(?=/ubuntu/'"${OS_VERSION}"'/)' | head -1)
-  fi
-  echo "  CHEF_WORKSTATION_VERSION set to ${CHEF_WORKSTATION_VERSION}"
-
   if [ "${DOCKER_COMPOSE_VERSION}" = "latest" ]
   then
     DOCKER_COMPOSE_VERSION=$(curl -s https://api.github.com/repos/docker/compose/git/refs/tags | jq -r '.[].ref' | grep -Po '[0-9]+\.[0-9]+\.[0-9](?!-)' | tail -1)
@@ -177,11 +173,10 @@ hashicorp() {
   rm vagrant.zip
 }
 
-chef() {
-  # Installing Chef Workstation
-  curl -o "chef-workstation.deb" "https://packages.chef.io/files/stable/chef-workstation/${CHEF_WORKSTATION_VERSION}/ubuntu/$(lsb_release -rs)/chef-workstation_${CHEF_WORKSTATION_VERSION}-1_amd64.deb"
-  dpkg -i chef-workstation.deb
-  rm chef-workstation.deb
+ansible() {
+  # Installing ansible-core
+  add-apt-repository --yes --update ppa:ansible/ansible
+  apt-get install -y ansible
 }
 
 op() {
@@ -209,7 +204,7 @@ main() {
 
   hashicorp
 
-  chef
+  ansible
 
   op
 }

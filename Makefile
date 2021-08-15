@@ -6,7 +6,7 @@
 BUILD_ARGS:=-color=false
 LINE_DIVIDE=************************************************************
 SHELL:=/bin/bash
-TEMPLATE_DIR:=./packer_templates/desktop/ubuntu/
+TEMPLATE_DIR:=./templates/desktop/ubuntu/
 TIMESTAMP:=$(shell /bin/date "+%y%m%d%H%M")
 
 # Enable Packer Logging
