@@ -4,6 +4,7 @@
 
 ## TODO:
 
+- Virtualbox Guest Additions install for base box
 - Convert scripts to Ansible Playbooks
 - Validate/cleanup preseed files
 - Configure [pre-commit](https://pre-commit.com/#intro) and use something like [this](https://github.com/cisagov/pre-commit-packer)
@@ -14,7 +15,7 @@
 
 ## Credit
 
-Took a lot of inspiration from [Chef's Bento project](https://github.com/chef/bento), especially for directory structure, Virtualbox & Vagrant configurations, and the minimize and cleanup scripts.
+Took a lot of inspiration from [Chef's Bento project](https://github.com/chef/bento) and the [Boxcutter](https://github.com/boxcutter) project, especially for Virtualbox & Vagrant configurations and the minimize/cleanup scripts.
 
 ## Problem Statement
 

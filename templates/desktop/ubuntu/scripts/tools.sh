@@ -104,7 +104,7 @@ vbGuestAdditions() {
   # mount the ISO to /tmp/vbox
   if [ -f "${HOME_DIR}/${ISO}" ]; then
     mkdir -p /tmp/vbox;
-    mount "${HOME_DIR}"/"${ISO}" /tmp/vbox;
+    mount "${HOME_DIR}/${ISO}" /tmp/vbox;
   fi
 
   echo "  Installing deps necessary to compile kernel modules"
