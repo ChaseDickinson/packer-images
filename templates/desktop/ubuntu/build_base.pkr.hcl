@@ -8,44 +8,46 @@ build {
 
   # Install the latest upgrades & reboot
   provisioner "shell" {
-    execute_command = "echo '${local.ssh_password}' | sudo -S sh -ceux '{{ .Vars }} {{ .Path }}'"
-    pause_before    = "10s"
-    script          = "${local.scripts_dir}/upgrades.sh"
-  }
+    environment_vars = [
+      "USERNAME=${local.ssh_username}"
+    ]
 
-  provisioner "shell" {
+    execute_command   = "echo '${local.ssh_password}' | sudo -S sh -ceux '{{ .Vars }} {{ .Path }}'"
     expect_disconnect = true
     pause_before      = "10s"
-    inline = [
-      "echo '${local.ssh_password}' | sudo -S shutdown -r now"
-    ]
-  }
-
-  # Configure environment as sudo
-  provisioner "shell" {
-    execute_command = "echo '${local.ssh_password}' | sudo -S sh -ceux '{{ .Vars }} {{ .Path }}'"
-    pause_before    = "10s"
     scripts = [
-      "${local.scripts_dir}/sudoers.sh",
-      "${local.scripts_dir}/vagrant.sh",
-      "${local.scripts_dir}/cleanup.sh",
-      "${local.scripts_dir}/minimize.sh"
-    ]
-  }
-
-  provisioner "shell" {
-    expect_disconnect = true
-    pause_before      = "10s"
-    inline = [
-      "echo '${local.ssh_password}' | sudo -S shutdown -r now"
+      "${local.scripts_dir}/1.upgrades.sh",
+      "${local.scripts_dir}/reboot.sh",
+      "${local.scripts_dir}/2.guest_additions.sh",
+      "${local.scripts_dir}/reboot.sh"
     ]
   }
 
   # Configure environment as Vagrant user
   provisioner "shell" {
+    environment_vars = [
+      "USERNAME=${local.ssh_username}"
+    ]
+
     pause_before = "10s"
     scripts = [
-      "${local.scripts_dir}/user_base.sh"
+      "${local.scripts_dir}/5.user_base.sh"
+    ]
+  }
+
+  # Configure environment as sudo
+  provisioner "shell" {
+    environment_vars = [
+      "USERNAME=${local.ssh_username}"
+    ]
+
+    execute_command = "echo '${local.ssh_password}' | sudo -S sh -ceux '{{ .Vars }} {{ .Path }}'"
+    pause_before    = "10s"
+    scripts = [
+      "${local.scripts_dir}/7.vagrant.sh",
+      "${local.scripts_dir}/8.sudoers.sh",
+      "${local.scripts_dir}/9.cleanup.sh",
+      "${local.scripts_dir}/10.minimize.sh"
     ]
   }
 

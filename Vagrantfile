@@ -7,7 +7,7 @@ SCRIPT
 
 Vagrant.configure("2") do |config|
   config.vm.define "full" do |f|
-    f.vm.box_url = "file:///C:/boxes/focal_desktop/virtualbox-iso_full_2108151948.box"
+    f.vm.box_url = "file:///C:/boxes/focal_desktop/virtualbox-iso_full_2108192018.box"
     f.vm.box = "focal_full"
     f.vm.synced_folder ".", "/vagrant", disabled: true
     f.vm.synced_folder ".", "/home/vagrant/wip/packer-images"
@@ -36,7 +36,7 @@ Vagrant.configure("2") do |config|
   end
 
   config.vm.define "base" do |b|
-    b.vm.box_url = "file:///C:/boxes/focal_desktop/virtualbox-iso_base_2108152136.box"
+    b.vm.box_url = "file:///C:/boxes/focal_desktop/virtualbox-iso_base_2108192018.box"
     b.vm.box = "focal_base"
     b.vm.synced_folder ".", "/vagrant", disabled: true
     b.vm.synced_folder ".", "/home/vagrant/wip/packer-images"
@@ -49,9 +49,17 @@ Vagrant.configure("2") do |config|
       vb.customize ["modifyvm", :id, "--memory", 8192]
       vb.customize ["modifyvm", :id, "--cpus", 4]
       vb.customize ["modifyvm", :id, "--vram", "64"]
+      vb.customize ["modifyvm", :id, "--ioapic", "on"]
+      vb.customize ["modifyvm", :id, "--rtcuseutc", "on"]
+      vb.customize ["modifyvm", :id, "--accelerate3d", "on"]
       vb.customize ["modifyvm", :id, "--graphicscontroller", "vmsvga"]
       vb.customize ["modifyvm", :id, "--nested-hw-virt", "on"]
       vb.customize ["modifyvm", :id, "--clipboard", "bidirectional"]
+      vb.customize ["setextradata", "global", "GUI/MaxGuestResolution", "any"]
+    end
+    b.trigger.after :up do |trigger|
+      trigger.info = "Setting VM display resolution"
+      trigger.run = {inline: "vboxmanage controlvm \"dev_vm_base\" setvideomodehint 1600 1200 32"}
     end
   end
 end
