@@ -4,7 +4,6 @@
 
 ## TODO:
 
-- Virtualbox Guest Additions install for base box
 - Convert scripts to Ansible Playbooks
 - Validate/cleanup preseed files
 - Configure [pre-commit](https://pre-commit.com/#intro) and use something like [this](https://github.com/cisagov/pre-commit-packer)
