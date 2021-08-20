@@ -6,7 +6,7 @@
 set -o errexit;
 set -o nounset;
 set -o xtrace;
-#set -o pipefail;
+set -o pipefail;
 
 DISK_USAGE_BEFORE_MINIMIZE=$(df -BM --total --output="source","used","pcent" | grep "total");
 

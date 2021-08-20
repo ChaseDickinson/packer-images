@@ -6,7 +6,7 @@
 set -o errexit;
 set -o nounset;
 set -o xtrace;
-#set -o pipefail;
+set -o pipefail;
 
 # set a default HOME_DIR environment variable if not set
 HOME_DIR="/home/${USERNAME}";

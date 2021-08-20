@@ -6,7 +6,7 @@
 set -o errexit;
 set -o nounset;
 set -o xtrace;
-#set -o pipefail;
+#set -o pipefail; - This fails at least on line 45
 
 DOCKER_COMPOSE_VERSION="latest";
 OP_VERSION="latest";

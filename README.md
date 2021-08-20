@@ -8,9 +8,9 @@
 - Validate/cleanup preseed files
 - Configure [pre-commit](https://pre-commit.com/#intro) and use something like [this](https://github.com/cisagov/pre-commit-packer)
 - Publish box to Vagrant Cloud
+- Add additional OS templates (Pop!_OS, Ubuntu server)
 - Create Docker image
 - Publish Docker image to Docker Hub
-- Add additional OS templates (Pop!_OS, Ubuntu server)
 
 ## Credit
 
@@ -25,9 +25,10 @@ Took a lot of inspiration from [Chef's Bento project](https://github.com/chef/be
 ## What's Included
 
 - What are you installing?
+  - Ansible
   - AWS CLI
   - Docker & Docker-Compose
-  - GIT
+  - Git
   - Oh-My-Zsh
   - Packer
   - Terraform

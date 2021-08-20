@@ -36,7 +36,7 @@ pba:
 	@echo "${LINE_DIVIDE}"
 	packer validate ${TEMPLATE_DIR}
 	@echo "${LINE_DIVIDE}"
-	@echo "  Packer Build"
+	@echo "  Packer Build - All"
 	@echo "${LINE_DIVIDE}"
 	packer build ${BUILD_ARGS} ${TEMPLATE_DIR}
 
@@ -47,7 +47,7 @@ pbb:
 	@echo "${LINE_DIVIDE}"
 	packer validate ${TEMPLATE_DIR}
 	@echo "${LINE_DIVIDE}"
-	@echo "  Packer Build"
+	@echo "  Packer Build - Base"
 	@echo "${LINE_DIVIDE}"
 	packer build -only=virtualbox-iso.base ${BUILD_ARGS} ${TEMPLATE_DIR}
 
@@ -58,6 +58,6 @@ pbf:
 	@echo "${LINE_DIVIDE}"
 	packer validate ${TEMPLATE_DIR}
 	@echo "${LINE_DIVIDE}"
-	@echo "  Packer Build"
+	@echo "  Packer Build - Full"
 	@echo "${LINE_DIVIDE}"
 	packer build -only=virtualbox-iso.full ${BUILD_ARGS} ${TEMPLATE_DIR}

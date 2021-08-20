@@ -10,3 +10,6 @@ set -o pipefail;
 
 apt-get update;
 apt-get dist-upgrade -y;
+
+# Capturing box creation date
+date > /etc/vagrant_box_build_date;

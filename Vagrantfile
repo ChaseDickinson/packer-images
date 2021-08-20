@@ -10,7 +10,7 @@ Vagrant.configure("2") do |config|
     f.vm.box_url = "file:///C:/boxes/focal_desktop/virtualbox-iso_full_2108192018.box"
     f.vm.box = "focal_full"
     f.vm.synced_folder ".", "/vagrant", disabled: true
-    f.vm.synced_folder ".", "/home/vagrant/wip/packer-images"
+    f.vm.synced_folder ".", "/home/vagrant/wip/packer-images", mount_options: ["dmode=755", "fmode=664"]
     f.vm.provision "file", source: "../.gitconfig", destination: "/home/vagrant/.gitconfig"
     f.vm.provision "file", source: "../keys", destination: "/home/vagrant/.ssh"
     f.vm.provision "shell",
@@ -29,7 +29,7 @@ Vagrant.configure("2") do |config|
       vb.customize ["modifyvm", :id, "--clipboard", "bidirectional"]
       vb.customize ["setextradata", "global", "GUI/MaxGuestResolution", "any"]
     end
-    f.trigger.after :up do |trigger|
+    f.trigger.after :up, :reload do |trigger|
       trigger.info = "Setting VM display resolution"
       trigger.run = {inline: "vboxmanage controlvm \"dev_vm_full\" setvideomodehint 1600 1200 32"}
     end
@@ -39,7 +39,7 @@ Vagrant.configure("2") do |config|
     b.vm.box_url = "file:///C:/boxes/focal_desktop/virtualbox-iso_base_2108192018.box"
     b.vm.box = "focal_base"
     b.vm.synced_folder ".", "/vagrant", disabled: true
-    b.vm.synced_folder ".", "/home/vagrant/wip/packer-images"
+    b.vm.synced_folder ".", "/home/vagrant/wip/packer-images", mount_options: ["dmode=755", "fmode=664"]
     b.vm.provision "file", source: "../.gitconfig", destination: "/home/vagrant/.gitconfig"
     b.vm.provision "file", source: "../keys", destination: "/home/vagrant/.ssh"
     b.vm.provision "shell",
@@ -57,7 +57,7 @@ Vagrant.configure("2") do |config|
       vb.customize ["modifyvm", :id, "--clipboard", "bidirectional"]
       vb.customize ["setextradata", "global", "GUI/MaxGuestResolution", "any"]
     end
-    b.trigger.after :up do |trigger|
+    b.trigger.after :up, :reload do |trigger|
       trigger.info = "Setting VM display resolution"
       trigger.run = {inline: "vboxmanage controlvm \"dev_vm_base\" setvideomodehint 1600 1200 32"}
     end

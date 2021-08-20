@@ -6,7 +6,7 @@
 set -o errexit;
 set -o nounset;
 set -o xtrace;
-#set -o pipefail;
+# set -o pipefail; - This fails at least on line 41
 
 DISK_USAGE_BEFORE_CLEANUP=$(df -BM --total --output="source","used","pcent" | grep "total")
 
