@@ -70,6 +70,12 @@ then
 fi
 echo "  VIRTUALBOX_VERSION set to ${VIRTUALBOX_VERSION}"
 
+# Set Python 3 as default
+update-alternatives --install /usr/bin/python python /usr/bin/python2 1
+update-alternatives --install /usr/bin/python python /usr/bin/python3 2
+echo "  Default Python verison set to:"
+python --version
+
 # Installing VirtualBox
 wget -q https://www.virtualbox.org/download/oracle_vbox_2016.asc -O- | apt-key add -;
 wget -q https://www.virtualbox.org/download/oracle_vbox.asc -O- | apt-key add -;
