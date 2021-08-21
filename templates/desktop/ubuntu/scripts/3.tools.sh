@@ -21,12 +21,10 @@ apt-get install -y \
   apt-transport-https \
   ca-certificates \
   curl \
-  git \
   gnupg-agent \
   jq \
   libarchive-tools \
   neofetch \
-  python3-pip \
   shellcheck \
   software-properties-common \
   tldr \

@@ -6,7 +6,7 @@ build {
     "source.virtualbox-iso.base"
   ]
 
-  # Install the latest upgrades & reboot
+  # Install the latest upgrades and VirtualBox Guest Additions
   provisioner "shell" {
     environment_vars = [
       "USERNAME=${local.ssh_username}"
@@ -31,8 +31,10 @@ build {
 
     pause_before = "10s"
     scripts = [
-      "${local.scripts_dir}/5.user_base.sh"
+      "${local.scripts_dir}/5.ansible.sh",
+      "${local.scripts_dir}/6.user_base.sh"
     ]
+
   }
 
   # Configure environment as sudo
@@ -41,13 +43,15 @@ build {
       "USERNAME=${local.ssh_username}"
     ]
 
-    execute_command = "echo '${local.ssh_password}' | sudo -S sh -ceux '{{ .Vars }} {{ .Path }}'"
-    pause_before    = "10s"
+    execute_command   = "echo '${local.ssh_password}' | sudo -S sh -ceux '{{ .Vars }} {{ .Path }}'"
+    expect_disconnect = true
+    pause_before      = "10s"
     scripts = [
-      "${local.scripts_dir}/7.vagrant.sh",
-      "${local.scripts_dir}/8.sudoers.sh",
-      "${local.scripts_dir}/9.cleanup.sh",
-      "${local.scripts_dir}/10.minimize.sh"
+      "${local.scripts_dir}/reboot.sh",
+      "${local.scripts_dir}/8.vagrant.sh",
+      "${local.scripts_dir}/9.sudoers.sh",
+      "${local.scripts_dir}/10.cleanup.sh",
+      "${local.scripts_dir}/11.minimize.sh"
     ]
   }
 

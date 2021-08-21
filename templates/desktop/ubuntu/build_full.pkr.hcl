@@ -33,8 +33,9 @@ build {
 
     pause_before = "10s"
     scripts = [
-      "${local.scripts_dir}/5.user_base.sh",
-      "${local.scripts_dir}/6.user_settings.sh"
+      "${local.scripts_dir}/5.ansible.sh",
+      "${local.scripts_dir}/6.user_base.sh",
+      "${local.scripts_dir}/7.user_settings.sh"
     ]
   }
 
@@ -47,10 +48,10 @@ build {
     execute_command = "echo '${local.ssh_password}' | sudo -S sh -ceux '{{ .Vars }} {{ .Path }}'"
     pause_before    = "10s"
     scripts = [
-      "${local.scripts_dir}/7.vagrant.sh",
-      "${local.scripts_dir}/8.sudoers.sh",
-      "${local.scripts_dir}/9.cleanup.sh",
-      "${local.scripts_dir}/10.minimize.sh"
+      "${local.scripts_dir}/8.vagrant.sh",
+      "${local.scripts_dir}/9.sudoers.sh",
+      "${local.scripts_dir}/10.cleanup.sh",
+      "${local.scripts_dir}/11.minimize.sh"
     ]
   }
 

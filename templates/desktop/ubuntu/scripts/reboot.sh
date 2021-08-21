@@ -9,4 +9,4 @@ set -o xtrace;
 set -o pipefail;
 
 # Reboot
-sudo -S shutdown -r now;
+shutdown -r now;
