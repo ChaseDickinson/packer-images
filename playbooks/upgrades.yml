@@ -9,8 +9,13 @@
       apt:
         update_cache: yes
         upgrade: dist
+      notify: Reboot VM
 
     - name: Capture box creation date
       command:
         cmd: date > /etc/vagrant_box_build_date
         creates: /etc/vagrant_box_build_date
+
+  handlers:
+    - name: Reboot VM
+      reboot:

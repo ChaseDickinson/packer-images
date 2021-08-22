@@ -1,0 +1,63 @@
+# guest_additions.yml
+---
+- name: Install VirtualBox Guest Additions
+  hosts: localhost
+  become: true
+
+  vars:
+    iso_path: "{{ ansible_facts['user_dir'] }}/VBoxGuestAdditions.iso"
+    mount_point: "/tmp/vbox"
+
+  tasks:
+    - name: Install necessary packages for compiling
+      apt:
+        name: ["build-essential", "dkms", "bzip2", "tar"]
+        update_cache: yes
+        state: present
+
+    - name: Ensure mount point directory exists
+      file:
+        path: "{{ mount_point }}"
+        state: directory
+        mode: "776"
+
+    - name: Mount Guest Additions ISO
+      mount:
+        name: "{{ mount_point }}"
+        src: "{{ iso_path }}"
+        fstype: iso9660
+        state: mounted
+      register: iso_mounted
+
+    - name: Install Guest Additions
+      command: /tmp/vbox/VBoxLinuxAdditions.run --nox11
+      when: iso_mounted is defined
+      notify: Reboot VM
+
+    - name: Unmount Guest Additions ISO
+      mount:
+        name: "{{ mount_point }}"
+        src: "{{ iso_path }}"
+        state: unmounted
+
+    - name: Remove mount point directory
+      file:
+        path: "{{ mount_point }}"
+        state: absent
+
+    - name: Remove Guest Additions ISO file
+      file:
+        path: "{{ iso_path }}"
+        state: absent
+
+    - name: List Guest Addition install logs
+      command: ls -lah /var/log
+      register: list_logs
+
+    - name: Debug install logs
+      debug:
+        var: "{{ list_logs }}"
+
+  handlers:
+    - name: Reboot VM
+      reboot:

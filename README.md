@@ -4,11 +4,13 @@
 
 ## TODO:
 
-- Convert scripts to Ansible Playbooks
+- Explicitly list log directories to remove after Guest Additions install
+- Convert remaining scripts to Ansible Playbooks
+- Organize Ansible Playbooks into Roles
 - Validate/cleanup preseed files
 - Configure [pre-commit](https://pre-commit.com/#intro) and use something like [this](https://github.com/cisagov/pre-commit-packer)
 - Publish box to Vagrant Cloud
-- Add additional OS templates (Pop!_OS, Ubuntu server)
+- Add additional OS templates (PopOS, Ubuntu server)
 - Create Docker image
 - Publish Docker image to Docker Hub
 
