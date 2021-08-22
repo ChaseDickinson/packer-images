@@ -1,0 +1,15 @@
+# vagrant_box.yml
+---
+- name: Enable VM to be packaged as Vagrant box
+  hosts: localhost
+
+  vars:
+    vagrant_pubkey_url: "https://raw.githubusercontent.com/hashicorp/vagrant/master/keys/vagrant.pub"
+
+  tasks:
+    - name: Create SSH directory
+      file:
+        path: "{{ ansible_facts['user_dir'] }}/.ssh"
+        state: directory
+        mode: "700"
+#    - name: Add Vagrant public key to authorized keys file & set correct permissions
