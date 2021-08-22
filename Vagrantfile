@@ -1,4 +1,4 @@
-$script = <<SCRIPT
+$dotfiles = <<SCRIPT
 cd /home/vagrant
 git clone git@github.com:ChaseDickinson/dotfiles.git
 cd dotfiles
@@ -15,7 +15,7 @@ Vagrant.configure("2") do |config|
     f.vm.provision "file", source: "../keys", destination: "/home/vagrant/.ssh"
     f.vm.provision "shell",
       inline: "chmod 700 /home/vagrant/.ssh && chmod 644 /home/vagrant/.ssh/known_hosts && chmod 644 /home/vagrant/.ssh/*.key.pub && chmod 600 /home/vagrant/.ssh/config && chmod 600 /home/vagrant/.ssh/*.key"
-    f.vm.provision "shell", inline: $script, privileged: false
+    f.vm.provision "shell", inline: $dotfiles, privileged: false
     f.vm.provider "virtualbox" do |vb|
       vb.name = "dev_vm_full"
       vb.customize ["modifyvm", :id, "--memory", 8192]
