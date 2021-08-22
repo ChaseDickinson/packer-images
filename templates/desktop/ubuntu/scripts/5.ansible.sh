@@ -8,4 +8,4 @@ set -o nounset;
 set -o xtrace;
 set -o pipefail;
 
-python3 -m pip install --user ansible
+python3 -m pip install --user ansible ansible-lint psutil
