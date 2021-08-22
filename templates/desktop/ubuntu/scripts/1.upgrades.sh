@@ -13,3 +13,7 @@ apt-get dist-upgrade -y;
 
 # Capturing box creation date
 date > /etc/vagrant_box_build_date;
+
+# Creating Ansible default hosts file
+mkdir /etc/ansible
+touch /etc/ansible/hosts
