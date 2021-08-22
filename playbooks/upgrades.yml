@@ -1,12 +1,16 @@
 # upgrades.yml
-
 ---
-  - name: Install latest OS updates
-    hosts: localhost
-    become: true
+- name: Install latest OS updates
+  hosts: localhost
+  become: true
 
-    tasks:
+  tasks:
     - name: Update all packages to the latest version
       apt:
         update_cache: yes
         upgrade: dist
+
+    - name: Capture box creation date
+      command:
+        cmd: date > /etc/vagrant_box_build_date
+        creates: /etc/vagrant_box_build_date

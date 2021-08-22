@@ -1,0 +1,23 @@
+# user_base.yml
+---
+- name: Configure base user settings
+  hosts: localhost
+
+  tasks:
+    - name: Create a working directory if it does not already exist
+      file:
+        path: "{{ ansible_facts['user_dir'] }}/code"
+        state: directory
+        mode: "755"
+
+    - name: Suppress Ubuntu Welcome Wizard
+      file:
+        path: "{{ ansible_facts['user_dir'] }}/.config/gnome-initial-setup-done"
+        state: touch
+        mode: "664"
+
+    - name: Set favorite apps
+      dconf:
+        key: "/org/gnome/shell/favorite-apps"
+        value: "['org.gnome.Nautilus.desktop', 'org.gnome.Terminal.desktop', 'org.gnome.gedit.desktop', 'firefox.desktop', 'gnome-control-center.desktop']"
+        state: present
