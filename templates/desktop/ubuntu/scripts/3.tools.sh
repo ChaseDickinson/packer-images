@@ -120,10 +120,6 @@ unzip vagrant.zip;
 mv vagrant /usr/bin/vagrant;
 rm vagrant.zip;
 
-# Installing ansible-core
-add-apt-repository --yes --update ppa:ansible/ansible;
-apt-get install -y ansible;
-
 # Installing 1Password CLI
 curl -o "op_cli.zip" "https://cache.agilebits.com/dist/1P/op/pkg/v${OP_VERSION}/op_linux_amd64_v${OP_VERSION}.zip";
 unzip op_cli.zip;
