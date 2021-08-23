@@ -49,18 +49,14 @@
         path: "{{ mount_point }}"
         state: absent
 
-    - name: Remove Guest Additions ISO file
+    - name: Cleanup after install
       file:
-        path: "{{ iso_path }}"
+        path: "{{ item }}"
         state: absent
-
-    - name: List Guest Addition install logs
-      command: ls -lah /var/log
-      register: list_logs
-
-    - name: Debug install logs
-      debug:
-        var: list_logs
+      loop:
+        - "{{ iso_path }}"
+        - /var/log/vboxadd-install.log
+        - /var/log/vboxadd-setup.log
 
   handlers:
     - name: Reboot VM
