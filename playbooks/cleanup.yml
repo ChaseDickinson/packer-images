@@ -1,0 +1,7 @@
+# cleanup.yml
+---
+- name: Cleanup after installation and minimize disk utilization
+  hosts: all
+  become: true
+
+  

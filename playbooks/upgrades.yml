@@ -1,7 +1,7 @@
 # upgrades.yml
 ---
 - name: Install latest OS updates
-  hosts: localhost
+  hosts: all
   become: true
 
   tasks:
@@ -12,7 +12,7 @@
       notify: Reboot VM
 
     - name: Capture box creation date
-      command:
+      shell:
         cmd: date > /etc/vagrant_box_build_date
         creates: /etc/vagrant_box_build_date
 

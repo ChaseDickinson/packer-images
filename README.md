@@ -4,9 +4,8 @@
 
 ## TODO:
 
-- Explicitly list log directories to remove after Guest Additions install
-- Convert remaining scripts to Ansible Playbooks
-- Organize Ansible Playbooks into Roles
+- Continue working to conver bash scripts to Ansible playbooks
+- Organize Ansible playbooks into roles
 - Validate/cleanup preseed files
 - Configure [pre-commit](https://pre-commit.com/#intro) and use something like [this](https://github.com/cisagov/pre-commit-packer)
 - Publish box to Vagrant Cloud

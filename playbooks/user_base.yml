@@ -1,7 +1,7 @@
 # user_base.yml
 ---
 - name: Configure base user settings
-  hosts: localhost
+  hosts: all
 
   tasks:
     - name: Create a working directory if it does not already exist

@@ -1,7 +1,7 @@
 # vagrant_box.yml
 ---
 - name: Enable VM to be packaged as Vagrant box
-  hosts: localhost
+  hosts: all
 
   vars:
     vagrant_pubkey_url: "https://raw.githubusercontent.com/hashicorp/vagrant/master/keys/vagrant.pub"

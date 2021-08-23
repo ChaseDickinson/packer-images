@@ -1,11 +1,11 @@
 # guest_additions.yml
 ---
 - name: Install VirtualBox Guest Additions
-  hosts: localhost
+  hosts: all
   become: true
 
   vars:
-    iso_path: "{{ ansible_facts['user_dir'] }}/VBoxGuestAdditions.iso"
+    iso_path: "/home/vagrant/VBoxGuestAdditions.iso"
     mount_point: "/tmp/vbox"
 
   tasks:
@@ -30,7 +30,11 @@
       register: iso_mounted
 
     - name: Install Guest Additions
-      command: /tmp/vbox/VBoxLinuxAdditions.run --nox11
+      command: "{{ mount_point }}/VBoxLinuxAdditions.run --nox11"
+      register: result
+      failed_when:
+        - result.rc >= 1
+        - '"VirtualBox Guest Additions: Running kernel modules will not be replaced until" not in result.stdout'
       when: iso_mounted is defined
       notify: Reboot VM
 
@@ -56,7 +60,7 @@
 
     - name: Debug install logs
       debug:
-        var: "{{ list_logs }}"
+        var: list_logs
 
   handlers:
     - name: Reboot VM

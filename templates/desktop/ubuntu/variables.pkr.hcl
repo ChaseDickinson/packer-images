@@ -21,6 +21,7 @@ locals {
   iso_url          = "${local.iso_mirror}/${var.os_version}/${local.iso}"
   keep_registered  = "false"
   memory           = "8192"
+  playbooks_dir    = "${path.cwd}/playbooks"
   scripts_dir      = "${path.root}scripts"
   shutdown_command = "echo '${local.ssh_password}' | sudo -S shutdown -P now"
   ssh_password     = "vagrant"

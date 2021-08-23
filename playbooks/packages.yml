@@ -1,0 +1,24 @@
+# packages.yml
+---
+- name: Install desired and required packages
+  hosts: all
+  become: true
+
+  tasks:
+    - name: Install list of packages
+      apt:
+        update_cache: yes
+        pkg:
+          - apt-transport-https
+          - ca-certificates
+          - curl
+          - gnupg-agent
+          - jq
+          - libarchive-tools
+          - neofetch
+          - shellcheck
+          - software-properties-common
+          - tldr
+          - tree
+          - unzip
+          - zsh

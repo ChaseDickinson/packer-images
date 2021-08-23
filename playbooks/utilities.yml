@@ -1,0 +1,35 @@
+# utilities.yml
+---
+- name: Install latest versions of utilities
+  hosts: all
+
+  tasks:
+    - name: Retrieve latest version of each utility to install
+      block:
+      - name: Retrieve latest version of 1Password CLI
+        shell: curl -s https://app-updates.agilebits.com/product_history/CLI | grep -Po '[0-9]+\.[0-9]+\.[0-9]+' | head -1
+        register: op_cli_version
+      - name: Retrieve latest version of Docker Compose
+        shell: curl -s https://api.github.com/repos/docker/compose/git/refs/tags | jq -r '.[].ref' | grep -Po '[0-9]+\.[0-9]+\.[0-9](?!-)' | tail -1
+        register: docker_compose_version
+      - name: Retrieve latest version of Packer
+        shell: curl -s https://checkpoint-api.hashicorp.com/v1/check/packer | jq -r '.current_version'
+        register: packer_version
+      - name: Retrieve latest version of Terraform
+        shell: curl -s https://checkpoint-api.hashicorp.com/v1/check/terraform | jq -r '.current_version'
+        register: terraform_version
+      - name: Retrieve latest version of Vagrant
+        shell: curl -s https://checkpoint-api.hashicorp.com/v1/check/vagrant | jq -r '.current_version'
+        register: vagrant_version
+      - name: Retrieve latest version of VirtualBox
+        shell: curl -s https://download.virtualbox.org/virtualbox/LATEST-STABLE.TXT
+        register: virtualbox_version
+    - name:
+      debug:
+        msg:
+          - "1Password CLI version is set to {{ op_cli_version.stdout }}"
+          - "Docker Compose version is set to {{ docker_compose_version.stdout }}"
+          - "Packer version is set to {{ packer_version.stdout }}"
+          - "Terraform version is set to {{ terraform_version.stdout }}"
+          - "Vagrant version is set to {{ vagrant_version.stdout }}"
+          - "VirtualBox version is set to {{ virtualbox_version.stdout }}"
