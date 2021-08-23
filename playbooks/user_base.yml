@@ -39,3 +39,15 @@
         key: "/org/gnome/shell/extensions/dash-to-dock/click-action"
         value: "'minimize'"
         state: present
+
+    - name: Default NumLock to be enabled
+      dconf:
+        key: "org/gnome/desktop/peripherals/keyboard/numlock-state"
+        value: "true"
+        state: present
+
+    - name: Configure NumLock state to be remembered
+      dconf:
+        key: "org/gnome/desktop/peripherals/keyboard/remember-numlock-state"
+        value: "true"
+        state: present

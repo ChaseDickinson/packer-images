@@ -24,6 +24,8 @@ gsettings set org.gnome.shell favorite-apps "['org.gnome.Nautilus.desktop', 'org
 gsettings set org.gnome.desktop.session idle-delay 0;
 gsettings set org.gnome.desktop.interface text-scaling-factor 1.25;
 gsettings set org.gnome.shell.extensions.dash-to-dock click-action minimize;
+gsettings set org.gnome.desktop.peripherals.keyboard numlock-state true;
+gsettings set org.gnome.desktop.peripherals.keyboard remember-numlock-state true;
 
 # Suppress Welcome Wizard
 touch "${HOME_DIR}"/.config/gnome-initial-setup-done;
