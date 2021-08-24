@@ -4,12 +4,19 @@
 
 ## TODO:
 
-- Continue working to conver bash scripts to Ansible playbooks
+- Ansible playbook to clear disk utilization
+  - Start with current scripts
+  - Clear ~/.cache
+  - Minimize disk by clearing root, boot, & disabling swap
+- Continue working to convert bash scripts to Ansible playbooks (full build)
 - Organize Ansible playbooks into roles
+  - Create role for build server
+- Add better conditions (virtualization technology and guest OS) into roles to provide more robust controls for if/when tasks run
 - Validate/cleanup preseed files
 - Configure [pre-commit](https://pre-commit.com/#intro) and use something like [this](https://github.com/cisagov/pre-commit-packer)
 - Publish box to Vagrant Cloud
-- Add additional OS templates (PopOS, Ubuntu server)
+- Add additional OS templates (Pop!_OS)
+- Add server builds (Ubuntu server)
 - Create Docker image
 - Publish Docker image to Docker Hub
 
