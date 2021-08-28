@@ -27,12 +27,17 @@ locals {
   ssh_password     = "vagrant"
   ssh_timeout      = "2h"
   ssh_username     = "vagrant"
+  virtualbox_iso   = "${path.cwd}/packer_cache/${var.iso_md5_checksum}.iso"
 }
 
 ########################################
 # Input Variables
 ########################################
-variable "iso_checksum" {
+variable "iso_md5_checksum" {
+  type = string
+}
+
+variable "iso_sha_checksum" {
   type = string
 }
 

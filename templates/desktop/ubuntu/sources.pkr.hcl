@@ -8,7 +8,7 @@ source "virtualbox-iso" "full" {
   guest_os_type    = local.guest_os
   headless         = local.headless
   http_directory   = local.http_directory
-  iso_checksum     = var.iso_checksum
+  iso_checksum     = var.iso_sha_checksum
   iso_url          = local.iso_url
   keep_registered  = local.keep_registered
   memory           = local.memory
@@ -26,7 +26,7 @@ source "virtualbox-iso" "full" {
       "--time-zone",
       "America/Chicago",
       "--iso",
-      "${path.cwd}/packer_cache/b8e9b7e0fe39bb2818365ca98ec2fd090052dab0.iso",
+      "${local.virtualbox_iso}",
       "--script-template",
       "${local.http_directory}/${var.os_type}.cfg",
     ]
@@ -40,7 +40,7 @@ source "virtualbox-iso" "base" {
   guest_os_type    = local.guest_os
   headless         = local.headless
   http_directory   = local.http_directory
-  iso_checksum     = var.iso_checksum
+  iso_checksum     = var.iso_sha_checksum
   iso_url          = local.iso_url
   keep_registered  = local.keep_registered
   memory           = local.memory
@@ -58,7 +58,7 @@ source "virtualbox-iso" "base" {
       "--time-zone",
       "America/Chicago",
       "--iso",
-      "${path.cwd}/packer_cache/b8e9b7e0fe39bb2818365ca98ec2fd090052dab0.iso",
+      "${local.virtualbox_iso}",
       "--script-template",
       "${local.http_directory}/${var.os_type}.cfg",
     ]

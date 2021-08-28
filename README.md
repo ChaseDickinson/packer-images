@@ -5,9 +5,10 @@
 ## TODO:
 
 - Ansible playbook to clear disk utilization
+  - Try to reverse engineer these results to see if/what is missing and validate understanding
   - Start with current scripts
   - Clear ~/.cache
-  - Minimize disk by clearing root, boot, & disabling swap
+  - Anonymize disk by zeroing root, boot, & swap
 - Continue working to convert bash scripts to Ansible playbooks (full build)
 - Organize Ansible playbooks into roles
   - Create role for build server

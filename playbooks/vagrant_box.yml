@@ -22,9 +22,9 @@
     - name: Enable password-less sudo for group "sudo"
       become: true
       lineinfile:
-        line: "Defaults\texempt_group=sudo"
+        line: "Defaults        exempt_group=sudo"
         path: /etc/sudoers
-        regexp: "Defaults\tenv_reset"
+        regexp: "Defaults        env_reset"
 
     - name: Create local sudoers config file for Vagrant
       become: true

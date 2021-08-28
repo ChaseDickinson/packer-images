@@ -1,0 +1,62 @@
+# files.yml
+---
+- name: Clear disposable files and directories
+  hosts: all
+  become: true
+
+  tasks:
+    - name: Capture disk usage before performing any operations
+      command: df / -hBM
+      when: clear_disk_usage_pre is undefined
+      register: clear_disk_usage_pre
+    
+    - name: Setup dpkg excludes for linux-firmware
+      lineinfile:
+        path: /etc/dpkg/dpkg.cfg.d/excludes
+        line: "{{ item }}"
+        create: yes
+        mode: "644"
+      loop:
+        - "path-exclude=/lib/firmware/*"
+        - "path-exclude=/usr/share/doc/linux-firmware/*"
+
+# Two needs: cleare files & leave directories OR clear directories
+    - name: Locating all files in provided directories
+      find:
+        path: "{{ item }}"
+        recurse: yes
+      register: files
+      loop:
+#        - "/lib/firmware"
+        - "/usr/share/doc/linux-firmware/"
+#        - "/usr/share/doc/"
+#        - "/var/cache"
+#        - "/var/log"
+#        - "/tmp"
+#        - "/var/tmp"
+
+    - name: Print file dictionary
+      debug:
+        var: files
+
+#    - name: Print file paths
+#      debug:
+#        msg: "File {{ item.key }} has path {{ item.value.path }}"
+#      loop: "{{ lookup('dict', files) }}"
+
+#    - name: Removing all files previously found in files dir
+#      file:
+#        path: "{{ item.path }}"
+#        state: absent
+#      with_items: "{{ files }}"
+
+    - name: Capture disk usage after performing operations
+      command: df / -hBM
+      when: clear_disk_usage_post is undefined
+      register: clear_disk_usage_post
+
+    - name: Print disk usage metrics
+      debug:
+        msg:
+          - "Disk usage before: {{ clear_disk_usage_pre.stdout_lines }}"
+          - "Disk usage after: {{ clear_disk_usage_post.stdout_lines }}"

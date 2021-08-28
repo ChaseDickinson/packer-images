@@ -1,0 +1,57 @@
+# purge.yml
+---
+- name: Purge unneeded packages, autoremove, and clean apt cache
+  hosts: all
+  become: true
+
+  tasks:
+    - name: Capture disk usage before purge
+      command: df / -hBM
+      when: purge_disk_usage_pre is undefined
+      register: purge_disk_usage_pre
+
+    - name: Retrieve list of packages to purge
+      block:
+      - name: Retrieve list of installed Linux headers
+        shell: dpkg --list | awk '{ print $2 }' | grep 'linux-headers'
+        register: linux_headers
+      - name: Retrieve list of installed Linux images
+        shell: dpkg --list | awk '{ print $2 }' | grep 'linux-image-.*-generic' | grep -v "$(uname -r)"
+        register: linux_images
+      - name: Retrieve list of installed Linux modules
+        shell: dpkg --list | awk '{ print $2 }' | grep 'linux-modules-.*-generic' | grep -v "$(uname -r)"
+        register: linux_modules
+      - name: Retrieve list of installed development packages
+        shell: dpkg --list | awk '{ print $2 }' | grep -- '-dev\(:[a-z0-9]\+\)\?$'
+        register: dev_packages
+
+    - name: Merge lists of packages to purge
+      set_fact:
+        purge_packages: "{{ linux_headers.stdout_lines + linux_images.stdout_lines + linux_modules.stdout_lines + dev_packages.stdout_lines }}"
+
+    - name: Purge unneeded packages
+      apt:
+        pkg: "{{ purge_packages }}"
+        purge: yes
+        state: absent
+        update_cache: yes
+
+    - name: Remove useless packages & dependencies that are no longer required
+      apt:
+        autoremove: yes
+        update_cache: yes
+
+    - name: Clear apt cache
+      apt:
+        autoclean: yes
+
+    - name: Capture disk usage after purge
+      command: df / -hBM
+      when: purge_disk_usage_post is undefined
+      register: purge_disk_usage_post
+
+    - name: Print disk usage metrics
+      debug:
+        msg:
+          - "Disk usage before: {{ purge_disk_usage_pre.stdout_lines }}"
+          - "Disk usage after: {{ purge_disk_usage_post.stdout_lines }}"
