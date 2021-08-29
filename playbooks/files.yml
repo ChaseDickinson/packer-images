@@ -20,24 +20,44 @@
         - "path-exclude=/lib/firmware/*"
         - "path-exclude=/usr/share/doc/linux-firmware/*"
 
-# Two needs: cleare files & leave directories OR clear directories
-    - name: Locating all files in provided directories
+    - name: Ansible delete file glob
       find:
-        path: "{{ item }}"
+        paths: /lib/firmware
+        file_type: file
         recurse: yes
-      register: files
-      loop:
+      register: files_to_delete
+
+    - name: Ansible remove file glob
+      file:
+        path: "{{ item.path }}"
+        state: absent
+      with_items: "{{ files_to_delete.files }}"
+
+# Two needs: clear files & leave directories OR clear directories
+#    - name: Locating all files in provided directories
+#      find:
+#        path: "{{ item }}"
+#        file_type: file
+#        recurse: yes
+#      register: located
+#      loop:
 #        - "/lib/firmware"
-        - "/usr/share/doc/linux-firmware/"
+#        - "/usr/share/doc/linux-firmware/"
 #        - "/usr/share/doc/"
 #        - "/var/cache"
+#        - /var/cache/cracklib/
 #        - "/var/log"
 #        - "/tmp"
 #        - "/var/tmp"
 
-    - name: Print file dictionary
-      debug:
-        var: files
+#    - name: Print located files
+#      debug:
+#        var: located.results
+
+#    - name: Extract path attribute
+#      debug:
+#        msg: "{{ {{ item.key }} }}"
+#      loop: "{{ lookup('dict', located.results) }}"
 
 #    - name: Print file paths
 #      debug:

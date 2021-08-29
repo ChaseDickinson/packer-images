@@ -15,7 +15,8 @@ build {
   provisioner "ansible" {
     extra_arguments = [
       "--extra-vars",
-      "ansible_become_pass=${local.ssh_password}"
+      "ansible_become_pass=${local.ssh_password}",
+      "-vvvv"
     ]
 
     playbook_file = "${local.playbooks_dir}/${source.name}.yml"

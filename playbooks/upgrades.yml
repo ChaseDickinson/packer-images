@@ -11,6 +11,14 @@
         upgrade: dist
       notify: Reboot VM
 
+    - name: Install list of packages
+      apt:
+        update_cache: yes
+        state: present
+        pkg:
+          - "linux-tools-{{ ansible_facts['ansible_kernel'] }}"
+          - "linux-cloud-tools-{{ ansible_facts['ansible_kernel'] }}"
+
     - name: Capture box creation date
       shell:
         cmd: date > /etc/vagrant_box_build_date

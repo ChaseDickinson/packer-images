@@ -13,16 +13,16 @@
     - name: Retrieve list of packages to purge
       block:
       - name: Retrieve list of installed Linux headers
-        shell: dpkg --list | awk '{ print $2 }' | grep 'linux-headers'
+        shell: dpkg --list | awk '{ print $2 }' | grep 'linux-headers' || echo ""
         register: linux_headers
       - name: Retrieve list of installed Linux images
-        shell: dpkg --list | awk '{ print $2 }' | grep 'linux-image-.*-generic' | grep -v "$(uname -r)"
+        shell: dpkg --list | awk '{ print $2 }' | grep 'linux-image-.*-generic' | grep -v "$(uname -r)" || echo ""
         register: linux_images
       - name: Retrieve list of installed Linux modules
-        shell: dpkg --list | awk '{ print $2 }' | grep 'linux-modules-.*-generic' | grep -v "$(uname -r)"
+        shell: dpkg --list | awk '{ print $2 }' | grep 'linux-modules-.*-generic' | grep -v "$(uname -r)" || echo ""
         register: linux_modules
       - name: Retrieve list of installed development packages
-        shell: dpkg --list | awk '{ print $2 }' | grep -- '-dev\(:[a-z0-9]\+\)\?$'
+        shell: dpkg --list | awk '{ print $2 }' | grep -- '-dev\(:[a-z0-9]\+\)\?$' || echo ""
         register: dev_packages
 
     - name: Merge lists of packages to purge
