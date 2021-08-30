@@ -6,9 +6,9 @@
 set -o errexit;
 set -o nounset;
 set -o xtrace;
-# set -o pipefail; - This fails at least on line 41
+set -o pipefail;
 
-DISK_USAGE_BEFORE_CLEANUP=$(df -BM --total --output="source","used","pcent" | grep "total")
+DISK_USAGE_BEFORE_CLEANUP=$(df / -hBM)
 
 # Removing unattended-upgrades package
 apt-get remove -y --purge unattended-upgrades;
@@ -18,43 +18,22 @@ systemctl disable apt-daily.timer;
 systemctl mask apt-daily.service;
 systemctl daemon-reload;
 
-echo "remove linux-headers"
-dpkg --list \
-	| awk '{ print $2 }' \
-	| grep 'linux-headers' \
-	| xargs apt-get -y purge;
+echo -e "\n\tcapture packages to purge\n"
+echo "==> linux-headers"
+purge_packages=$(dpkg --list | awk '{ print $2 }' | grep 'linux-headers' || true)
+echo "==> linux-image"
+purge_packages+=$(dpkg --list | awk '{ print $2 }' | grep 'linux-image-.*-generic' | grep -v "$(uname -r)" || true)
+echo "==> linux-modules"
+purge_packages+=$(dpkg --list | awk '{ print $2 }' | grep 'linux-modules-.*-generic' | grep -v "$(uname -r)" || true)
+echo "==> linux-source"
+purge_packages+=$(dpkg --list | awk '{ print $2 }' | grep linux-source || true)
+echo "==> development packages"
+purge_packages+=$(dpkg --list | awk '{ print $2 }' | grep -- '-dev\(:[a-z0-9]\+\)\?$' || true)
+echo "==> development packages"
+purge_packages+=$(dpkg --list | awk '{ print $2 }' | grep -- '-doc$' || true)
 
-echo "remove specific Linux kernels, such as linux-image-3.11.0-15-generic but keeps the current kernel and does not touch the virtual packages"
-dpkg --list \
-		| awk '{ print $2 }' \
-		| grep 'linux-image-.*-generic' \
-		| grep -v "$(uname -r)" \
-		| xargs apt-get -y purge;
-
-echo "remove old kernel modules packages"
-dpkg --list \
-		| awk '{ print $2 }' \
-		| grep 'linux-modules-.*-generic' \
-		| grep -v "$(uname -r)" \
-		| xargs apt-get -y purge;
-
-echo "remove linux-source package"
-dpkg --list \
-		| awk '{ print $2 }' \
-		| grep linux-source \
-		| xargs apt-get -y purge;
-
-echo "remove all development packages"
-dpkg --list \
-		| awk '{ print $2 }' \
-		| grep -- '-dev\(:[a-z0-9]\+\)\?$' \
-		| xargs apt-get -y purge;
-
-echo "remove docs packages"
-dpkg --list \
-		| awk '{ print $2 }' \
-		| grep -- '-doc$' \
-		| xargs apt-get -y purge;
+echo "purging packages"
+apt-get -y purge "${purge_packages}"
 
 echo "remove obsolete networking packages"
 apt-get -y purge ppp pppconfig pppoeconf;
@@ -123,6 +102,6 @@ echo "${DISK_USAGE_BEFORE_CLEANUP}";
 
 echo -e "\tDisk usage after cleanup:\n"
 sleep 1;
-DISK_USAGE_AFTER_CLEANUP=$(df -BM --total --output="source","used","pcent" | grep "total");
+DISK_USAGE_AFTER_CLEANUP=$(df / -hBM);
 sleep 1;
 echo "${DISK_USAGE_AFTER_CLEANUP}";

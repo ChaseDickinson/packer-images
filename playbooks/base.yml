@@ -4,4 +4,3 @@
 - import_playbook: guest_additions.yml
 - import_playbook: user_base.yml
 - import_playbook: vagrant_box.yml
-- import_playbook: purge.yml

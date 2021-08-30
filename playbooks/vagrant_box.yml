@@ -9,22 +9,22 @@
   tasks:
     - name: Create SSH directory
       file:
-        path: "{{ ansible_facts['user_dir'] }}/.ssh"
+        path: "{{ ansible_facts.user_dir }}/.ssh"
         state: directory
         mode: "700"
 
     - name: Add Vagrant public key to authorized keys file & set correct permissions
       get_url:
         url: "{{ vagrant_pubkey_url }}"
-        dest: "{{ ansible_facts['user_dir'] }}/.ssh/authorized_keys"
+        dest: "{{ ansible_facts.user_dir }}/.ssh/authorized_keys"
         mode: "600"
 
     - name: Enable password-less sudo for group "sudo"
       become: true
       lineinfile:
+        insertafter: "env_reset\n"
         line: "Defaults        exempt_group=sudo"
         path: /etc/sudoers
-        regexp: "Defaults        env_reset"
 
     - name: Create local sudoers config file for Vagrant
       become: true

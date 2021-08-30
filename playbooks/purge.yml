@@ -21,17 +21,43 @@
       - name: Retrieve list of installed Linux modules
         shell: dpkg --list | awk '{ print $2 }' | grep 'linux-modules-.*-generic' | grep -v "$(uname -r)" || echo ""
         register: linux_modules
+      - name: Retrieve list of installed Linux sources
+        shell: dpkg --list | awk '{ print $2 }' | grep linux-source | xargs apt-get -y purge || echo ""
+        register: linux_sources
       - name: Retrieve list of installed development packages
         shell: dpkg --list | awk '{ print $2 }' | grep -- '-dev\(:[a-z0-9]\+\)\?$' || echo ""
         register: dev_packages
+      - name: Retrieve list of installed documentation packages
+        shell: dpkg --list | awk '{ print $2 }' | grep -- '-doc$' | xargs apt-get -y purge|| echo ""
+        register: doc_packages
 
-    - name: Merge lists of packages to purge
+    - name: Merge lists of collected variables
       set_fact:
-        purge_packages: "{{ linux_headers.stdout_lines + linux_images.stdout_lines + linux_modules.stdout_lines + dev_packages.stdout_lines }}"
+        purge_packages_lookup: "{{ linux_headers.stdout_lines + linux_images.stdout_lines + linux_modules.stdout_lines + linux_sources.stdout_lines + dev_packages.stdout_lines + doc_packages.stdout_lines }}"
+
+    - name: Create list of additional packages to purge
+      set_fact:
+        purge_packages_explicit:
+          - bash-completion
+          - command-not-found
+          - command-not-found-data
+          - fonts-ubuntu-console
+          - fonts-ubuntu-font-family-console
+          - friendly-recovery
+          - grub-legacy-ec2
+          - installation-report
+          - laptop-detect
+          - motd-news-config
+          - popularity-contest
+          - ppp
+          - pppconfig
+          - pppoeconf
+          - unattended-upgrades
+          - usbutils
 
     - name: Purge unneeded packages
       apt:
-        pkg: "{{ purge_packages }}"
+        pkg: "{{ purge_packages_lookup + purge_packages_explicit }}"
         purge: yes
         state: absent
         update_cache: yes
@@ -53,5 +79,7 @@
     - name: Print disk usage metrics
       debug:
         msg:
-          - "Disk usage before: {{ purge_disk_usage_pre.stdout_lines }}"
-          - "Disk usage after: {{ purge_disk_usage_post.stdout_lines }}"
+          - "Disk usage before:"
+          - "{{ purge_disk_usage_pre.stdout_lines }}"
+          - "Disk usage after:"
+          - "{{ purge_disk_usage_post.stdout_lines }}"

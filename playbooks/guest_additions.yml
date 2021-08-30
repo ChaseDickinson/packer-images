@@ -11,9 +11,13 @@
   tasks:
     - name: Install necessary packages for compiling
       apt:
-        name: ["build-essential", "dkms", "bzip2", "tar"]
         update_cache: yes
         state: present
+        name:
+        - build-essential
+        - dkms
+        - bzip2
+        - tar
 
     - name: Ensure mount point directory exists
       file:

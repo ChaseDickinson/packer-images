@@ -20,55 +20,20 @@
         - "path-exclude=/lib/firmware/*"
         - "path-exclude=/usr/share/doc/linux-firmware/*"
 
-    - name: Ansible delete file glob
-      find:
-        paths: /lib/firmware
-        file_type: file
-        recurse: yes
-      register: files_to_delete
-
-    - name: Ansible remove file glob
+    - name: Clean directories & files
       file:
-        path: "{{ item.path }}"
+        path: "{{ item }}"
         state: absent
-      with_items: "{{ files_to_delete.files }}"
-
-# Two needs: clear files & leave directories OR clear directories
-#    - name: Locating all files in provided directories
-#      find:
-#        path: "{{ item }}"
-#        file_type: file
-#        recurse: yes
-#      register: located
-#      loop:
-#        - "/lib/firmware"
-#        - "/usr/share/doc/linux-firmware/"
-#        - "/usr/share/doc/"
-#        - "/var/cache"
-#        - /var/cache/cracklib/
-#        - "/var/log"
-#        - "/tmp"
-#        - "/var/tmp"
-
-#    - name: Print located files
-#      debug:
-#        var: located.results
-
-#    - name: Extract path attribute
-#      debug:
-#        msg: "{{ {{ item.key }} }}"
-#      loop: "{{ lookup('dict', located.results) }}"
-
-#    - name: Print file paths
-#      debug:
-#        msg: "File {{ item.key }} has path {{ item.value.path }}"
-#      loop: "{{ lookup('dict', files) }}"
-
-#    - name: Removing all files previously found in files dir
-#      file:
-#        path: "{{ item.path }}"
-#        state: absent
-#      with_items: "{{ files }}"
+      register: clean_complete
+      changed_when: clean_complete is undefined 
+      loop:
+        - /lib/firmware
+        - /usr/share/doc
+        - /var/cache
+        - /var/log
+        - /var/tmp
+        - /var/lib/systemd/random-seed
+        - /root/.wget-hsts
 
     - name: Capture disk usage after performing operations
       command: df / -hBM
@@ -78,5 +43,7 @@
     - name: Print disk usage metrics
       debug:
         msg:
-          - "Disk usage before: {{ clear_disk_usage_pre.stdout_lines }}"
-          - "Disk usage after: {{ clear_disk_usage_post.stdout_lines }}"
+          - "Disk usage before:"
+          - "{{ clear_disk_usage_pre.stdout_lines }}"
+          - "Disk usage after:"
+          - "{{ clear_disk_usage_post.stdout_lines }}"

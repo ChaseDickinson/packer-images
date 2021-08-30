@@ -6,13 +6,13 @@
   tasks:
     - name: Create a working directory if it does not already exist
       file:
-        path: "{{ ansible_facts['user_dir'] }}/code"
+        path: "{{ ansible_facts.user_dir }}/code"
         state: directory
         mode: "755"
 
     - name: Suppress Ubuntu Welcome Wizard
       file:
-        path: "{{ ansible_facts['user_dir'] }}/.config/gnome-initial-setup-done"
+        path: "{{ ansible_facts.user_dir }}/.config/gnome-initial-setup-done"
         state: touch
         mode: "664"
 
