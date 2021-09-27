@@ -8,7 +8,7 @@ set -o nounset;
 set -o xtrace;
 set -o pipefail;
 
-DISK_USAGE_BEFORE_MINIMIZE=$(df -BM --total --output="source","used","pcent" | grep "total");
+DISK_USAGE_BEFORE_MINIMIZE=$(df -BM --total --output=source,used,pcent | grep "total");
 
 # Whiteout root
 count=$(df --sync -kP / | tail -n1  | awk -F ' ' '{print $4}');
@@ -47,6 +47,6 @@ echo "${DISK_USAGE_BEFORE_MINIMIZE}";
 
 echo -e "\tDisk usage after minimize:\n"
 sleep 1;
-DISK_USAGE_AFTER_MINIMIZE=$(df -BM --total --output="source","used","pcent" | grep "total");
+DISK_USAGE_AFTER_MINIMIZE=$(df -BM --total --output=source,used,pcent | grep "total");
 sleep 1;
 echo "${DISK_USAGE_AFTER_MINIMIZE}";

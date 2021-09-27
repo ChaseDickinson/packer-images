@@ -18,22 +18,49 @@ systemctl disable apt-daily.timer;
 systemctl mask apt-daily.service;
 systemctl daemon-reload;
 
-echo -e "\n\tcapture packages to purge\n"
-echo "==> linux-headers"
-purge_packages=$(dpkg --list | awk '{ print $2 }' | grep 'linux-headers' || true)
-echo "==> linux-image"
-purge_packages+=$(dpkg --list | awk '{ print $2 }' | grep 'linux-image-.*-generic' | grep -v "$(uname -r)" || true)
-echo "==> linux-modules"
-purge_packages+=$(dpkg --list | awk '{ print $2 }' | grep 'linux-modules-.*-generic' | grep -v "$(uname -r)" || true)
-echo "==> linux-source"
-purge_packages+=$(dpkg --list | awk '{ print $2 }' | grep linux-source || true)
-echo "==> development packages"
-purge_packages+=$(dpkg --list | awk '{ print $2 }' | grep -- '-dev\(:[a-z0-9]\+\)\?$' || true)
-echo "==> development packages"
-purge_packages+=$(dpkg --list | awk '{ print $2 }' | grep -- '-doc$' || true)
+echo "==> remove linux-headers"
+dpkg --list \
+  | awk '{ print $2 }' \
+  | grep 'linux-headers' \
+  | xargs apt-get -y purge \
+  || true;
 
-echo "purging packages"
-apt-get -y purge "${purge_packages}"
+echo "==> remove linux-image"
+dpkg --list \
+  | awk '{ print $2 }' \
+  | grep 'linux-image-.*-generic' \
+  | grep -v "$(uname -r)" \
+  | xargs apt-get -y purge \
+  || true;
+
+echo "==> remove linux-modules"
+dpkg --list \
+  | awk '{ print $2 }' \
+  | grep 'linux-modules-.*-generic' \
+  | grep -v "$(uname -r)" \
+  | xargs apt-get -y purge \
+  || true;
+
+echo "==> remove linux-source"
+dpkg --list \
+  | awk '{ print $2 }' \
+  | grep linux-source \
+  | xargs apt-get -y purge \
+  || true;
+
+echo "==> remove development packages"
+dpkg --list \
+  | awk '{ print $2 }' \
+  | grep -- '-dev\(:[a-z0-9]\+\)\?$' \
+  | xargs apt-get -y purge \
+  || true;
+
+echo "==> remove docs packages"
+dpkg --list \
+  | awk '{ print $2 }' \
+  | grep -- '-doc$' \
+  | xargs apt-get -y purge \
+  || true;
 
 echo "remove obsolete networking packages"
 apt-get -y purge ppp pppconfig pppoeconf;

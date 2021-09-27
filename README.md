@@ -5,11 +5,10 @@
 ## TODO:
 
 - Ansible playbook to clear disk utilization
-  - Try to reverse engineer these results to see if/what is missing and validate understanding
-  - Start with current scripts
-  - Clear ~/.cache
+  - Analyze disk utilization to determine if/what can be removed
   - Anonymize disk by zeroing root, boot, & swap
 - Continue working to convert bash scripts to Ansible playbooks (full build)
+- Add [Pop!_OS Shell](https://github.com/pop-os/shell) to full build
 - Organize Ansible playbooks into roles
   - Create role for build server
 - Add better conditions (virtualization technology and guest OS) into roles to provide more robust controls for if/when tasks run

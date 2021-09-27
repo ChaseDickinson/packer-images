@@ -25,19 +25,19 @@ gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profi
 # Installing VS Code extensions
 ext_list=(\
   amazonwebservices.aws-toolkit-vscode \
-  coenraads.bracket-pair-colorizer-2 \
   github.github-vscode-theme \
   eamodio.gitlens \
   esbenp.prettier-vscode \
   ms-azuretools.vscode-docker \
+  ms-python.python \
   ms-vscode-remote.remote-containers \
   ms-vscode-remote.remote-ssh \
   oderwat.indent-rainbow \
   rebornix.ruby \
+  redhat.ansible \
   redhat.vscode-yaml \
   wayou.vscode-todo-highlight \
-  wingrunr21.vscode-ruby \
-  zbr.vscode-ansible);
+  wingrunr21.vscode-ruby);
 
 for i in "${ext_list[@]}"
 do

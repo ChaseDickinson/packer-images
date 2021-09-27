@@ -9,7 +9,7 @@
       command: df / -hBM
       when: clear_disk_usage_pre is undefined
       register: clear_disk_usage_pre
-    
+
     - name: Setup dpkg excludes for linux-firmware
       lineinfile:
         path: /etc/dpkg/dpkg.cfg.d/excludes
@@ -20,20 +20,47 @@
         - "path-exclude=/lib/firmware/*"
         - "path-exclude=/usr/share/doc/linux-firmware/*"
 
-    - name: Clean directories & files
-      file:
+    - name: Get directory stats
+      stat:
         path: "{{ item }}"
-        state: absent
-      register: clean_complete
-      changed_when: clean_complete is undefined 
+      register: directory_stats
       loop:
         - /lib/firmware
         - /usr/share/doc
         - /var/cache
         - /var/log
         - /var/tmp
+        - /tmp
+        - /home/vagrant/.cache
+
+    - name: Delete directories
+      file:
+        path: "{{ item.stat.path }}"
+        state: absent
+      loop: "{{ directory_stats.results }}"
+
+    - name: Delete files
+      file:
+        path: "{{ item }}"
+        state: absent
+      loop:
         - /var/lib/systemd/random-seed
         - /root/.wget-hsts
+
+    - name: Create directory
+      file:
+        path: "{{ item.stat.path }}"
+        state: directory
+        owner: "{{ item.stat.pw_name }}"
+        group: "{{ item.stat.gr_name }}"
+        mode: "{{ item.stat.mode }}"
+      loop: "{{ directory_stats.results }}"
+
+    - name: Autoremove packages and clean apt cache
+      apt:
+        autoclean: yes
+        autoremove: yes
+        update_cache: no
 
     - name: Capture disk usage after performing operations
       command: df / -hBM
