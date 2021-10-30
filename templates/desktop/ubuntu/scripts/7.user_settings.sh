@@ -24,7 +24,6 @@ gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profi
 
 # Installing VS Code extensions
 ext_list=(\
-  amazonwebservices.aws-toolkit-vscode \
   github.github-vscode-theme \
   eamodio.gitlens \
   esbenp.prettier-vscode \
@@ -36,8 +35,10 @@ ext_list=(\
   rebornix.ruby \
   redhat.ansible \
   redhat.vscode-yaml \
+  streetsidesoftware.code-spell-checker \
   wayou.vscode-todo-highlight \
-  wingrunr21.vscode-ruby);
+  wingrunr21.vscode-ruby \
+  yzhang.markdown-all-in-one);
 
 for i in "${ext_list[@]}"
 do
